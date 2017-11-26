@@ -1,9 +1,16 @@
 package ru.voting.api.restaurants.model;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@MappedSuperclass
+// http://stackoverflow.com/questions/594597/hibernate-annotations-which-is-better-field-or-property-access
+@Access(AccessType.FIELD)
 public class BaseEntity {
 
+    @Id
+    @Column(name = "id", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
 
     public BaseEntity() {

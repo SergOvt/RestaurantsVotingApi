@@ -1,13 +1,31 @@
 package ru.voting.api.restaurants.model;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "meals")
 public class Meal extends BaseEntity {
 
+    @Column(name = "title", nullable = false)
+    @NotBlank
     private String title;
+
+    @Column(name = "price", nullable = false)
+    @Range(min = 10, max = 1000000)
     private int price;
+
+    @Column(name = "date", nullable = false)
+    @NotNull
     private LocalDate date;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="rest_id", nullable = false)
+    @NotNull
     private Restaurant restaurant;
 
     public Meal() {

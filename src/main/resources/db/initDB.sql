@@ -16,7 +16,7 @@ CREATE TABLE votes
   id INT PRIMARY KEY NOT NULL IDENTITY,
   user_id INT NOT NULL,
   rest_id INT NOT NULL,
-  date DATE DEFAULT now() NOT NULL,
+  date DATE DEFAULT NOW() NOT NULL,
   CONSTRAINT votes_rest_fk FOREIGN KEY (rest_id) REFERENCES RESTAURANTS (ID) ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX votes_unique_user_date_idx ON votes (user_id, date);
@@ -27,7 +27,7 @@ CREATE TABLE meals
   rest_id INT NOT NULL,
   title VARCHAR(255) NOT NULL,
   price INT NOT NULL,
-  date DATE DEFAULT now() NOT NULL,
+  date DATE DEFAULT NOW() NOT NULL,
   CONSTRAINT meals_rest_fk FOREIGN KEY (rest_id) REFERENCES RESTAURANTS (ID) ON DELETE CASCADE
 );
 
