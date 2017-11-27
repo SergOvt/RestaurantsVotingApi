@@ -31,6 +31,13 @@ public class Meal extends BaseEntity {
     public Meal() {
     }
 
+    public Meal(int id, String title, int price, LocalDate date) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+        this.date = date;
+    }
+
     public Meal(String title, int price) {
         this.title = title;
         this.price = price;

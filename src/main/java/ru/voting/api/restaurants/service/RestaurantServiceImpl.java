@@ -1,9 +1,11 @@
 package ru.voting.api.restaurants.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.repository.RestaurantRepository;
+import ru.voting.api.restaurants.repository.VoteRepository;
 
 import java.util.List;
 
@@ -12,36 +14,45 @@ import static ru.voting.api.restaurants.util.ValidationUtil.*;
 @Service
 public class RestaurantServiceImpl implements RestaurantService{
 
-    private final RestaurantRepository repository;
+    private final RestaurantRepository restaurantRepository;
+    private final VoteRepository voteRepository;
 
-    public RestaurantServiceImpl(RestaurantRepository repository) {
-        this.repository = repository;
+    @Autowired
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, VoteRepository voteRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.voteRepository = voteRepository;
     }
 
     @Override
     public Restaurant get(int id) {
-        return checkNotFound(repository.get(id), id);
+        return checkNotFound(restaurantRepository.get(id), id);
     }
 
     @Override
     public List<Restaurant> getAll() {
-        return repository.getAll();
+        return restaurantRepository.getAll();
     }
 
     @Override
     public Restaurant add(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        return checkNotFound(repository.add(restaurant), restaurant.getId());
+        return checkNotFound(restaurantRepository.add(restaurant), restaurant.getId());
     }
 
     @Override
     public Restaurant update(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        return checkNotFound(repository.update(restaurant), restaurant.getId());
+        return checkNotFound(restaurantRepository.update(restaurant), restaurant.getId());
     }
 
     @Override
     public void delete(int id) {
-        checkNotFound(repository.delete(id), id);
+        checkNotFound(restaurantRepository.delete(id), id);
     }
+
+    @Override
+    public boolean setVote(int id, int userId) {
+        return voteRepository.vote(id, userId);
+    }
+
 }

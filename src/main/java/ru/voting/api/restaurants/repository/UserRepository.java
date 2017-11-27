@@ -16,6 +16,4 @@ public interface UserRepository {
 
     boolean delete(String email);
 
-    boolean setVote(int restaurantId, int userId);
-
 }

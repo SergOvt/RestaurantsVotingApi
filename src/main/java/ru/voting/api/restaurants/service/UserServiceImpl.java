@@ -1,5 +1,6 @@
 package ru.voting.api.restaurants.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.voting.api.restaurants.model.User;
@@ -14,6 +15,7 @@ public class UserServiceImpl implements UserService{
 
     private final UserRepository repository;
 
+    @Autowired
     public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
     }
@@ -47,8 +49,4 @@ public class UserServiceImpl implements UserService{
         checkNotFound(repository.delete(email), "email=" + email);
     }
 
-    @Override
-    public boolean setVote(int restaurantId, int userId) {
-        return repository.setVote(restaurantId, userId);
-    }
 }

@@ -16,5 +16,4 @@ public interface UserService {
 
     void delete(String email);
 
-    boolean setVote(int restaurantId, int userId);
 }
