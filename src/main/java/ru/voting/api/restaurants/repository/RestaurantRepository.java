@@ -10,10 +10,10 @@ public interface RestaurantRepository {
 
     List<Restaurant> getAll();
 
-    Restaurant add(Restaurant restaurant);
-
-    Restaurant update(Restaurant restaurant);
+    Restaurant save(Restaurant restaurant);
 
     boolean delete(int id);
+
+    boolean setVote(int userId, int restaurantId);
 
 }

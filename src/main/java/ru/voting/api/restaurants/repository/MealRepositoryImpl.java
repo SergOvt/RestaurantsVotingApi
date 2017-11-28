@@ -3,6 +3,7 @@ package ru.voting.api.restaurants.repository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.Meal;
+import ru.voting.api.restaurants.model.Restaurant;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,34 +19,47 @@ public class MealRepositoryImpl implements MealRepository{
 
     @Override
     public Meal get(int id, int restaurantId) {
-        return null;
+        Meal meal = em.find(Meal.class, id);
+        return meal == null || meal.getRestaurant().getId() != restaurantId ? null : meal;
     }
 
     @Override
     public List<Meal> getAll(int restaurantId) {
-        return null;
+        return em.createNamedQuery("meal.getAll", Meal.class)
+                .setParameter("rest_id", restaurantId)
+                .getResultList();
     }
 
     @Override
     public List<Meal> getByDate(LocalDate date, int restaurantId) {
-        return null;
+        return em.createNamedQuery("meal.getByDate", Meal.class)
+                .setParameter("rest_id", restaurantId)
+                .setParameter("date", date)
+                .getResultList();
     }
 
     @Override
     @Transactional
-    public Meal add(Meal meal, int restaurantId) {
-        return null;
+    public Meal save(Meal meal, int restaurantId) {
+        Restaurant ref = em.getReference(Restaurant.class, restaurantId);
+        meal.setRestaurant(ref);
+        if (meal.isNew()) {
+            em.persist(meal);
+        } else {
+            if (get(meal.getId(), restaurantId) == null) {
+                return null;
+            }
+            em.merge(meal);
+        }
+        return meal;
     }
 
     @Override
     @Transactional
-    public Meal update(Meal meal, int restaurantId) {
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public boolean delete(int userId, int restaurantId) {
-        return false;
+    public boolean delete(int id, int restaurantId) {
+        return em.createNamedQuery("meal.delete")
+                .setParameter("id", id)
+                .setParameter("rest_id", restaurantId)
+                .executeUpdate() != 0;
     }
 }

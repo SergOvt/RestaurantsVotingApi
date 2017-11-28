@@ -1,10 +1,15 @@
 package ru.voting.api.restaurants.model;
 
 import org.hibernate.annotations.Formula;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+@NamedQueries({
+        @NamedQuery(name = "restaurant.delete", query = "DELETE FROM Restaurant r WHERE r.id=:id"),
+        @NamedQuery(name = "restaurant.getAll", query = "SELECT r FROM Restaurant r ORDER BY r.rating DESC")
+})
 @Entity
 @Table(name = "restaurants")
 public class Restaurant extends BaseEntity{
@@ -19,9 +24,13 @@ public class Restaurant extends BaseEntity{
     public Restaurant() {
     }
 
-    public Restaurant(int id, String name, int rating) {
-        this.id = id;
+    public Restaurant(String name) {
         this.name = name;
+    }
+
+    public Restaurant(int id, String name, int rating) {
+        this(name);
+        this.id = id;
         this.rating = rating;
     }
 

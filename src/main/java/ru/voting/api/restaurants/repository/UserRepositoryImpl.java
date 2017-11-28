@@ -1,5 +1,6 @@
 package ru.voting.api.restaurants.repository;
 
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.User;
@@ -17,30 +18,34 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public User get(String email) {
-        return null;
+        List<User> users = em.createNamedQuery("user.get", User.class)
+                .setParameter("email", email)
+                .getResultList();
+        return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public List<User> getAll() {
-        return null;
+        return em.createNamedQuery("user.getAll", User.class).getResultList();
     }
 
     @Override
     @Transactional
-    public User add(User user) {
-        return null;
-    }
-
-    @Override
-    @Transactional
-    public User update(User user) {
-        return null;
+    public User save(User user) {
+        if (user.isNew()) {
+            em.persist(user);
+            return user;
+        } else {
+            return em.merge(user);
+        }
     }
 
     @Override
     @Transactional
     public boolean delete(String email) {
-        return false;
+        return em.createNamedQuery("user.delete")
+                .setParameter("email", email)
+                .executeUpdate() != 0;
     }
 
 }

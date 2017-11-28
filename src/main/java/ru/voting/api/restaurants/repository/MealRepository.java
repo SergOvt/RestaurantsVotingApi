@@ -13,10 +13,8 @@ public interface MealRepository {
 
     List<Meal> getByDate(LocalDate date, int restaurantId);
 
-    Meal add(Meal meal, int restaurantId);
+    Meal save(Meal meal, int restaurantId);
 
-    Meal update(Meal meal, int restaurantId);
-
-    boolean delete(int userId, int restaurantId);
+    boolean delete(int id, int restaurantId);
 
 }

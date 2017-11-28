@@ -5,6 +5,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+@NamedQueries({
+        @NamedQuery(name = "vote.get", query = "SELECT v FROM Vote v WHERE v.userId=:userId AND v.date=:date")
+})
 @Entity
 @Table(name = "votes")
 public class Vote extends BaseEntity{
@@ -23,6 +26,11 @@ public class Vote extends BaseEntity{
     private Restaurant restaurant;
 
     public Vote() {
+    }
+
+    public Vote(int userId) {
+        this.userId = userId;
+        this.date = LocalDate.now();
     }
 
     public LocalDate getDate() {

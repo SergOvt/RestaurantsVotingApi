@@ -4,8 +4,14 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.EnumSet;
 import java.util.Set;
 
+@NamedQueries({
+        @NamedQuery(name = "user.delete", query = "DELETE FROM User u WHERE u.email=:email"),
+        @NamedQuery(name = "user.get", query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=:email"),
+        @NamedQuery(name = "user.getAll", query = "SELECT u FROM User u LEFT JOIN FETCH u.roles"),
+})
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity{
@@ -39,6 +45,19 @@ public class User extends BaseEntity{
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    public User(String name, String email, String password, Role role, Role... roles) {
+        this(name, email, password, EnumSet.of(role, roles));
+    }
+
+    public User(int id, String name, String email, String password, Set<Role> roles) {
+        this(name, email, password, roles);
+        this.id = id;
+    }
+
+    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+        this(id, name, email, password, EnumSet.of(role, roles));
     }
 
     public String getName() {

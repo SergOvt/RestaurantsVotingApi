@@ -11,7 +11,7 @@ public class BaseEntity {
     @Id
     @Column(name = "id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
+    protected Integer id;
 
     public BaseEntity() {
     }
@@ -24,12 +24,16 @@ public class BaseEntity {
         this.id = id;
     }
 
+    public boolean isNew() {
+        return this.id == null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BaseEntity that = (BaseEntity) o;
-        return id == that.id;
+        return Objects.equals(id, that.id);
     }
 
     @Override

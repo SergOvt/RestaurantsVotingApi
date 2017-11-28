@@ -1,15 +1,18 @@
 package ru.voting.api.restaurants.service;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.voting.api.restaurants.model.Restaurant;
+import ru.voting.api.restaurants.util.exception.NotFoundException;
+
+import java.time.LocalTime;
+import java.util.List;
 
 import static ru.voting.api.restaurants.TestData.*;
 
@@ -20,7 +23,6 @@ public class RestaurantServiceTest {
 
     @Autowired
     private RestaurantService service;
-    private static final Logger log = LoggerFactory.getLogger(RestaurantServiceTest.class);
 
     @Test
     public void get() throws Exception {
@@ -30,18 +32,57 @@ public class RestaurantServiceTest {
 
     @Test
     public void getAll() throws Exception {
+        List<Restaurant> actual = service.getAll();
+        assertMatch(actual, RESTAURANT_2, RESTAURANT_1, RESTAURANT_3);
     }
 
     @Test
     public void add() throws Exception {
+        service.add(RESTAURANT_NEW);
+        assertMatch(service.get(4), RESTAURANT_NEW);
     }
 
     @Test
     public void update() throws Exception {
+        service.update(RESTAURANT_UPDATED);
+        assertMatch(service.get(1), RESTAURANT_UPDATED);
     }
 
     @Test
     public void delete() throws Exception {
+        service.delete(1);
+        assertMatch(service.getAll(), RESTAURANT_2, RESTAURANT_3);
+    }
+
+    @Test
+    public void setNewVote() throws Exception {
+        service.setVote(2, 1);
+        Assert.assertEquals(service.get(2).getRating(), 3);
+    }
+
+    @Test
+    public void setVote() throws Exception {
+        if (LocalTime.now().isBefore(LocalTime.of(11,0))) {
+            service.setVote(1, 4);
+            Assert.assertEquals(service.get(1).getRating(), 2);
+        }
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void setVoteException() throws Exception {
+        if (LocalTime.now().isAfter(LocalTime.of(11,0))) {
+            service.setVote(1, 4);
+        }
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getNotFound() throws Exception {
+        service.get(5);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void deleteNotFound() throws Exception {
+        service.delete(4);
     }
 
 }

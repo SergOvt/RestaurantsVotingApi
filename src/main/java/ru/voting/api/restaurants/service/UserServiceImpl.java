@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public User add(User user) {
         Assert.notNull(user, "user must not be null");
-        return checkNotFound(repository.add(user), user.getId());
+        return repository.save(user);
     }
 
     @Override
     public User update(User user) {
         Assert.notNull(user, "user must not be null");
-        return checkNotFound(repository.update(user), user.getId());
+        return checkNotFound(repository.save(user), user.getId());
     }
 
     @Override

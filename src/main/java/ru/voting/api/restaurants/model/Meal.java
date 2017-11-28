@@ -7,6 +7,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+@NamedQueries({
+        @NamedQuery(name = "meal.delete", query = "DELETE FROM Meal m WHERE m.id=:id AND m.restaurant.id=:rest_id"),
+        @NamedQuery(name = "meal.getAll", query = "SELECT m FROM Meal m WHERE m.restaurant.id=:rest_id ORDER BY m.date DESC, m.id"),
+        @NamedQuery(name = "meal.getByDate", query = "SELECT m FROM Meal m WHERE m.date=:date AND m.restaurant.id=:rest_id"),
+})
 @Entity
 @Table(name = "meals")
 public class Meal extends BaseEntity {
@@ -31,16 +36,16 @@ public class Meal extends BaseEntity {
     public Meal() {
     }
 
-    public Meal(int id, String title, int price, LocalDate date) {
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.date = date;
-    }
-
     public Meal(String title, int price) {
         this.title = title;
         this.price = price;
+        this.date = LocalDate.now();
+    }
+
+    public Meal(int id, String title, int price, LocalDate date) {
+        this(title, price);
+        this.id = id;
+        this.date = date;
     }
 
     public String getTitle() {

@@ -33,19 +33,20 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public List<Meal> getAllByDate(LocalDate date, int restaurantId) {
+        Assert.notNull(date, "date must not be null");
         return repository.getByDate(date, restaurantId);
     }
 
     @Override
     public Meal add(Meal meal, int restaurantId) {
         Assert.notNull(meal, "meal must not be null");
-        return checkNotFound(repository.add(meal, restaurantId), meal.getId());
+        return repository.save(meal, restaurantId);
     }
 
     @Override
     public Meal update(Meal meal, int restaurantId) {
         Assert.notNull(meal, "meal must not be null");
-        return checkNotFound(repository.update(meal, restaurantId), meal.getId());
+        return checkNotFound(repository.save(meal, restaurantId), meal.getId());
     }
 
     @Override

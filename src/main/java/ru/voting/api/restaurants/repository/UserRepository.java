@@ -10,9 +10,7 @@ public interface UserRepository {
 
     List<User> getAll();
 
-    User add(User user);
-
-    User update(User user);
+    User save(User user);
 
     boolean delete(String email);
 
