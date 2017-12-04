@@ -17,11 +17,8 @@ public class UserRepositoryImpl implements UserRepository{
     private EntityManager em;
 
     @Override
-    public User get(String email) {
-        List<User> users = em.createNamedQuery("user.get", User.class)
-                .setParameter("email", email)
-                .getResultList();
-        return DataAccessUtils.singleResult(users);
+    public User get(int id) {
+        return em.find(User.class, id);
     }
 
     @Override
@@ -42,9 +39,9 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     @Transactional
-    public boolean delete(String email) {
+    public boolean delete(int id) {
         return em.createNamedQuery("user.delete")
-                .setParameter("email", email)
+                .setParameter("id", id)
                 .executeUpdate() != 0;
     }
 

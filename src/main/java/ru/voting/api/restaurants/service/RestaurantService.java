@@ -16,6 +16,6 @@ public interface RestaurantService {
 
     void delete(int id);
 
-    void setVote(int id, int userId);
+    void setVote(int id, String userEmail);
 
 }

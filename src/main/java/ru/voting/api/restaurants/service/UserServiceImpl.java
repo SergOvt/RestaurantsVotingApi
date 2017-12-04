@@ -21,9 +21,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User get(String email) {
-        Assert.notNull(email, "email must not be null");
-        return checkNotFound(repository.get(email), "email=" + email);
+    public User get(int id) {
+        return checkNotFound(repository.get(id), "id=" + id);
     }
 
     @Override
@@ -44,9 +43,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void delete(String email) {
-        Assert.notNull(email, "email must not be null");
-        checkNotFound(repository.delete(email), "email=" + email);
+    public void delete(int id) {
+        checkNotFound(repository.delete(id), "email=" + id);
     }
 
 }

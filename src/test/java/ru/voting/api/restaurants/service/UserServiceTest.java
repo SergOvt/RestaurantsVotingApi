@@ -24,7 +24,7 @@ public class UserServiceTest {
 
     @Test
     public void get() throws Exception {
-        User user = service.get("user1@mail.ru");
+        User user = service.get(1);
         assertMatch(user, USER_1);
     }
 
@@ -37,29 +37,29 @@ public class UserServiceTest {
     @Test
     public void add() throws Exception {
         service.add(USER_NEW);
-        assertMatch(service.get("new@mail.ru"), USER_NEW);
+        assertMatch(service.get(5), USER_NEW);
     }
 
     @Test
     public void update() throws Exception {
         service.update(USER_UPDATE);
-        assertMatch(service.get("updated@mail.ru"), USER_UPDATE);
+        assertMatch(service.get(1), USER_UPDATE);
     }
 
     @Test
     public void delete() throws Exception {
-        service.delete("user1@mail.ru");
+        service.delete(1);
         assertMatch(service.getAll(), USER_2, ADMIN_1, ADMIN_2);
     }
 
     @Test(expected = NotFoundException.class)
     public void getNotFound() throws Exception {
-        service.get("dummy");
+        service.get(0);
     }
 
     @Test(expected = NotFoundException.class)
     public void deleteNotFound() throws Exception {
-        service.delete("dummy");
+        service.delete(0);
     }
 
 }

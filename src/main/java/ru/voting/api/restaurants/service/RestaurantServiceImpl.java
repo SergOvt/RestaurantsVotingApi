@@ -48,8 +48,8 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public void setVote(int id, int userId) {
-        checkNotFound(repository.setVote(id, userId), id);
+    public void setVote(int id, String userEmail) {
+        checkNotFound(repository.setVote(id, userEmail), id);
     }
 
 }

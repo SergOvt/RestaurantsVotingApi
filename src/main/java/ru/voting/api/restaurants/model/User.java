@@ -8,8 +8,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 @NamedQueries({
-        @NamedQuery(name = "user.delete", query = "DELETE FROM User u WHERE u.email=:email"),
-        @NamedQuery(name = "user.get", query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=:email"),
+        @NamedQuery(name = "user.delete", query = "DELETE FROM User u WHERE u.id=:id"),
         @NamedQuery(name = "user.getAll", query = "SELECT u FROM User u LEFT JOIN FETCH u.roles"),
 })
 @Entity

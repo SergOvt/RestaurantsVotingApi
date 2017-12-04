@@ -1,12 +1,13 @@
 package ru.voting.api.restaurants.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @NamedQueries({
-        @NamedQuery(name = "vote.get", query = "SELECT v FROM Vote v WHERE v.userId=:userId AND v.date=:date")
+        @NamedQuery(name = "vote.get", query = "SELECT v FROM Vote v WHERE v.userEmail=:userEmail AND v.date=:date")
 })
 @Entity
 @Table(name = "votes")
@@ -16,9 +17,10 @@ public class Vote extends BaseEntity{
     @NotNull
     private LocalDate date;
 
-    @Column(name = "user_id", nullable = false)
-    @Min(0)
-    private int userId;
+    @Column(name = "user_email", nullable = false)
+    @NotBlank
+    @Email
+    private String userEmail;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="rest_id", nullable = false)
@@ -28,8 +30,8 @@ public class Vote extends BaseEntity{
     public Vote() {
     }
 
-    public Vote(int userId) {
-        this.userId = userId;
+    public Vote(String userEmail) {
+        this.userEmail = userEmail;
         this.date = LocalDate.now();
     }
 
@@ -41,12 +43,12 @@ public class Vote extends BaseEntity{
         this.date = date;
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUserEmail(String userId) {
+        this.userEmail = userId;
     }
 
     public Restaurant getRestaurant() {

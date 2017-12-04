@@ -23,8 +23,8 @@ INSERT INTO meals (rest_id, title, price, date) VALUES
   (2, 'fish', 20000, now()),
   (2, 'chicken', 10000, now());
 
-INSERT INTO votes (user_id, rest_id) VALUES
-  (2, 1),
-  (3, 2),
-  (4, 2);
+INSERT INTO votes (user_email, rest_id) VALUES
+  ('user2@mail.ru', 1),
+  ('admin1@mail.ru', 2),
+  ('admin2@mail.ru', 2);
 

@@ -1,7 +1,6 @@
 package ru.voting.api.restaurants.model;
 
 import org.hibernate.annotations.Formula;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
