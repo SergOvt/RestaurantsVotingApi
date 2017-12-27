@@ -24,13 +24,13 @@ public class MealServiceTest {
     private MealService service;
 
     @Test
-    public void getTodayMenu() throws Exception {
+    public void testGetTodayMenu() throws Exception {
         assertMatch(service.getTodayMenu(1), MEAL_2, MEAL_3);
     }
 
     @Test
-    public void putMenu() throws Exception {
-        List<Meal> newMenu = service.putMenu(Arrays.asList(MEAL_NEW, new Meal("dummy", 100)), 2);
+    public void testPutMenu() throws Exception {
+        List<Meal> newMenu = service.putMenu(Arrays.asList(MEAL_NEW, new Meal(MEAL_NEW)), 2);
         assertMatch(service.getTodayMenu(2), newMenu);
     }
 }

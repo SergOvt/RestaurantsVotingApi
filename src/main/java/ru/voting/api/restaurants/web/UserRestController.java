@@ -12,14 +12,16 @@ import ru.voting.api.restaurants.service.UserService;
 import static ru.voting.api.restaurants.util.ValidationUtil.assureIdConsistent;
 
 @RestController
-@RequestMapping("/rest/user")
-public class ProfileUserRestController {
+@RequestMapping(UserRestController.REST_URL)
+public class UserRestController {
+
+    static final String REST_URL = "/rest/user";
 
     private UserService userService;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public ProfileUserRestController(UserService userService) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
     }
 

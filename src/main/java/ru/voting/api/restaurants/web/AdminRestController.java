@@ -16,8 +16,8 @@ import java.util.List;
 import static ru.voting.api.restaurants.util.ValidationUtil.assureIdConsistent;
 
 @RestController
-@RequestMapping(AdminUserRestController.REST_URL)
-public class AdminUserRestController {
+@RequestMapping(AdminRestController.REST_URL)
+public class AdminRestController {
 
     static final String REST_URL = "/rest/admin/users";
 
@@ -25,7 +25,7 @@ public class AdminUserRestController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public AdminUserRestController(UserService userService) {
+    public AdminRestController(UserService userService) {
         this.userService = userService;
     }
 

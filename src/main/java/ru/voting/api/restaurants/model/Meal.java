@@ -43,10 +43,14 @@ public class Meal extends BaseEntity {
         this.date = LocalDate.now();
     }
 
-    public Meal(int id, String title, int price, LocalDate date) {
+    public Meal(Integer id, String title, int price, LocalDate date) {
         this(title, price);
         this.id = id;
         this.date = date;
+    }
+
+    public Meal(Meal meal) {
+        this(meal.getId(), meal.getTitle(), meal.getPrice(), meal.getDate());
     }
 
     public String getTitle() {

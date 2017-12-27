@@ -2,6 +2,7 @@ package ru.voting.api.restaurants.service;
 
 import ru.voting.api.restaurants.model.Restaurant;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public interface RestaurantService {
@@ -17,5 +18,7 @@ public interface RestaurantService {
     void delete(int id);
 
     void vote(int id, String userEmail);
+
+    void setEndVotingTime (LocalTime endVotingTime);
 
 }

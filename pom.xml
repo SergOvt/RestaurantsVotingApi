@@ -22,6 +22,7 @@
 
         <!--    Tests  -->
         <junit.version>4.12</junit.version>
+        <jsonassert.version>1.5.0</jsonassert.version>
 
         <!--   Spring  -->
         <spring.version>5.0.1.RELEASE</spring.version>
@@ -166,9 +167,14 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

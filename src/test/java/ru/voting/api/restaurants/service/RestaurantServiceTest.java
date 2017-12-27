@@ -25,63 +25,64 @@ public class RestaurantServiceTest {
     private RestaurantService service;
 
     @Test
-    public void get() throws Exception {
+    public void testGet() throws Exception {
         Restaurant actual = service.get(1);
         assertMatch(actual, RESTAURANT_1);
     }
 
     @Test
-    public void getAll() throws Exception {
+    public void testGetAll() throws Exception {
         List<Restaurant> actual = service.getAll();
         assertMatch(actual, RESTAURANT_2, RESTAURANT_1, RESTAURANT_3);
     }
 
     @Test
-    public void add() throws Exception {
+    public void testCrete() throws Exception {
         service.create(RESTAURANT_NEW);
         assertMatch(service.get(4), RESTAURANT_NEW);
     }
 
     @Test
-    public void update() throws Exception {
-        service.update(RESTAURANT_UPDATED);
-        assertMatch(service.get(1), RESTAURANT_UPDATED);
+    public void testUpdate() throws Exception {
+        Restaurant updated = new Restaurant(RESTAURANT_1);
+        updated.setName("Updated");
+        service.update(updated);
+        assertMatch(service.get(RESTAURANT_1.getId()), updated);
     }
 
     @Test
-    public void delete() throws Exception {
+    public void testDelete() throws Exception {
         service.delete(1);
         assertMatch(service.getAll(), RESTAURANT_2, RESTAURANT_3);
     }
 
     @Test
-    public void setNewVote() throws Exception {
+    public void testNewVote() throws Exception {
         service.vote(2, "user1@mail.ru");
         Assert.assertEquals(service.get(2).getRating(), 3);
     }
 
     @Test
-    public void setVote() throws Exception {
-        if (LocalTime.now().isBefore(LocalTime.of(11,0))) {
-            service.vote(1, "user1@mail.ru");
-            Assert.assertEquals(service.get(1).getRating(), 2);
-        }
+    public void testReVote() throws Exception {
+        service.setEndVotingTime(LocalTime.now().plusHours(1));
+        service.vote(1, "admin2@mail.ru");
+        Assert.assertEquals(service.get(1).getRating(), 2);
+        Assert.assertEquals(service.get(2).getRating(), 1);
     }
 
     @Test(expected = NotFoundException.class)
-    public void setVoteException() throws Exception {
-        if (LocalTime.now().isAfter(LocalTime.of(11,0))) {
-            service.vote(1, "admin2@mail.ru");
-        }
+    public void testVoteException() throws Exception {
+        service.setEndVotingTime(LocalTime.now().minusHours(1));
+        service.vote(1, "admin2@mail.ru");
     }
 
     @Test(expected = NotFoundException.class)
-    public void getNotFound() throws Exception {
+    public void testGetNotFound() throws Exception {
         service.get(5);
     }
 
     @Test(expected = NotFoundException.class)
-    public void deleteNotFound() throws Exception {
+    public void testDeleteNotFound() throws Exception {
         service.delete(4);
     }
 

@@ -6,12 +6,15 @@ import org.springframework.util.Assert;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.repository.RestaurantRepository;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.voting.api.restaurants.util.ValidationUtil.*;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService{
+
+    private LocalTime endVotingTime = LocalTime.of(11,0);
 
     private final RestaurantRepository repository;
 
@@ -49,7 +52,11 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     public void vote(int id, String userEmail) {
-        checkNotFound(repository.vote(id, userEmail), "vote");
+        checkNotFound(repository.vote(id, userEmail, endVotingTime), "vote");
     }
 
+    @Override
+    public void setEndVotingTime(LocalTime endVotingTime) {
+        this.endVotingTime = endVotingTime;
+    }
 }

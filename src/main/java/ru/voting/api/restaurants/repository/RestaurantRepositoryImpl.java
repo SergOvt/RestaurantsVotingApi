@@ -50,7 +50,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     @Override
     @Transactional
-    public boolean vote(int id, String userEmail) {
+    public boolean vote(int id, String userEmail, LocalTime endVotingTime) {
         List<Vote> votes = em.createNamedQuery("vote.get", Vote.class)
                 .setParameter("userEmail", userEmail)
                 .setParameter("date", LocalDate.now())
@@ -61,7 +61,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
             em.persist(vote);
             return true;
         } else {
-            if (LocalTime.now().isBefore(LocalTime.of(11, 0))) {
+            if (LocalTime.now().isBefore(endVotingTime)) {
                 Vote vote = votes.get(0);
                 vote.setRestaurant(em.getReference(Restaurant.class, id));
                 return em.merge(vote) != null;

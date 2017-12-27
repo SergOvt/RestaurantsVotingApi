@@ -1,5 +1,6 @@
 package ru.voting.api.restaurants;
 
+import org.springframework.test.web.servlet.ResultMatcher;
 import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.model.User;
@@ -8,7 +9,9 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static ru.voting.api.restaurants.model.Role.*;
+import static ru.voting.api.restaurants.web.json.JsonUtil.writeValue;
 
 public class TestData {
 
@@ -24,15 +27,12 @@ public class TestData {
     public static final Restaurant RESTAURANT_2 = new Restaurant(2, "Restaurant2", 2);
     public static final Restaurant RESTAURANT_3 = new Restaurant(3, "Restaurant3", 0);
     public static final Restaurant RESTAURANT_NEW = new Restaurant("new");
-    public static final Restaurant RESTAURANT_UPDATED = new Restaurant(1, "updated", 1);
 
     public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", USER);
     public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", USER);
     public static final User ADMIN_1 = new User(3, "admin1", "admin1@mail.ru", "qwerty", ADMIN);
     public static final User ADMIN_2 = new User(4, "admin2", "admin2@mail.ru", "qwerty", ADMIN);
     public static final User USER_NEW = new User("new", "new@mail.ru", "qwerty", USER);
-    public static final User USER_UPDATE = new User(1,"updated", "updated@mail.ru", "qwerty", ADMIN);
-
 
     public static <T> void assertMatch(T actual, T expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "restaurant");
@@ -45,5 +45,13 @@ public class TestData {
 
     public static <T> void assertMatch(Iterable<? extends T> actual, Iterable<? extends T> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
+    }
+
+    public static <T> ResultMatcher contentJson(T... expected) {
+        return content().json(writeValue(Arrays.asList(expected)));
+    }
+
+    public static <T> ResultMatcher contentJson(T expected) {
+        return content().json(writeValue(expected));
     }
 }

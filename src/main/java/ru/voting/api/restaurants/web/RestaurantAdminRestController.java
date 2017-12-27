@@ -18,8 +18,8 @@ import java.util.List;
 import static ru.voting.api.restaurants.util.ValidationUtil.assureIdConsistent;
 
 @RestController
-@RequestMapping(AdminRestaurantRestController.REST_URL)
-public class AdminRestaurantRestController {
+@RequestMapping(RestaurantAdminRestController.REST_URL)
+public class RestaurantAdminRestController {
 
     static final String REST_URL = "/rest/admin/restaurants";
 
@@ -28,7 +28,7 @@ public class AdminRestaurantRestController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public AdminRestaurantRestController(RestaurantService restaurantService, MealService mealService) {
+    public RestaurantAdminRestController(RestaurantService restaurantService, MealService mealService) {
         this.restaurantService = restaurantService;
         this.mealService = mealService;
     }
@@ -46,7 +46,7 @@ public class AdminRestaurantRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> create(Restaurant restaurant){
+    public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant){
         log.info("admin create new restaurant");
         Restaurant created = restaurantService.create(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()

@@ -27,10 +27,14 @@ public class Restaurant extends BaseEntity{
         this.name = name;
     }
 
-    public Restaurant(int id, String name, int rating) {
+    public Restaurant(Integer id, String name, int rating) {
         this(name);
         this.id = id;
         this.rating = rating;
+    }
+
+    public Restaurant(Restaurant restaurant) {
+        this(restaurant.getId(), restaurant.getName(), restaurant.getRating());
     }
 
     public String getName() {

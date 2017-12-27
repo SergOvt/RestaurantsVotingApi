@@ -7,9 +7,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.voting.api.restaurants.model.Role;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 
 import static ru.voting.api.restaurants.TestData.*;
@@ -23,42 +25,45 @@ public class UserServiceTest {
     private UserService service;
 
     @Test
-    public void get() throws Exception {
-        User user = service.get(1);
+    public void testGet() throws Exception {
+        User user = service.get(USER_1.getId());
         assertMatch(user, USER_1);
     }
 
     @Test
-    public void getAll() throws Exception {
+    public void testGetAll() throws Exception {
         List<User> users = service.getAll();
         assertMatch(users, USER_1, USER_2, ADMIN_1, ADMIN_2);
     }
 
     @Test
-    public void add() throws Exception {
+    public void testCreate() throws Exception {
         service.create(USER_NEW);
         assertMatch(service.get(5), USER_NEW);
     }
 
     @Test
-    public void update() throws Exception {
-        service.update(USER_UPDATE);
-        assertMatch(service.get(1), USER_UPDATE);
+    public void testUpdate() throws Exception {
+        User updated = new User(USER_1);
+        updated.setName("Updated");
+        updated.setRoles(Collections.singleton(Role.ADMIN));
+        service.update(updated);
+        assertMatch(service.get(USER_1.getId()), updated);
     }
 
     @Test
-    public void delete() throws Exception {
-        service.delete(1);
+    public void testDelete() throws Exception {
+        service.delete(USER_1.getId());
         assertMatch(service.getAll(), USER_2, ADMIN_1, ADMIN_2);
     }
 
     @Test(expected = NotFoundException.class)
-    public void getNotFound() throws Exception {
+    public void testGetNotFound() throws Exception {
         service.get(0);
     }
 
     @Test(expected = NotFoundException.class)
-    public void deleteNotFound() throws Exception {
+    public void testDeleteNotFound() throws Exception {
         service.delete(0);
     }
 
