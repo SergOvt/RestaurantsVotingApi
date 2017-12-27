@@ -19,7 +19,6 @@ public class TestData {
     public static final Meal MEAL_5 = new Meal(5, "fish", 20000, LocalDate.now());
     public static final Meal MEAL_6 = new Meal(6, "chicken", 10000, LocalDate.now());
     public static final Meal MEAL_NEW = new Meal("new", 9999);
-    public static final Meal MEAL_UPDATED = new Meal(1, "updated", 9999, LocalDate.now());
 
     public static final Restaurant RESTAURANT_1 = new Restaurant(1, "Restaurant1", 1);
     public static final Restaurant RESTAURANT_2 = new Restaurant(2, "Restaurant2", 2);

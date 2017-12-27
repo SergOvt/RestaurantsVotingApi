@@ -38,7 +38,7 @@ public class RestaurantServiceTest {
 
     @Test
     public void add() throws Exception {
-        service.add(RESTAURANT_NEW);
+        service.create(RESTAURANT_NEW);
         assertMatch(service.get(4), RESTAURANT_NEW);
     }
 
@@ -56,14 +56,14 @@ public class RestaurantServiceTest {
 
     @Test
     public void setNewVote() throws Exception {
-        service.setVote(2, "user1@mail.ru");
+        service.vote(2, "user1@mail.ru");
         Assert.assertEquals(service.get(2).getRating(), 3);
     }
 
     @Test
     public void setVote() throws Exception {
         if (LocalTime.now().isBefore(LocalTime.of(11,0))) {
-            service.setVote(1, "user1@mail.ru");
+            service.vote(1, "user1@mail.ru");
             Assert.assertEquals(service.get(1).getRating(), 2);
         }
     }
@@ -71,7 +71,7 @@ public class RestaurantServiceTest {
     @Test(expected = NotFoundException.class)
     public void setVoteException() throws Exception {
         if (LocalTime.now().isAfter(LocalTime.of(11,0))) {
-            service.setVote(1, "admin2@mail.ru");
+            service.vote(1, "admin2@mail.ru");
         }
     }
 

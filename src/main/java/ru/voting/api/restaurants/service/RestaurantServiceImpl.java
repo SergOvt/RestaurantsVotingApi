@@ -31,7 +31,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public Restaurant add(Restaurant restaurant) {
+    public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
         return repository.save(restaurant);
     }
@@ -48,8 +48,8 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public void setVote(int id, String userEmail) {
-        checkNotFound(repository.setVote(id, userEmail), id);
+    public void vote(int id, String userEmail) {
+        checkNotFound(repository.vote(id, userEmail), "vote");
     }
 
 }

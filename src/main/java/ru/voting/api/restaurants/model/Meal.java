@@ -1,5 +1,6 @@
 package ru.voting.api.restaurants.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -8,8 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @NamedQueries({
-        @NamedQuery(name = "meal.delete", query = "DELETE FROM Meal m WHERE m.id=:id AND m.restaurant.id=:rest_id"),
-        @NamedQuery(name = "meal.getAll", query = "SELECT m FROM Meal m WHERE m.restaurant.id=:rest_id ORDER BY m.date DESC, m.id"),
+        @NamedQuery(name = "meal.delete", query = "DELETE FROM Meal m WHERE m.date=:date AND m.restaurant.id=:rest_id"),
         @NamedQuery(name = "meal.getByDate", query = "SELECT m FROM Meal m WHERE m.date=:date AND m.restaurant.id=:rest_id"),
 })
 @Entity
@@ -31,6 +31,7 @@ public class Meal extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="rest_id", nullable = false)
     @NotNull
+    @JsonIgnore
     private Restaurant restaurant;
 
     public Meal() {

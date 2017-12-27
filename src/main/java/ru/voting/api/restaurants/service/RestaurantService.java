@@ -10,12 +10,12 @@ public interface RestaurantService {
 
     List<Restaurant> getAll();
 
-    Restaurant add(Restaurant restaurant);
+    Restaurant create(Restaurant restaurant);
 
     Restaurant update(Restaurant restaurant);
 
     void delete(int id);
 
-    void setVote(int id, String userEmail);
+    void vote(int id, String userEmail);
 
 }

@@ -50,7 +50,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     @Override
     @Transactional
-    public boolean setVote(int id, String userEmail) {
+    public boolean vote(int id, String userEmail) {
         List<Vote> votes = em.createNamedQuery("vote.get", Vote.class)
                 .setParameter("userEmail", userEmail)
                 .setParameter("date", LocalDate.now())

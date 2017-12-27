@@ -36,7 +36,7 @@ public class UserServiceTest {
 
     @Test
     public void add() throws Exception {
-        service.add(USER_NEW);
+        service.create(USER_NEW);
         assertMatch(service.get(5), USER_NEW);
     }
 

@@ -7,14 +7,9 @@ import java.util.List;
 
 public interface MealRepository {
 
-    Meal get(int id, int restaurantId);
+    List<Meal> getTodayMenu(int restaurantId);
 
-    List<Meal> getAll(int restaurantId);
+    List<Meal> getMenuByDate(LocalDate date, int restaurantId);
 
-    List<Meal> getByDate(LocalDate date, int restaurantId);
-
-    Meal save(Meal meal, int restaurantId);
-
-    boolean delete(int id, int restaurantId);
-
+    List<Meal> putMenu(List<Meal> menu, int restaurantId);
 }

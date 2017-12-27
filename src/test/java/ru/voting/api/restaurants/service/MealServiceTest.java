@@ -8,9 +8,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.voting.api.restaurants.model.Meal;
-import ru.voting.api.restaurants.util.exception.NotFoundException;
 
-import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 import static ru.voting.api.restaurants.TestData.*;
 
@@ -24,45 +24,13 @@ public class MealServiceTest {
     private MealService service;
 
     @Test
-    public void get() throws Exception {
-        Meal actual = service.get(1, 1);
-        assertMatch(actual, MEAL_1);
+    public void getTodayMenu() throws Exception {
+        assertMatch(service.getTodayMenu(1), MEAL_2, MEAL_3);
     }
 
     @Test
-    public void getAll() throws Exception {
-        assertMatch(service.getAll(1), MEAL_2, MEAL_3, MEAL_1);
+    public void putMenu() throws Exception {
+        List<Meal> newMenu = service.putMenu(Arrays.asList(MEAL_NEW, new Meal("dummy", 100)), 2);
+        assertMatch(service.getTodayMenu(2), newMenu);
     }
-
-    public void getByDate() throws Exception {
-        assertMatch(service.getAllByDate(LocalDate.of(2000,1,1), 1), MEAL_1);
-    }
-
-    @Test
-    public void add() throws Exception {
-        service.add(MEAL_NEW, 1);
-        assertMatch(service.getAll(1), MEAL_2, MEAL_3, MEAL_NEW, MEAL_1);
-    }
-
-    @Test
-    public void update() throws Exception {
-        service.update(MEAL_UPDATED, 1);
-        assertMatch(service.get(1, 1), MEAL_UPDATED);
-    }
-
-    @Test(expected = NotFoundException.class)
-    public void getNotFound() throws Exception {
-        service.get(1, 2);
-    }
-
-    @Test(expected = NotFoundException.class)
-    public void deleteNotFound() throws Exception {
-        service.delete(4,1);
-    }
-
-    @Test(expected = NotFoundException.class)
-    public void updateNotFound() throws Exception {
-        service.update(MEAL_1,2);
-    }
-
 }

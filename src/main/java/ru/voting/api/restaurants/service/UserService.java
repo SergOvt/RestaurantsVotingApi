@@ -10,7 +10,7 @@ public interface UserService {
 
     List<User> getAll();
 
-    User add(User user);
+    User create(User user);
 
     User update(User user);
 
