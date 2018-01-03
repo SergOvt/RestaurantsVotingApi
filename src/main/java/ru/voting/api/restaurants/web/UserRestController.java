@@ -27,20 +27,20 @@ public class UserRestController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     User get(){
-        log.info("get user id={}", AuthorizedUser.id());
+        log.info("user id={} self get", AuthorizedUser.id());
         return userService.get(AuthorizedUser.id());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     void update(@RequestBody User user){
-        log.info("update user id={}", user.getId());
+        log.info("user id={} self update", user.getId());
         assureIdConsistent(user, AuthorizedUser.id());
         userService.update(user);
     }
 
     @DeleteMapping
     void delete(){
-        log.info("delete user id={}", AuthorizedUser.id());
+        log.info("user id={} self delete", AuthorizedUser.id());
         userService.delete(AuthorizedUser.id());
     }
 }

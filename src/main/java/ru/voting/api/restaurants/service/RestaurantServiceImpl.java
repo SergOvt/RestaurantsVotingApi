@@ -52,7 +52,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     public void vote(int id, String userEmail) {
-        checkNotFound(repository.vote(id, userEmail, endVotingTime), "vote");
+        checkVotingAccess(repository.vote(id, userEmail, endVotingTime), "Voting time is out");
     }
 
     @Override

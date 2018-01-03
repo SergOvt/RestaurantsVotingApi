@@ -41,7 +41,7 @@ public class RestaurantUserRestControllerTest extends AbstractControllerTest{
     @Test
     @Transactional(propagation = Propagation.NEVER)
     public void testReVote() throws Exception {
-        restaurantService.setEndVotingTime(LocalTime.now().plusHours(1));
+        restaurantService.setEndVotingTime(LocalTime.now().plusMinutes(1));
         testUpdateEntity(REST_URL + RESTAURANT_1.getId() + "/vote", null);
         assertMatch(restaurantService.get(RESTAURANT_1.getId()).getRating(), RESTAURANT_1.getRating() + 1);
         testUpdateEntity(REST_URL + RESTAURANT_2.getId() + "/vote", null);

@@ -31,19 +31,19 @@ public class AdminRestController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     User get(@PathVariable("id") int id){
-        log.info("get user id={}", id);
+        log.info("admin get user id={}", id);
         return userService.get(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     List<User> getAll(){
-        log.info("get all users");
+        log.info("admin get all users");
         return userService.getAll();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<User> create(@RequestBody User user){
-        log.info("create new user");
+        log.info("admin create new user");
         User created = userService.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -53,14 +53,14 @@ public class AdminRestController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     void update(@RequestBody User user, @PathVariable("id") int id){
-        log.info("update user id={}", user.getId());
+        log.info("admin update user id={}", user.getId());
         assureIdConsistent(user, id);
         userService.update(user);
     }
 
     @DeleteMapping(value = "/{id}")
     void delete(@PathVariable("id") int id){
-        log.info("delete user id={}", id);
+        log.info("admin delete user id={}", id);
         userService.delete(id);
     }
 }

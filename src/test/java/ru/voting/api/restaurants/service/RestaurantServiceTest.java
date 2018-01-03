@@ -10,6 +10,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
+import ru.voting.api.restaurants.util.exception.VotingAccessException;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -64,13 +65,13 @@ public class RestaurantServiceTest {
 
     @Test
     public void testReVote() throws Exception {
-        service.setEndVotingTime(LocalTime.now().plusHours(1));
+        service.setEndVotingTime(LocalTime.now().plusMinutes(1));
         service.vote(1, "admin2@mail.ru");
         Assert.assertEquals(service.get(1).getRating(), 2);
         Assert.assertEquals(service.get(2).getRating(), 1);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = VotingAccessException.class)
     public void testVoteException() throws Exception {
         service.setEndVotingTime(LocalTime.now().minusHours(1));
         service.vote(1, "admin2@mail.ru");
