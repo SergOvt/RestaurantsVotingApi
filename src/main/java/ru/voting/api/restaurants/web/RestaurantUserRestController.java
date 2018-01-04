@@ -40,7 +40,7 @@ public class RestaurantUserRestController {
         return restaurantService.get(id);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Restaurant> getAll(){
         log.info("user get all restaurants");
         return restaurantService.getAll();

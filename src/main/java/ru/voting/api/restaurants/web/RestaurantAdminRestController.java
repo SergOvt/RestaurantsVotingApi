@@ -39,13 +39,13 @@ public class RestaurantAdminRestController {
         return restaurantService.get(id);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Restaurant> getAll(){
         log.info("admin get all restaurants");
         return restaurantService.getAll();
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant){
         log.info("admin create new restaurant");
         Restaurant created = restaurantService.create(restaurant);

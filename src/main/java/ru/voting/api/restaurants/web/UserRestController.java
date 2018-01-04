@@ -15,7 +15,7 @@ import static ru.voting.api.restaurants.util.ValidationUtil.assureIdConsistent;
 @RequestMapping(UserRestController.REST_URL)
 public class UserRestController {
 
-    static final String REST_URL = "/rest/user";
+    static final String REST_URL = "/rest/user/profile";
 
     private UserService userService;
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -35,6 +35,9 @@ public class UserRestController {
     void update(@RequestBody User user){
         log.info("user id={} self update", user.getId());
         assureIdConsistent(user, AuthorizedUser.id());
+        User currentUser = userService.get(AuthorizedUser.id());
+        user.setEmail(currentUser.getEmail());
+        user.setRoles(currentUser.getRoles());
         userService.update(user);
     }
 

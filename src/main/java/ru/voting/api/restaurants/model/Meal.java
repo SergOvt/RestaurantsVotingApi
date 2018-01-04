@@ -21,11 +21,12 @@ public class Meal extends BaseEntity {
     private String title;
 
     @Column(name = "price", nullable = false)
-    @Range(min = 10, max = 1000000)
+    @Range(min = 0, max = 1000000)
     private int price;
 
     @Column(name = "date", nullable = false)
     @NotNull
+    @JsonIgnore
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
