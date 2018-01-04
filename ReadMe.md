@@ -15,7 +15,6 @@ There is a voting system for deciding where to have lunch:
 
 -----------------------------
 ## Endpoints
-All endpoints require user authentication.
 
 #### For Admin:
 | Method |    Group    |   Endpoint    |           Usage                    |
@@ -50,23 +49,23 @@ All endpoints require user authentication.
 ### Get all Restaurants
 Gives the list of all sorted by rating restaurants (Max rating first).
 
-##### Request
+#### Request
 `GET http://localhost:8080/rest/admin/restaurants/all`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 | Field  | Description                                  |
 |:------:|----------------------------------------------|
 |  id    | A unique identifier for each restaurant      |
 |  name  | Each restaurant's name                       |
 | rating | Numerical day rating of each restaurant      |
 
-##### Response
+#### Response
 ```
 [
 {"id":2,"name":"Restaurant2","rating":2},
@@ -78,45 +77,45 @@ Not supported
 ### Get details of a Restaurant
 Gives full details about a restaurant including id, name and rating.
 
-##### Request
+#### Request
 `GET http://localhost:8080/rest/admin/restaurants/RESTAURANT_ID`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 | Field  | Description                             |
 |:------:|-----------------------------------------|
 |  id    | A unique identifier for this restaurant |
 |  name  | This restaurant's name                  |
 | rating | Numerical day rating of the restaurant  |
 
-##### Response
+#### Response
 ```{"id":1,"name":"Restaurant1","rating":1}```
 
 ### Get a Restaurant's day menu 
 Gives restaurant's day menu.
 
-##### Request
+#### Request
 `GET http://localhost:8080/rest/admin/restaurants/RESTAURANT_ID/menu`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 | Field  | Description                                        |
 |:------:|----------------------------------------------------|
 |  id    | A unique identifier for each dish                  |
 | title  | A name for each dish                               |
 | price  | Numerical price for each dish. Price keep in cents |  
 
-##### Response
+#### Response
 ```
 [
 {"id":2,"title":"fish","price":15000},
@@ -127,16 +126,16 @@ Not supported
 ### Add a Restaurant
 Allows admins to add new restaurant with an initial rating of 0.
 
-##### Request
+#### Request
 `POST http://localhost:8080/rest/admin/restaurants/add`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 | Field  | Description                   |
 |:------:|-------------------------------|
 |  name  | New restaurant's name         |
@@ -144,16 +143,16 @@ Not supported
 ### Update a Restaurant
 Allows admins to update restaurant's name.
 
-##### Request
+#### Request
 `PUT http://localhost:8080/rest/admin/restaurants/RESTAURANT_ID`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 | Field  | Description                                                   |
 |:------:|---------------------------------------------------------------|
 |  id    | A unique identifier for updatable restaurant (not changeable) |
@@ -162,31 +161,31 @@ Not supported
 ### Delete a Restaurant
 Allows admins to delete a restaurant.
 
-##### Request
+#### Request
 `DELETE http://localhost:8080/rest/admin/restaurants/RESTAURANT_ID`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 Not supported
 
 ### Put a Restaurant's day menu
 Allows admins to add restaurant's day menu or update, if menu for current date is exist.
 
-##### Request
+#### Request
 `PUT http://localhost:8080/rest/admin/restaurants/RESTAURANT_ID/menu`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 | Field  | Description                                             |
 |:------:|---------------------------------------------------------|
 | title  | A name for each new dish                                |
@@ -195,16 +194,16 @@ Not supported
 ### Get all Users
 Gives the list of all users.
 
-##### Request
+#### Request
 `GET http://localhost:8080/rest/admin/users/all`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 |  Field   | Description                                      |
 |:--------:|--------------------------------------------------|
 |    id    | A unique identifier for each user                |
@@ -213,7 +212,7 @@ Not supported
 | password | Each user's password                             |
 |   roles  | A set of roles for each user (admin or/and user) |
 
-##### Response
+#### Response
 ```
 [
 {"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["USER"]},
@@ -226,16 +225,16 @@ Not supported
 ### Get details of a User
 Gives full details about a user including id, name, email, password and set of roles.
 
-##### Request
+#### Request
 `GET http://localhost:8080/rest/admin/users/USER_ID`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 |  Field   | Description                                      |
 |:--------:|--------------------------------------------------|
 |    id    | A unique identifier for each user                |
@@ -244,22 +243,22 @@ Not supported
 | password | This user's password                             |
 |   roles  | A set of roles for this user (admin or/and user) |
 
-##### Response
+#### Response
 ```{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["USER"]}```
 
 ### Add a User
 Allows admins to add new user.
 
-##### Request
+#### Request
 `POST http://localhost:8080/rest/admin/users/add`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 |  Field   | Description                                        |
 |:--------:|----------------------------------------------------|
 |   name   | New user's name                                    |
@@ -270,16 +269,16 @@ Not supported
 ### Update a User
 Allows admins to update user's details (name, email, password, roles).
 
-##### Request
+#### Request
 `PUT http://localhost:8080/rest/admin/users/USER_ID`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 |  Field   | Description                                             |
 |:--------:|---------------------------------------------------------|
 |    id    | A unique identifier for updatable user (not changeable) |
@@ -291,16 +290,16 @@ Not supported
 ### Delete a User
 Allows admins to delete a user.
 
-##### Request
+#### Request
 `DELETE http://localhost:8080/rest/admin/users/USER_ID`
 
-##### Authentication
+#### Authentication
 User must be admin.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 Not supported
 
 -----------------------------
@@ -309,23 +308,23 @@ Not supported
 ### Get all Restaurants
 Gives the list of all sorted by rating restaurants (Max rating first).
 
-##### Request
+#### Request
 `GET http://localhost:8080/rest/user/restaurants/all`
 
-##### Authentication
+#### Authentication
 User or userless authentication.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 | Field  | Description                                  |
 |:------:|----------------------------------------------|
 |  id    | A unique identifier for each restaurant      |
 |  name  | Each restaurant's name                       |
 | rating | Numerical day rating of each restaurant      |
 
-##### Response
+#### Response
 ```
 [
 {"id":2,"name":"Restaurant2","rating":2},
@@ -337,45 +336,45 @@ Not supported
 ### Get details of a Restaurant
 Gives full details about a restaurant including id, name and rating.
 
-##### Request
+#### Request
 `GET http://localhost:8080/rest/user/restaurants/RESTAURANT_ID`
 
-##### Authentication
+#### Authentication
 User or userless authentication.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 | Field  | Description                             |
 |:------:|-----------------------------------------|
 |  id    | A unique identifier for this restaurant |
 |  name  | This restaurant's name                  |
 | rating | Numerical day rating of the restaurant  |
 
-##### Response
+#### Response
 ```{"id":1,"name":"Restaurant1","rating":1}```
 
 ### Get a Restaurant's day menu 
 Gives restaurant's day menu.
 
-##### Request
+#### Request
 `GET http://localhost:8080/rest/user/restaurants/RESTAURANT_ID/menu`
 
-##### Authentication
+#### Authentication
 User or userless authentication.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 | Field  | Description                                        |
 |:------:|----------------------------------------------------|
 |  id    | A unique identifier for each dish                  |
 | title  | A name for each dish                               |
 | price  | Numerical price for each dish. Price keep in cents |  
 
-##### Response
+#### Response
 ```
 [
 {"id":2,"title":"fish","price":15000},
@@ -388,31 +387,31 @@ Allows authorized users vote for restaurant. If user votes again the same day:
 - If it is before 11:00 we assume that he changed his mind.
 - If it is after 11:00 then it is too late, vote can't be changed.
 
-##### Request
+#### Request
 `PUT http://localhost:8080/rest/user/restaurants/RESTAURANT_ID/vote`
 
-##### Authentication
+#### Authentication
 Mast user authentication.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 Not supported
 
 ### Get User's details
 Gives full details about authorized user including id, name, email, password and set of roles.
 
-##### Request
+#### Request
 `GET http://localhost:8080/rest/user/profile`
 
-##### Authentication
+#### Authentication
 Mast user authentication.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 |  Field   | Description                                            |
 |:--------:|--------------------------------------------------------|
 |    id    | A unique identifier for authorized user                |
@@ -421,22 +420,22 @@ Not supported
 | password | Authorized user's password                             |
 |   roles  | A set of roles for authorized user (user or/and admin) |
 
-##### Response
+#### Response
 ```{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["USER"]}```
 
 ### Update User's details
 Allows authorized users to update some their details (name and password).
 
-##### Request
+#### Request
 `PUT http://localhost:8080/rest/user/profile`
 
-##### Authentication
+#### Authentication
 Mast user authentication.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 |  Field   | Description                                                 |
 |:--------:|-------------------------------------------------------------|
 |    id    | A unique identifier for authorized user (not changeable)    |
@@ -448,15 +447,15 @@ Not supported
 ### Delete a User
 Allows authorized users to delete himself.
 
-##### Request
+#### Request
 `DELETE http://localhost:8080/rest/user/profile`
 
-##### Authentication
+#### Authentication
 Mast user authentication.
 
-##### Parameters
+#### Parameters
 Not supported
 
-##### Response Fields
+#### Response Fields
 Not supported
 
