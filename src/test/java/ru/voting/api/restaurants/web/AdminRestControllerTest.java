@@ -23,12 +23,12 @@ public class AdminRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testGetAll() throws Exception {
-        testGetEntities(REST_URL, USER_1, USER_2, ADMIN_1, ADMIN_2);
+        testGetEntities(REST_URL + "/all", USER_1, USER_2, ADMIN_1, ADMIN_2);
     }
 
     @Test
     public void testCreate() throws Exception {
-        testCreateEntity(REST_URL, new User(USER_NEW), User.class);
+        testCreateEntity(REST_URL + "/add", new User(USER_NEW), User.class);
     }
 
     @Test

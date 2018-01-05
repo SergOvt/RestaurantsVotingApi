@@ -1,5 +1,6 @@
 package ru.voting.api.restaurants.web;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import static ru.voting.api.restaurants.util.ValidationUtil.assureIdConsistent;
 @RequestMapping(AdminRestController.REST_URL)
 public class AdminRestController {
 
+    @VisibleForTesting
     static final String REST_URL = "/rest/admin/users";
 
     private UserService userService;
@@ -30,19 +32,19 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    User get(@PathVariable("id") int id){
+    public User get(@PathVariable("id") int id){
         log.info("admin get user id={}", id);
         return userService.get(id);
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    List<User> getAll(){
+    public List<User> getAll(){
         log.info("admin get all users");
         return userService.getAll();
     }
 
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<User> create(@RequestBody User user){
+    public ResponseEntity<User> create(@RequestBody User user){
         log.info("admin create new user");
         User created = userService.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -52,14 +54,14 @@ public class AdminRestController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void update(@RequestBody User user, @PathVariable("id") int id){
+    public void update(@RequestBody User user, @PathVariable("id") int id){
         log.info("admin update user id={}", user.getId());
         assureIdConsistent(user, id);
         userService.update(user);
     }
 
     @DeleteMapping(value = "/{id}")
-    void delete(@PathVariable("id") int id){
+    public void delete(@PathVariable("id") int id){
         log.info("admin delete user id={}", id);
         userService.delete(id);
     }

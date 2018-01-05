@@ -27,12 +27,12 @@ public class RestaurantAdminRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testGetAll() throws Exception {
-        testGetEntities(REST_URL, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
+        testGetEntities(REST_URL + "/all", RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
     }
 
     @Test
     public void testCreate() throws Exception {
-        testCreateEntity(REST_URL, new Restaurant(RESTAURANT_NEW), Restaurant.class);
+        testCreateEntity(REST_URL + "/add", new Restaurant(RESTAURANT_NEW), Restaurant.class);
     }
 
     @Test

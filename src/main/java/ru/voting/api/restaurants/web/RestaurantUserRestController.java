@@ -1,5 +1,6 @@
 package ru.voting.api.restaurants.web;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.List;
 @Transactional
 public class RestaurantUserRestController {
 
+    @VisibleForTesting
     static final String REST_URL = "/rest/user/restaurants";
 
     private RestaurantService restaurantService;

@@ -40,6 +40,7 @@ public class MealRepositoryImpl implements MealRepository{
         menu.forEach(meal -> {
             meal.setRestaurant(em.getReference(Restaurant.class, restaurantId));
             meal.setId(null);
+            meal.setDate(LocalDate.now());
             em.persist(meal);
         });
         return menu;

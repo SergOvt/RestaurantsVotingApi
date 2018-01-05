@@ -1,5 +1,6 @@
 package ru.voting.api.restaurants.web;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import static ru.voting.api.restaurants.util.ValidationUtil.assureIdConsistent;
 @RequestMapping(RestaurantAdminRestController.REST_URL)
 public class RestaurantAdminRestController {
 
+    @VisibleForTesting
     static final String REST_URL = "/rest/admin/restaurants";
 
     private RestaurantService restaurantService;

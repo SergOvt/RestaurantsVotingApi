@@ -24,7 +24,7 @@ public class RestaurantUserRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testGetAll() throws Exception {
-        testGetEntities(REST_URL, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
+        testGetEntities(REST_URL + "/all", RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
     }
 
     @Test

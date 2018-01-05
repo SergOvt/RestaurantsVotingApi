@@ -52,14 +52,14 @@ abstract public class AbstractControllerTest {
                 .build();
     }
 
-    <T> void testGetEntities(String restUrl, T... objects) throws Exception {
+    protected <T> void testGetEntities(String restUrl, T... objects) throws Exception {
         mockMvc.perform(get(restUrl))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(objects.length == 1 ? objects[0] : objects));
     }
 
-    <T extends BaseEntity> void testCreateEntity(String restUrl, T created, Class<T> clazz) throws Exception {
+    protected <T extends BaseEntity> void testCreateEntity(String restUrl, T created, Class<T> clazz) throws Exception {
         ResultActions action = mockMvc.perform(post(restUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(created)))
@@ -70,14 +70,14 @@ abstract public class AbstractControllerTest {
         assertMatch(returned, created);
     }
 
-    <T> void testUpdateEntity(String restUrl, T updated) throws Exception {
+    protected <T> void testUpdateEntity(String restUrl, T updated) throws Exception {
         mockMvc.perform(put(restUrl)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isOk());
     }
 
-    void testDeleteEntity(String restUrl) throws Exception {
+    protected void testDeleteEntity(String restUrl) throws Exception {
         mockMvc.perform(delete(restUrl))
                 .andExpect(status().isOk());
     }

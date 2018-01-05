@@ -1,6 +1,5 @@
 package ru.voting.api.restaurants.repository;
 
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.User;
