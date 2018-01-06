@@ -3,6 +3,7 @@ package ru.voting.api.restaurants.repository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.Restaurant;
+import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.model.Vote;
 
 import javax.persistence.EntityManager;
@@ -50,20 +51,20 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     @Override
     @Transactional
-    public boolean vote(int id, String userEmail, LocalTime endVotingTime) {
+    public boolean vote(int restaurantId, int userId, LocalTime endVotingTime) {
         List<Vote> votes = em.createNamedQuery("vote.get", Vote.class)
-                .setParameter("userEmail", userEmail)
+                .setParameter("userId", userId)
                 .setParameter("date", LocalDate.now())
                 .getResultList();
         if (votes.size() == 0) {
-            Vote vote = new Vote(userEmail);
-            vote.setRestaurant(em.getReference(Restaurant.class, id));
+            Vote vote = new Vote(em.getReference(Restaurant.class, restaurantId),
+                                 em.getReference(User.class, userId));
             em.persist(vote);
             return true;
         } else {
             if (LocalTime.now().isBefore(endVotingTime)) {
                 Vote vote = votes.get(0);
-                vote.setRestaurant(em.getReference(Restaurant.class, id));
+                vote.setRestaurant(em.getReference(Restaurant.class, restaurantId));
                 return em.merge(vote) != null;
             }
         }

@@ -1,5 +1,5 @@
 ### Delete a User
-Allows admins to delete a user.
+Allows admins to delete a user with id = USER_ID.
 
 #### Request
 `DELETE http://localhost:8080/rest/admin/users/USER_ID`

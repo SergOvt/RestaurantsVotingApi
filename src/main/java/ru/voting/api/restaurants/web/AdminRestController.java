@@ -14,8 +14,6 @@ import ru.voting.api.restaurants.service.UserService;
 import java.net.URI;
 import java.util.List;
 
-import static ru.voting.api.restaurants.util.ValidationUtil.assureIdConsistent;
-
 @RestController
 @RequestMapping(AdminRestController.REST_URL)
 public class AdminRestController {
@@ -33,19 +31,20 @@ public class AdminRestController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public User get(@PathVariable("id") int id){
-        log.info("admin get user id={}", id);
+        log.info("Admin get user id={}", id);
         return userService.get(id);
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAll(){
-        log.info("admin get all users");
+        log.info("Admin get all users");
         return userService.getAll();
     }
 
-    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> create(@RequestBody User user){
-        log.info("admin create new user");
+        log.info("Admin create new user");
+        user.setId(null);
         User created = userService.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -53,16 +52,15 @@ public class AdminRestController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void update(@RequestBody User user, @PathVariable("id") int id){
-        log.info("admin update user id={}", user.getId());
-        assureIdConsistent(user, id);
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void update(@RequestBody User user){
+        log.info("Admin update user id={}", user.getId());
         userService.update(user);
     }
 
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") int id){
-        log.info("admin delete user id={}", id);
+        log.info("Admin delete user id={}", id);
         userService.delete(id);
     }
 }

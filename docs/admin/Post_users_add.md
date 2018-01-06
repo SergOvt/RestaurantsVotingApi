@@ -2,7 +2,7 @@
 Allows admins to add new user.
 
 #### Request
-`POST http://localhost:8080/rest/admin/users/add`
+`POST http://localhost:8080/rest/admin/users`
 
 #### Authentication
 User must be admin.
@@ -11,9 +11,9 @@ User must be admin.
 Not supported
 
 #### Response Fields
-|  Field   | Description                                        |
-|:--------:|----------------------------------------------------|
-|   name   | New user's name                                    |
-|   email  | New user's unique email                            |
-| password | New user's password                                |
-|   roles  | A set of roles for new user (admin or/and user)    |
+|  Field   | Description                                                                                |
+|:--------:|--------------------------------------------------------------------------------------------|
+|   name   | New user's name (mast be not empty)                                                        |
+|   email  | New user's unique email (mast be not empty, have correct email format, max 100 characters) |
+| password | New user's password (min 5 characters, max 64 characters)                                  |
+|   roles  | Roles for new user (mast be USER or ADMIN or [USER, ADMIN])                                |

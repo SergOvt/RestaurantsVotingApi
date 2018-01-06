@@ -17,7 +17,7 @@ public interface RestaurantService {
 
     void delete(int id);
 
-    void vote(int id, String userEmail);
+    void vote(int restaurantId, int userId);
 
     void setEndVotingTime (LocalTime endVotingTime);
 

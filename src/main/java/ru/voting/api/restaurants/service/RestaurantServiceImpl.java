@@ -51,8 +51,8 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public void vote(int id, String userEmail) {
-        checkVotingAccess(repository.vote(id, userEmail, endVotingTime), "Voting time is out");
+    public void vote(int restaurantId, int userId) {
+        checkVotingAccess(repository.vote(restaurantId, userId, endVotingTime));
     }
 
     @Override

@@ -1,4 +1,4 @@
-### Put a Restaurant's day menu
+### Put restaurant's day Menu
 Allows admins to add restaurant's day menu or update, if menu for current date is exist.
 
 #### Request
@@ -11,7 +11,7 @@ User must be admin.
 Not supported
 
 #### Response Fields
-| Field  | Description                                             |
-|:------:|---------------------------------------------------------|
-| title  | A name for each new dish                                |
-| price  | Numerical price for each new dish. Price keep in cents  |
+| Field  | Description                                                                      |
+|:------:|----------------------------------------------------------------------------------|
+| title  | A name for each new dish (mast be not empty)                                     |
+| price  | Numerical price for each new dish. Price keep in cents (min = 0, max = 1000000)  |

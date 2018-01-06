@@ -10,8 +10,6 @@ import ru.voting.api.restaurants.AuthorizedUser;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.UserService;
 
-import static ru.voting.api.restaurants.util.ValidationUtil.assureIdConsistent;
-
 @RestController
 @RequestMapping(UserRestController.REST_URL)
 public class UserRestController {
@@ -29,15 +27,15 @@ public class UserRestController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User get(){
-        log.info("user id={} self get", AuthorizedUser.id());
+        log.info("User id={} self get", AuthorizedUser.id());
         return userService.get(AuthorizedUser.id());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void update(@RequestBody User user){
-        log.info("user id={} self update", user.getId());
-        assureIdConsistent(user, AuthorizedUser.id());
+        log.info("User id={} self update", user.getId());
         User currentUser = userService.get(AuthorizedUser.id());
+        user.setId(AuthorizedUser.id());
         user.setEmail(currentUser.getEmail());
         user.setRoles(currentUser.getRoles());
         userService.update(user);
@@ -45,7 +43,7 @@ public class UserRestController {
 
     @DeleteMapping
     public void delete(){
-        log.info("user id={} self delete", AuthorizedUser.id());
+        log.info("User id={} self delete", AuthorizedUser.id());
         userService.delete(AuthorizedUser.id());
     }
 }

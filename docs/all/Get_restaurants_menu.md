@@ -1,11 +1,11 @@
-### Get a Restaurant's day menu 
+### Get restaurant's day Menu
 Gives restaurant's day menu.
 
 #### Request
-`GET http://localhost:8080/rest/admin/restaurants/RESTAURANT_ID/menu`
+`GET http://localhost:8080/rest/restaurants/RESTAURANT_ID/menu`
 
 #### Authentication
-User must be admin.
+User or userless authentication.
 
 #### Parameters
 Not supported

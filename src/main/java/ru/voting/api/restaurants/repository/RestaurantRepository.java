@@ -15,6 +15,6 @@ public interface RestaurantRepository {
 
     boolean delete(int id);
 
-    boolean vote(int id, String userEmail, LocalTime endVotingTime);
+    boolean vote(int restaurantId, int userId, LocalTime endVotingTime);
 
 }

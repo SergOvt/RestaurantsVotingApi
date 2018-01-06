@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.repository.MealRepository;
+import ru.voting.api.restaurants.util.exception.NotFoundException;
 
 import java.util.List;
 
@@ -20,7 +21,9 @@ public class MealServiceImpl implements MealService {
 
     @Override
     public List<Meal> getTodayMenu(int restaurantId) {
-        return repository.getTodayMenu(restaurantId);
+        List<Meal> menu = repository.getTodayMenu(restaurantId);
+        if (menu.isEmpty()) throw new NotFoundException("Not found menu for restaurant id=" + restaurantId);
+        return menu;
     }
 
     @Override

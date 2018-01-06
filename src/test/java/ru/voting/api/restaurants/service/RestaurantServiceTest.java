@@ -59,14 +59,14 @@ public class RestaurantServiceTest {
 
     @Test
     public void testNewVote() throws Exception {
-        service.vote(2, "user1@mail.ru");
+        service.vote(2, USER_1.getId());
         Assert.assertEquals(service.get(2).getRating(), 3);
     }
 
     @Test
     public void testReVote() throws Exception {
         service.setEndVotingTime(LocalTime.now().plusMinutes(1));
-        service.vote(1, "admin2@mail.ru");
+        service.vote(1, ADMIN_2.getId());
         Assert.assertEquals(service.get(1).getRating(), 2);
         Assert.assertEquals(service.get(2).getRating(), 1);
     }
@@ -74,7 +74,7 @@ public class RestaurantServiceTest {
     @Test(expected = VotingAccessException.class)
     public void testVoteException() throws Exception {
         service.setEndVotingTime(LocalTime.now().minusHours(1));
-        service.vote(1, "admin2@mail.ru");
+        service.vote(1, ADMIN_2.getId());
     }
 
     @Test(expected = NotFoundException.class)

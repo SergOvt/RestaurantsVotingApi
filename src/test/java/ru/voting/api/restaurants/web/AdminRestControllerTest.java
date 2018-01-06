@@ -28,7 +28,7 @@ public class AdminRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testCreate() throws Exception {
-        testCreateEntity(REST_URL + "/add", new User(USER_NEW), User.class);
+        testCreateEntity(REST_URL, new User(USER_NEW), User.class);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         User updated = new User(USER_1);
         updated.setName("Updated Name");
         updated.setRoles(Collections.singleton(Role.ADMIN));
-        testUpdateEntity(REST_URL + USER_1.getId(), updated);
+        testUpdateEntity(REST_URL, updated);
         assertMatch(userService.get(USER_1.getId()), updated);
     }
 

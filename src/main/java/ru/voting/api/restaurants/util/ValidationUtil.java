@@ -1,6 +1,5 @@
 package ru.voting.api.restaurants.util;
 
-import ru.voting.api.restaurants.model.BaseEntity;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
 import ru.voting.api.restaurants.util.exception.VotingAccessException;
 
@@ -28,17 +27,9 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkVotingAccess(boolean access, String msg) {
+    public static void checkVotingAccess(boolean access) {
         if (!access) {
-            throw new VotingAccessException(msg);
-        }
-    }
-
-    public static void assureIdConsistent(BaseEntity entity, int id) {
-        if (entity.isNew()) {
-            entity.setId(id);
-        } else if (entity.getId() != id) {
-            throw new IllegalArgumentException(entity + " must be with id=" + id);
+            throw new VotingAccessException("Voting time is out");
         }
     }
 }

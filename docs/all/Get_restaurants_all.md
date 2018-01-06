@@ -2,10 +2,10 @@
 Gives the list of all sorted by rating restaurants (Max rating first).
 
 #### Request
-`GET http://localhost:8080/rest/admin/restaurants/all`
+`GET http://localhost:8080/rest/restaurants/all`
 
 #### Authentication
-User must be admin.
+User or userless authentication.
 
 #### Parameters
 Not supported
