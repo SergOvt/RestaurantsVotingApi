@@ -17,6 +17,7 @@ public class RestaurantUserRestControllerTest extends AbstractControllerTest{
     private RestaurantService restaurantService;
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     public void testNewVote() throws Exception {
         testUpdateEntity(REST_URL + RESTAURANT_1.getId() + "/vote", null);
         assertMatch(restaurantService.get(RESTAURANT_1.getId()).getRating(), RESTAURANT_1.getRating() + 1);

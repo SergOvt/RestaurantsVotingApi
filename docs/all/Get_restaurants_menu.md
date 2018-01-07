@@ -24,3 +24,5 @@ Not supported
 {"id":3,"title":"chicken","price":5000}
 ]
 ```
+#### Errors
+The method may return an HTTP 404 error if the menu for restaurant with id = RESTAURANT_ID not exist.

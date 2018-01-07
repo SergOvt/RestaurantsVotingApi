@@ -8,11 +8,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
 import ru.voting.api.restaurants.util.exception.VotingAccessException;
 
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 
 import static ru.voting.api.restaurants.TestData.*;
@@ -27,7 +29,7 @@ public class RestaurantServiceTest {
 
     @Test
     public void testGet() throws Exception {
-        Restaurant actual = service.get(1);
+        Restaurant actual = service.get(RESTAURANT_1.getId());
         assertMatch(actual, RESTAURANT_1);
     }
 
@@ -53,38 +55,49 @@ public class RestaurantServiceTest {
 
     @Test
     public void testDelete() throws Exception {
-        service.delete(1);
+        service.delete(RESTAURANT_1.getId());
         assertMatch(service.getAll(), RESTAURANT_2, RESTAURANT_3);
     }
 
     @Test
     public void testNewVote() throws Exception {
-        service.vote(2, USER_1.getId());
-        Assert.assertEquals(service.get(2).getRating(), 3);
+        service.vote(RESTAURANT_2.getId(), USER_1.getId());
+        Assert.assertEquals(service.get(RESTAURANT_2.getId()).getRating(), 3);
     }
 
     @Test
     public void testReVote() throws Exception {
         service.setEndVotingTime(LocalTime.now().plusMinutes(1));
-        service.vote(1, ADMIN_2.getId());
-        Assert.assertEquals(service.get(1).getRating(), 2);
-        Assert.assertEquals(service.get(2).getRating(), 1);
+        service.vote(RESTAURANT_1.getId(), ADMIN_2.getId());
+        Assert.assertEquals(service.get(RESTAURANT_1.getId()).getRating(), 2);
+        Assert.assertEquals(service.get(RESTAURANT_2.getId()).getRating(), 1);
     }
 
     @Test(expected = VotingAccessException.class)
     public void testVoteException() throws Exception {
-        service.setEndVotingTime(LocalTime.now().minusHours(1));
-        service.vote(1, ADMIN_2.getId());
+        service.setEndVotingTime(LocalTime.now().minusHours(RESTAURANT_1.getId()));
+        service.vote(RESTAURANT_1.getId(), ADMIN_2.getId());
     }
 
     @Test(expected = NotFoundException.class)
     public void testGetNotFound() throws Exception {
-        service.get(5);
+        service.get(1000);
     }
 
     @Test(expected = NotFoundException.class)
     public void testDeleteNotFound() throws Exception {
-        service.delete(4);
+        service.delete(1000);
+    }
+
+    @Test
+    public void testGetTodayMenu() throws Exception {
+        assertMatch(service.getTodayMenu(RESTAURANT_1.getId()), MEAL_2, MEAL_3);
+    }
+
+    @Test
+    public void testPutMenu() throws Exception {
+        List<Meal> newMenu = service.putMenu(Arrays.asList(MEAL_NEW, new Meal(MEAL_NEW)), RESTAURANT_2.getId());
+        assertMatch(service.getTodayMenu(RESTAURANT_2.getId()), newMenu);
     }
 
 }

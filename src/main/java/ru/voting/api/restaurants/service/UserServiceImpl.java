@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
+        user.setId(null);
         return repository.save(user);
     }
 

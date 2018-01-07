@@ -19,3 +19,6 @@ Not supported
 
 #### Response
 ```{"id":1,"name":"Restaurant1","rating":1}```
+
+#### Errors
+The method may return an HTTP 404 error if the restaurant with id = RESTAURANT_ID not exist.
