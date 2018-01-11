@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.voting.api.restaurants.AuthorizedUser;
 import ru.voting.api.restaurants.service.RestaurantService;
 
-import static ru.voting.api.restaurants.util.ValidationUtil.checkExceptions;
+import static ru.voting.api.restaurants.util.ErrorsHandler.checkExceptions;
+
 
 @RestController
 @RequestMapping(RestaurantUserRestController.REST_URL)

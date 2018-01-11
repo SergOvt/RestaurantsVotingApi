@@ -22,12 +22,10 @@ public class User extends BaseEntity{
     @Column(name = "email", nullable = false, unique = true)
     @Email
     @NotBlank
-    @Size(max = 100)
     private String email;
 
     @Column(name = "password", nullable = false)
-    @NotBlank
-    @Size(min = 5, max = 64)
+    @Size(min = 5, max = 32)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -35,6 +33,9 @@ public class User extends BaseEntity{
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled = true;
 
     public User() {
     }
@@ -61,6 +62,7 @@ public class User extends BaseEntity{
 
     public User(User user) {
         this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRoles());
+        this.enabled = user.isEnabled();
     }
 
     public String getName() {
@@ -93,5 +95,13 @@ public class User extends BaseEntity{
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

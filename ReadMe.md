@@ -54,7 +54,7 @@ There is a voting system for deciding where to have lunch:
 `curl -i http://localhost:8080/rest/admin/users/all --user admin1@mail.ru:qwerty`
 
 #### Create a User
-`curl -i -X POST -d '{"name":"new_user","email":"new_user@mail.ru","password":"qwerty","roles":["USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/rest/admin/users/add --user admin1@mail.ru:qwerty`
+`curl -i -X POST -d '{"name":"new_user","email":"new_user@mail.ru","password":"qwerty","roles":["USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/rest/admin/users --user admin1@mail.ru:qwerty`
 
 #### Delete a Restaurant
 `curl -i -X DELETE http://localhost:8080/rest/admin/restaurants/1 --user admin1@mail.ru:qwerty`

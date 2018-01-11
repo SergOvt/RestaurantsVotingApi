@@ -15,7 +15,8 @@ import ru.voting.api.restaurants.service.RestaurantService;
 import java.net.URI;
 import java.util.List;
 
-import static ru.voting.api.restaurants.util.ValidationUtil.checkExceptions;
+import static ru.voting.api.restaurants.util.ErrorsHandler.checkExceptions;
+
 
 @RestController
 @RequestMapping(RestaurantAdminRestController.REST_URL)
@@ -55,7 +56,7 @@ public class RestaurantAdminRestController {
         log.info("Admin delete restaurant id={}", id);
         return checkExceptions(() -> {
             restaurantService.delete(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         });
     }
 

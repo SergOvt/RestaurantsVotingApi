@@ -33,7 +33,6 @@ public class MealRepositoryImpl implements MealRepository{
     @Override
     @Transactional
     public List<Meal> putMenu(List<Meal> menu, int restaurantId) {
-        if (em.find(Restaurant.class, restaurantId) == null) return null;
         em.createNamedQuery("meal.delete")
                 .setParameter("date", LocalDate.now())
                 .setParameter("rest_id", restaurantId)

@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.voting.api.restaurants.AuthorizedUser;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.UserService;
+import ru.voting.api.restaurants.to.UserTo;
 
-import static ru.voting.api.restaurants.util.ValidationUtil.checkExceptions;
+import static ru.voting.api.restaurants.util.ErrorsHandler.checkExceptions;
+
 
 @RestController
 @RequestMapping(UserRestController.REST_URL)
@@ -35,14 +37,9 @@ public class UserRestController {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody User user){
-        log.info("User id={} self update", user.getId());
-        return checkExceptions(() -> {
-            User currentUser = userService.get(AuthorizedUser.id());
-            user.setId(AuthorizedUser.id());
-            user.setRoles(currentUser.getRoles());
-            return ResponseEntity.ok(userService.update(user));
-        });
+    public ResponseEntity update(@RequestBody UserTo user){
+        log.info("User id={} self update", AuthorizedUser.id());
+        return checkExceptions(() -> ResponseEntity.ok(userService.update(user, AuthorizedUser.id())));
     }
 
     @DeleteMapping
@@ -50,7 +47,7 @@ public class UserRestController {
         log.info("User id={} self delete", AuthorizedUser.id());
         return checkExceptions(() -> {
             userService.delete(AuthorizedUser.id());
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         });
     }
 }

@@ -12,7 +12,8 @@ import ru.voting.api.restaurants.service.RestaurantService;
 
 import java.util.List;
 
-import static ru.voting.api.restaurants.util.ValidationUtil.checkExceptions;
+import static ru.voting.api.restaurants.util.ErrorsHandler.checkExceptions;
+
 
 @RestController
 @RequestMapping(RestaurantRestController.REST_URL)

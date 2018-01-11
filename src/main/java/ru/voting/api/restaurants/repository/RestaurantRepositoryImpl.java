@@ -52,7 +52,6 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
     @Override
     @Transactional
     public boolean vote(int restaurantId, int userId, LocalTime endVotingTime) {
-        if (em.find(Restaurant.class, restaurantId) == null) return false;
         List<Vote> votes = em.createNamedQuery("vote.get", Vote.class)
                 .setParameter("userId", userId)
                 .setParameter("date", LocalDate.now())

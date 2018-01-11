@@ -18,6 +18,7 @@ Not supported
 |   email  | This user's unique email                         |
 | password | This user's password                             |
 |   roles  | Roles for this user (admin or/and user)          |
+| enabled  | A status for this user (enabled or disabled)     |
 
 #### Response
-```{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["USER"]}```
+```{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["USER"],"enabled":true}```

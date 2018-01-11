@@ -79,6 +79,6 @@ abstract public class AbstractControllerTest {
 
     protected void testDeleteEntity(String restUrl) throws Exception {
         mockMvc.perform(delete(restUrl))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }

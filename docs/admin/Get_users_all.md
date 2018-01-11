@@ -18,13 +18,14 @@ Not supported
 |   email  | Each user's unique email                         |
 | password | Each user's password                             |
 |   roles  | A set of roles for each user (admin or/and user) |
+| enabled  | A status for each user (enabled or disabled)     |
 
 #### Response
 ```
 [
-{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["USER"]},
-{"id":2,"name":"user2","email":"user2@mail.ru","password":"qwerty","roles":["USER"]},
-{"id":3,"name":"admin1","email":"admin1@mail.ru","password":"qwerty","roles":["ADMIN"]},
-{"id":4,"name":"admin2","email":"admin2@mail.ru","password":"qwerty","roles":["ADMIN"]}
+{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["USER"],"enabled":true},
+{"id":2,"name":"user2","email":"user2@mail.ru","password":"qwerty","roles":["USER"],"enabled":true},
+{"id":3,"name":"admin1","email":"admin1@mail.ru","password":"qwerty","roles":["ADMIN"],"enabled":true},
+{"id":4,"name":"admin2","email":"admin2@mail.ru","password":"qwerty","roles":["ADMIN"],"enabled":true}
 ]
 ```

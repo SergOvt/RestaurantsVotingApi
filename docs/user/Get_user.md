@@ -18,6 +18,7 @@ Not supported
 |   email  | Authorized user's unique email                         |
 | password | Authorized user's password                             |
 |   roles  | A set of roles for authorized user (user or/and admin) |
+| enabled  | A status for authorized user (may be just enabled)     |
 
 #### Response
-```{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["USER"]}```
+```{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["USER"],"enabled":true}```

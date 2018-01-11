@@ -2,9 +2,11 @@ package ru.voting.api.restaurants.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.repository.UserRepository;
+import ru.voting.api.restaurants.to.UserTo;
 
 import java.util.List;
 
@@ -41,6 +43,16 @@ public class UserServiceImpl implements UserService{
     public User update(User user) {
         Assert.notNull(user, "user must not be null");
         return checkNotFound(repository.save(user), user.getId());
+    }
+
+    @Override
+    @Transactional
+    public User update(UserTo userTo, int id) {
+        User user = get(id);
+        user.setName(userTo.getName());
+        user.setEmail(userTo.getEmail().toLowerCase());
+        user.setPassword(userTo.getPassword());
+        return repository.save(user);
     }
 
     @Override
