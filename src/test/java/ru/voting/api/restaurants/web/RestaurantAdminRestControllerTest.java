@@ -19,27 +19,27 @@ public class RestaurantAdminRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testCreate() throws Exception {
-        testCreateEntity(REST_URL, new Restaurant(RESTAURANT_NEW), Restaurant.class);
+        testCreateEntity(REST_URL, ADMIN_1, new Restaurant(RESTAURANT_NEW), Restaurant.class);
     }
 
     @Test
     public void testUpdate() throws Exception {
         Restaurant updated = new Restaurant(RESTAURANT_1);
         updated.setName("Updated Name");
-        testUpdateEntity(REST_URL, updated);
+        testUpdateEntity(REST_URL, ADMIN_1, updated);
         assertMatch(restaurantService.get(RESTAURANT_1.getId()), updated);
     }
 
     @Test
     public void testDelete() throws Exception {
-        testDeleteEntity(REST_URL + RESTAURANT_1.getId());
+        testDeleteEntity(REST_URL + RESTAURANT_1.getId(), ADMIN_1);
         assertMatch(restaurantService.getAll(), RESTAURANT_2, RESTAURANT_3);
     }
 
     @Test
     public void testPutMenu() throws Exception {
         List<Meal> newMenu = Arrays.asList(new Meal(MEAL_NEW), new Meal(MEAL_NEW));
-        testUpdateEntity(REST_URL + RESTAURANT_1.getId() + "/menu", newMenu);
+        testUpdateEntity(REST_URL + RESTAURANT_1.getId() + "/menu", ADMIN_1, newMenu);
         newMenu.get(0).setId(7);
         newMenu.get(1).setId(8);
         assertMatch(restaurantService.getTodayMenu(RESTAURANT_1.getId()), newMenu);

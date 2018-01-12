@@ -19,7 +19,7 @@ public class RestaurantUserRestControllerTest extends AbstractControllerTest{
     @Test
     @Transactional(propagation = Propagation.NEVER)
     public void testNewVote() throws Exception {
-        testUpdateEntity(REST_URL + RESTAURANT_1.getId() + "/vote", null);
+        testUpdateEntity(REST_URL + RESTAURANT_1.getId() + "/vote", USER_1, null);
         assertMatch(restaurantService.get(RESTAURANT_1.getId()).getRating(), RESTAURANT_1.getRating() + 1);
     }
 
@@ -27,9 +27,9 @@ public class RestaurantUserRestControllerTest extends AbstractControllerTest{
     @Transactional(propagation = Propagation.NEVER)
     public void testReVote() throws Exception {
         restaurantService.setEndVotingTime(LocalTime.now().plusMinutes(1));
-        testUpdateEntity(REST_URL + RESTAURANT_1.getId() + "/vote", null);
+        testUpdateEntity(REST_URL + RESTAURANT_1.getId() + "/vote", USER_1, null);
         assertMatch(restaurantService.get(RESTAURANT_1.getId()).getRating(), RESTAURANT_1.getRating() + 1);
-        testUpdateEntity(REST_URL + RESTAURANT_2.getId() + "/vote", null);
+        testUpdateEntity(REST_URL + RESTAURANT_2.getId() + "/vote", USER_1, null);
         assertMatch(restaurantService.get(RESTAURANT_1.getId()).getRating(), RESTAURANT_1.getRating());
         assertMatch(restaurantService.get(RESTAURANT_2.getId()).getRating(), RESTAURANT_2.getRating() + 1);
     }

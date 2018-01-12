@@ -28,11 +28,11 @@ public class TestData {
     public static final Restaurant RESTAURANT_3 = new Restaurant(3, "Restaurant3", 0);
     public static final Restaurant RESTAURANT_NEW = new Restaurant("new");
 
-    public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", USER);
-    public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", USER);
-    public static final User ADMIN_1 = new User(3, "admin1", "admin1@mail.ru", "qwerty", ADMIN);
-    public static final User ADMIN_2 = new User(4, "admin2", "admin2@mail.ru", "qwerty", ADMIN);
-    public static final User USER_NEW = new User("new", "new@mail.ru", "qwerty", USER);
+    public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", ROLE_USER);
+    public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", ROLE_USER);
+    public static final User ADMIN_1 = new User(3, "admin1", "admin1@mail.ru", "qwerty", ROLE_ADMIN);
+    public static final User ADMIN_2 = new User(4, "admin2", "admin2@mail.ru", "qwerty", ROLE_ADMIN);
+    public static final User USER_NEW = new User("new", "new@mail.ru", "qwerty", ROLE_USER);
 
     public static <T> void assertMatch(T actual, T expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "restaurant");
@@ -45,10 +45,6 @@ public class TestData {
 
     public static <T> void assertMatch(Iterable<? extends T> actual, Iterable<? extends T> expected) {
         assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
-    }
-
-    public static <T> ResultMatcher contentJson(T... expected) {
-        return content().json(writeValue(Arrays.asList(expected)));
     }
 
     public static <T> ResultMatcher contentJson(T expected) {

@@ -10,6 +10,7 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = "user.delete", query = "DELETE FROM User u WHERE u.id=:id"),
         @NamedQuery(name = "user.getAll", query = "SELECT u FROM User u LEFT JOIN FETCH u.roles"),
+        @NamedQuery(name = "user.byEmail", query = "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=:email")
 })
 @Entity
 @Table(name = "users")

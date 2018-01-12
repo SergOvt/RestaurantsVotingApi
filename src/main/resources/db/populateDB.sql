@@ -5,10 +5,10 @@ INSERT INTO users (name, email, password) VALUES
   ('admin2', 'admin2@mail.ru', 'qwerty');
 
 INSERT INTO user_roles (user_id, role) VALUES
-  (1, 'USER'),
-  (2, 'USER'),
-  (3, 'ADMIN'),
-  (4, 'ADMIN');
+  (1, 'ROLE_USER'),
+  (2, 'ROLE_USER'),
+  (3, 'ROLE_ADMIN'),
+  (4, 'ROLE_ADMIN');
 
 INSERT INTO restaurants (name) VALUES
   ('Restaurant1'),

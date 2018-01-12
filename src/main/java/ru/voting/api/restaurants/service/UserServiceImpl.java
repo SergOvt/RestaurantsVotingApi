@@ -1,9 +1,12 @@
 package ru.voting.api.restaurants.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import ru.voting.api.restaurants.AuthorizedUser;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.repository.UserRepository;
 import ru.voting.api.restaurants.to.UserTo;
@@ -12,8 +15,8 @@ import java.util.List;
 
 import static ru.voting.api.restaurants.util.ValidationUtil.*;
 
-@Service
-public class UserServiceImpl implements UserService{
+@Service("userService")
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository repository;
 
@@ -60,4 +63,12 @@ public class UserServiceImpl implements UserService{
         checkNotFound(repository.delete(id), "email=" + id);
     }
 
+    @Override
+    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.getByEmail(email.toLowerCase());
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
+    }
 }

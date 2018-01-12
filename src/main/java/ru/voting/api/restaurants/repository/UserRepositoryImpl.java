@@ -1,5 +1,7 @@
 package ru.voting.api.restaurants.repository;
 
+import org.hibernate.jpa.QueryHints;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.User;
@@ -18,6 +20,15 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public User get(int id) {
         return em.find(User.class, id);
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        List<User> users = em.createNamedQuery("user.byEmail", User.class)
+                .setParameter("email", email)
+                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+                .getResultList();
+        return DataAccessUtils.singleResult(users);
     }
 
     @Override

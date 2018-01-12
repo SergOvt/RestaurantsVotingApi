@@ -46,7 +46,7 @@ public class UserServiceTest {
     public void testUpdate() throws Exception {
         User updated = new User(USER_1);
         updated.setName("Updated");
-        updated.setRoles(Collections.singleton(Role.ADMIN));
+        updated.setRoles(Collections.singleton(Role.ROLE_ADMIN));
         service.update(updated);
         assertMatch(service.get(USER_1.getId()), updated);
     }

@@ -14,6 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import ru.voting.api.restaurants.TestUtil;
 import ru.voting.api.restaurants.model.BaseEntity;
+import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.web.json.JsonUtil;
 
 import javax.annotation.PostConstruct;
@@ -22,6 +23,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.api.restaurants.TestData.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static ru.voting.api.restaurants.TestUtil.userAuth;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -39,7 +42,7 @@ abstract public class AbstractControllerTest {
         CHARACTER_ENCODING_FILTER.setForceEncoding(true);
     }
 
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -49,18 +52,21 @@ abstract public class AbstractControllerTest {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(CHARACTER_ENCODING_FILTER)
+                .apply(springSecurity())
                 .build();
     }
 
-    protected <T> void testGetEntities(String restUrl, T... objects) throws Exception {
-        mockMvc.perform(get(restUrl))
+    protected <T> void testGetEntities(String restUrl, User authUser, T... objects) throws Exception {
+        mockMvc.perform(get(restUrl)
+                .with(userAuth(authUser)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(contentJson(objects.length == 1 ? objects[0] : objects));
     }
 
-    protected <T extends BaseEntity> void testCreateEntity(String restUrl, T created, Class<T> clazz) throws Exception {
+    protected <T extends BaseEntity> void testCreateEntity(String restUrl, User authUser, T created, Class<T> clazz) throws Exception {
         ResultActions action = mockMvc.perform(post(restUrl)
+                .with(userAuth(authUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(created)))
                 .andExpect(status().isCreated());
@@ -70,15 +76,17 @@ abstract public class AbstractControllerTest {
         assertMatch(returned, created);
     }
 
-    protected <T> void testUpdateEntity(String restUrl, T updated) throws Exception {
+    protected <T> void testUpdateEntity(String restUrl, User authUser, T updated) throws Exception {
         mockMvc.perform(put(restUrl)
+                .with(userAuth(authUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isOk());
     }
 
-    protected void testDeleteEntity(String restUrl) throws Exception {
-        mockMvc.perform(delete(restUrl))
+    protected void testDeleteEntity(String restUrl, User authUser) throws Exception {
+        mockMvc.perform(delete(restUrl)
+                .with(userAuth(authUser)))
                 .andExpect(status().isNoContent());
     }
 }
