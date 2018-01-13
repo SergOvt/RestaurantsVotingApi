@@ -10,6 +10,7 @@ import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
+import ru.voting.api.restaurants.to.RestaurantTo;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
 import ru.voting.api.restaurants.util.exception.VotingAccessException;
 
@@ -40,16 +41,17 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void testCrete() throws Exception {
-        service.create(RESTAURANT_NEW);
+    public void testCreate() throws Exception {
+        service.create(new RestaurantTo(RESTAURANT_NEW.getName()));
         assertMatch(service.get(4), RESTAURANT_NEW);
     }
 
     @Test
     public void testUpdate() throws Exception {
+        RestaurantTo updatedTo = new RestaurantTo("New Name");
+        service.update(updatedTo, RESTAURANT_1.getId());
         Restaurant updated = new Restaurant(RESTAURANT_1);
-        updated.setName("Updated");
-        service.update(updated);
+        updated.setName("New Name");
         assertMatch(service.get(RESTAURANT_1.getId()), updated);
     }
 
@@ -96,7 +98,7 @@ public class RestaurantServiceTest {
 
     @Test
     public void testPutMenu() throws Exception {
-        List<Meal> newMenu = service.putMenu(Arrays.asList(MEAL_NEW, new Meal(MEAL_NEW)), RESTAURANT_2.getId());
+        List<Meal> newMenu = service.putMenu(Arrays.asList(new Meal(MEAL_NEW), new Meal(MEAL_NEW)), RESTAURANT_2.getId());
         assertMatch(service.getTodayMenu(RESTAURANT_2.getId()), newMenu);
     }
 

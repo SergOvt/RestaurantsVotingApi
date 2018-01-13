@@ -2,13 +2,11 @@ package ru.voting.api.restaurants.web;
 
 import org.junit.Test;
 import org.springframework.http.MediaType;
-import ru.voting.api.restaurants.model.User;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.api.restaurants.TestData.*;
-import static ru.voting.api.restaurants.TestUtil.userAuth;
 
 public class RestaurantRestControllerTest extends AbstractControllerTest{
 

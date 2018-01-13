@@ -30,19 +30,19 @@ There is a voting system for deciding where to have lunch:
 | Method |    Group    |   Endpoint    |                                                   Usage                                                              |
 |:------:|:-----------:|:-------------:|:---------------------------------------------------------------------------------------------------------------------|
 | POST   | restaurants |      `/`      | [Add a Restaurant](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Post_restaurants_add.md)            |
-| PUT    | restaurants |      `/`      | [Update a Restaurant](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Put_restaurants_update.md)       |
+| PUT    | restaurants |`RESTAURANT_ID`| [Update a Restaurant](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Put_restaurants_update.md)       |
 | DELETE | restaurants |`RESTAURANT_ID`| [Delete a Restaurant](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Delete_restaurants.md)           |
 | PUT    | restaurants |    `menu`     | [Put restaurant's day Menu](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Put_restaurants_menu.md)   |
 | GET    |    users    |    `all`      | [Get all Users](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Get_users_all.md)                      |
 | GET    |    users    |   `USER_ID`   | [Get details of a User](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Get_users_id.md)               |
 | POST   |    users    |      `/`      | [Add a User](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Post_users_add.md)                        |
-| PUT    |    users    |      `/`      | [Update a User](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Put_users_update.md)                   |
+| PUT    |    users    |   `USER_ID`   | [Update a User](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Put_users_update.md)                   |
 | DELETE |    users    |   `USER_ID`   | [Delete a User](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Delete_users_id.md)                    |
 
 #### For User:
 | Method |    Group    |    Endpoint   |                                                  Usage                                                               |
 |:------:|:-----------:|:-------------:|:---------------------------------------------------------------------------------------------------------------------|
-| PUT    | restaurants |     `vote`    | [Vote for a Restaurant](https://github.com/SergOvt/restaurants/blob/master/docs/user/Put_restaurants_vote.md)        |
+| PUT    | restaurants |`RESTAURANT_ID`| [Vote for a Restaurant](https://github.com/SergOvt/restaurants/blob/master/docs/user/Put_restaurants_vote.md)        |
 | GET    |  profile    |      `/`      | [Get User's details](https://github.com/SergOvt/restaurants/blob/master/docs/user/Get_user.md)                       |
 | PUT    |  profile    |      `/`      | [Update User's details](https://github.com/SergOvt/restaurants/blob/master/docs/user/Put_user.md)                    |
 | DELETE |  profile    |      `/`      | [Delete a User](https://github.com/SergOvt/restaurants/blob/master/docs/user/Delete_user.md)                         |

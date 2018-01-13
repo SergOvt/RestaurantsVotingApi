@@ -29,7 +29,7 @@ public class RestaurantUserRestController {
         this.restaurantService = restaurantService;
     }
 
-    @PutMapping(value = "/{id}/vote")
+    @PutMapping(value = "/{id}")
     public ResponseEntity vote(@PathVariable("id") int restaurantId){
         log.info("User id={} vote for restaurant id={}", AuthorizedUser.id(), restaurantId);
         return checkExceptions(() -> {

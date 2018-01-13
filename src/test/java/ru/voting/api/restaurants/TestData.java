@@ -26,7 +26,7 @@ public class TestData {
     public static final Restaurant RESTAURANT_1 = new Restaurant(1, "Restaurant1", 1);
     public static final Restaurant RESTAURANT_2 = new Restaurant(2, "Restaurant2", 2);
     public static final Restaurant RESTAURANT_3 = new Restaurant(3, "Restaurant3", 0);
-    public static final Restaurant RESTAURANT_NEW = new Restaurant("new");
+    public static final Restaurant RESTAURANT_NEW = new Restaurant(4, "new", 0);
 
     public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", ROLE_USER);
     public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", ROLE_USER);

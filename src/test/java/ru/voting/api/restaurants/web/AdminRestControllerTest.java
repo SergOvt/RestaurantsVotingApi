@@ -2,6 +2,8 @@ package ru.voting.api.restaurants.web;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.ResultActions;
+import ru.voting.api.restaurants.TestUtil;
 import ru.voting.api.restaurants.model.Role;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.UserService;
@@ -31,7 +33,11 @@ public class AdminRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testCreate() throws Exception {
-        testCreateEntity(REST_URL, ADMIN_1, new User(USER_NEW), User.class);
+        User created = new User(USER_NEW);
+        ResultActions action = testCreateEntity(REST_URL, ADMIN_1, created);
+        User returned = TestUtil.readFromJson(action, User.class);
+        created.setId(returned.getId());
+        assertMatch(returned, created);
     }
 
     @Test
@@ -39,7 +45,7 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         User updated = new User(USER_1);
         updated.setName("Updated Name");
         updated.setRoles(Collections.singleton(Role.ROLE_ADMIN));
-        testUpdateEntity(REST_URL, ADMIN_1, updated);
+        testUpdateEntity(REST_URL + USER_1.getId(), ADMIN_1, updated);
         assertMatch(userService.get(USER_1.getId()), updated);
     }
 
@@ -52,13 +58,13 @@ public class AdminRestControllerTest extends AbstractControllerTest{
     @Test
     public void testGetNotAuthorized() throws Exception {
         mockMvc.perform(get(REST_URL + ADMIN_1.getId()))
-                .andExpect(status().is(401));
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
     public void testGetNotAdminAuthorized() throws Exception {
         mockMvc.perform(get(REST_URL + ADMIN_1.getId())
                 .with(userAuth(USER_1)))
-                .andExpect(status().is(403));
+                .andExpect(status().isForbidden());
     }
 }

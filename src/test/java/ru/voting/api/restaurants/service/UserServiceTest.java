@@ -38,8 +38,10 @@ public class UserServiceTest {
 
     @Test
     public void testCreate() throws Exception {
-        service.create(USER_NEW);
-        assertMatch(service.get(5), USER_NEW);
+        User created = new User(USER_NEW);
+        service.create(created);
+        created.setId(5);
+        assertMatch(service.get(5), created);
     }
 
     @Test
@@ -47,7 +49,7 @@ public class UserServiceTest {
         User updated = new User(USER_1);
         updated.setName("Updated");
         updated.setRoles(Collections.singleton(Role.ROLE_ADMIN));
-        service.update(updated);
+        service.update(updated, USER_1.getId());
         assertMatch(service.get(USER_1.getId()), updated);
     }
 

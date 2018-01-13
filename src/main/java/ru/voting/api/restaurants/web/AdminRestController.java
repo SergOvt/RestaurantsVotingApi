@@ -56,10 +56,10 @@ public class AdminRestController {
         });
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody User user){
-        log.info("Admin update user id={}", user.getId());
-        return checkExceptions(() -> ResponseEntity.ok(userService.update(user)));
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(@RequestBody User user, @PathVariable("id") int id){
+        log.info("Admin update user id={}", id);
+        return checkExceptions(() -> ResponseEntity.ok(userService.update(user, id)));
     }
 
     @DeleteMapping(value = "/{id}")

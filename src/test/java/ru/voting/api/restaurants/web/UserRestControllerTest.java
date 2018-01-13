@@ -42,14 +42,14 @@ public class UserRestControllerTest extends AbstractControllerTest{
     @Test
     public void testGetNotAuthorized() throws Exception {
         mockMvc.perform(get(REST_URL))
-                .andExpect(status().is(401));
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
     public void testGetNotUserAuthorized() throws Exception {
         mockMvc.perform(get(REST_URL)
                 .with(userAuth(ADMIN_1)))
-                .andExpect(status().is(403));
+                .andExpect(status().isForbidden());
     }
 
 }

@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User get(int id) {
-        return checkNotFound(repository.get(id), "id=" + id);
+        return checkNotFound(repository.get(id), id);
     }
 
     @Override
@@ -38,19 +38,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
-        user.setId(null);
+        checkNew(user);
         return repository.save(user);
     }
 
     @Override
-    public User update(User user) {
+    @Transactional
+    public User update(User user, int id) {
         Assert.notNull(user, "user must not be null");
-        return checkNotFound(repository.save(user), user.getId());
+        get(id);  //check NotFound
+        user.setId(id);
+        return checkNotFound(repository.save(user), id);
     }
 
     @Override
     @Transactional
     public User update(UserTo userTo, int id) {
+        Assert.notNull(userTo, "user must not be null");
         User user = get(id);
         user.setName(userTo.getName());
         user.setEmail(userTo.getEmail().toLowerCase());
@@ -60,11 +64,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void delete(int id) {
-        checkNotFound(repository.delete(id), "email=" + id);
+        checkNotFound(repository.delete(id), id);
     }
 
     @Override
     public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        Assert.notNull(email, "email must not be null");
         User user = repository.getByEmail(email.toLowerCase());
         if (user == null) {
             throw new UsernameNotFoundException("User " + email + " is not found");

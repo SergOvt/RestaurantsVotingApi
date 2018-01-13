@@ -13,7 +13,7 @@ public interface UserService {
 
     User create(User user);
 
-    User update(User user);
+    User update(User user, int id);
 
     User update(UserTo userTo, int id);
 

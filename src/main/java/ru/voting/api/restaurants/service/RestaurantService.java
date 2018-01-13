@@ -2,6 +2,7 @@ package ru.voting.api.restaurants.service;
 
 import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
+import ru.voting.api.restaurants.to.RestaurantTo;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -12,13 +13,13 @@ public interface RestaurantService {
 
     List<Restaurant> getAll();
 
-    Restaurant create(Restaurant restaurant);
+    Restaurant create(RestaurantTo restaurantTo);
 
-    Restaurant update(Restaurant restaurant);
+    Restaurant update(RestaurantTo restaurantTo, int id);
 
     void delete(int id);
 
-    void vote(int restaurantId, int userId);
+    void vote(int id, int userId);
 
     List<Meal> getTodayMenu(int id);
 

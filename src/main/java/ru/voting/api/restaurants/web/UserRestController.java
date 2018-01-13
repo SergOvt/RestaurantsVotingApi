@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.voting.api.restaurants.AuthorizedUser;
-import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.UserService;
 import ru.voting.api.restaurants.to.UserTo;
 
@@ -33,7 +32,7 @@ public class UserRestController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity get(){
         log.info("User id={} self get", AuthorizedUser.id());
-        return checkExceptions(() -> ResponseEntity.ok(userService.get(AuthorizedUser.id())));
+        return checkExceptions(() -> ResponseEntity.ok(AuthorizedUser.get().getUser()));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -2,12 +2,14 @@ package ru.voting.api.restaurants.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.repository.MealRepository;
 import ru.voting.api.restaurants.repository.RestaurantRepository;
-import ru.voting.api.restaurants.util.exception.NotFoundException;
+import ru.voting.api.restaurants.to.RestaurantTo;
+import ru.voting.api.restaurants.util.ValidationUtil;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -39,17 +41,18 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public Restaurant create(Restaurant restaurant) {
-        Assert.notNull(restaurant, "restaurant must not be null");
-        restaurant.setId(null);
-        restaurant.setRating(0);
-        return restaurantRepository.save(restaurant);
+    public Restaurant create(RestaurantTo restaurantTo) {
+        Assert.notNull(restaurantTo, "restaurant must not be null");
+        return restaurantRepository.save(new Restaurant(null, restaurantTo.getName(), 0));
     }
 
     @Override
-    public Restaurant update(Restaurant restaurant) {
-        Assert.notNull(restaurant, "restaurant must not be null");
-        return checkNotFound(restaurantRepository.save(restaurant), restaurant.getId());
+    @Transactional
+    public Restaurant update(RestaurantTo restaurantTo, int id) {
+        Assert.notNull(restaurantTo, "restaurant must not be null");
+        Restaurant restaurant = get(id);
+        restaurant.setName(restaurantTo.getName());
+        return checkNotFound(restaurantRepository.save(restaurant), id);
     }
 
     @Override
@@ -64,14 +67,13 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     public List<Meal> getTodayMenu(int id) {
-        List<Meal> menu = mealRepository.getTodayMenu(id);
-        if (menu.isEmpty()) throw new NotFoundException("Not found menu for restaurant id=" + id);
-        return menu;
+        return checkNotFound(mealRepository.getTodayMenu(id), "Not found menu for restaurant id=" + id);
     }
 
     @Override
     public List<Meal> putMenu(List<Meal> menu, int id) {
         Assert.notNull(menu, "Menu must not be null");
+        menu.forEach(ValidationUtil::checkNew);
         return checkNotFound(mealRepository.putMenu(menu, id), id);
     }
 

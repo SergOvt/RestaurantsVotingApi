@@ -24,10 +24,11 @@ public class MealRepositoryImpl implements MealRepository{
 
     @Override
     public List<Meal> getMenuByDate(LocalDate date, int restaurantId) {
-        return em.createNamedQuery("meal.getByDate", Meal.class)
+        List<Meal> result =  em.createNamedQuery("meal.getByDate", Meal.class)
                 .setParameter("rest_id", restaurantId)
                 .setParameter("date", date)
                 .getResultList();
+        return result.isEmpty() ? null : result;
     }
 
     @Override
@@ -39,7 +40,6 @@ public class MealRepositoryImpl implements MealRepository{
                 .executeUpdate();
         menu.forEach(meal -> {
             meal.setRestaurant(em.getReference(Restaurant.class, restaurantId));
-            meal.setId(null);
             meal.setDate(LocalDate.now());
             em.persist(meal);
         });

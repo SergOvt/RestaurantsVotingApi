@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.service.RestaurantService;
+import ru.voting.api.restaurants.to.RestaurantTo;
 
 import java.net.URI;
 import java.util.List;
@@ -34,10 +35,10 @@ public class RestaurantAdminRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@RequestBody Restaurant restaurant){
+    public ResponseEntity create(@RequestBody RestaurantTo restaurantTo){
         log.info("Admin create new restaurant");
         return checkExceptions(() -> {
-            Restaurant created = restaurantService.create(restaurant);
+            Restaurant created = restaurantService.create(restaurantTo);
             URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                     .path(REST_URL + "/{id}")
                     .buildAndExpand(created.getId()).toUri();
@@ -45,10 +46,10 @@ public class RestaurantAdminRestController {
         });
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody Restaurant restaurant){
-        log.info("Admin update restaurant id={}", restaurant.getId());
-        return checkExceptions(() -> ResponseEntity.ok(restaurantService.update(restaurant)));
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(@RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id){
+        log.info("Admin update restaurant id={}", id);
+        return checkExceptions(() -> ResponseEntity.ok(restaurantService.update(restaurantTo, id)));
     }
 
     @DeleteMapping(value = "/{id}")

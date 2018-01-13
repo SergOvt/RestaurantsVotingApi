@@ -1,5 +1,6 @@
 package ru.voting.api.restaurants.repository;
 
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.Restaurant;
@@ -56,14 +57,13 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
                 .setParameter("userId", userId)
                 .setParameter("date", LocalDate.now())
                 .getResultList();
-        if (votes.size() == 0) {
-            Vote vote = new Vote(em.getReference(Restaurant.class, restaurantId),
-                                 em.getReference(User.class, userId));
-            em.persist(vote);
+        Vote vote = DataAccessUtils.singleResult(votes);
+        if (vote == null) {
+            em.persist(new Vote(em.getReference(Restaurant.class, restaurantId),
+                    em.getReference(User.class, userId)));
             return true;
         } else {
             if (LocalTime.now().isBefore(endVotingTime)) {
-                Vote vote = votes.get(0);
                 vote.setRestaurant(em.getReference(Restaurant.class, restaurantId));
                 return em.merge(vote) != null;
             }

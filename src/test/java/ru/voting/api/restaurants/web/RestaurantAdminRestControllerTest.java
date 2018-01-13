@@ -2,10 +2,14 @@ package ru.voting.api.restaurants.web;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.ResultActions;
+import ru.voting.api.restaurants.TestUtil;
 import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.service.RestaurantService;
+import ru.voting.api.restaurants.to.RestaurantTo;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,14 +23,19 @@ public class RestaurantAdminRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testCreate() throws Exception {
-        testCreateEntity(REST_URL, ADMIN_1, new Restaurant(RESTAURANT_NEW), Restaurant.class);
+        RestaurantTo createdTo = new RestaurantTo(RESTAURANT_NEW.getName());
+        ResultActions action = testCreateEntity(REST_URL, ADMIN_1, createdTo);
+        Restaurant returned = TestUtil.readFromJson(action, Restaurant.class);
+        Restaurant created = new Restaurant(returned.getId(), RESTAURANT_NEW.getName(), 0);
+        assertMatch(returned, created);
     }
 
     @Test
     public void testUpdate() throws Exception {
+        RestaurantTo updatedTo = new RestaurantTo("Updated Name");
+        testUpdateEntity(REST_URL + RESTAURANT_1.getId(), ADMIN_1, updatedTo);
         Restaurant updated = new Restaurant(RESTAURANT_1);
         updated.setName("Updated Name");
-        testUpdateEntity(REST_URL, ADMIN_1, updated);
         assertMatch(restaurantService.get(RESTAURANT_1.getId()), updated);
     }
 
@@ -40,9 +49,10 @@ public class RestaurantAdminRestControllerTest extends AbstractControllerTest{
     public void testPutMenu() throws Exception {
         List<Meal> newMenu = Arrays.asList(new Meal(MEAL_NEW), new Meal(MEAL_NEW));
         testUpdateEntity(REST_URL + RESTAURANT_1.getId() + "/menu", ADMIN_1, newMenu);
-        newMenu.get(0).setId(7);
-        newMenu.get(1).setId(8);
-        assertMatch(restaurantService.getTodayMenu(RESTAURANT_1.getId()), newMenu);
+        List<Meal> expectedMenu = new ArrayList<>(newMenu);
+        expectedMenu.get(0).setId(7);
+        expectedMenu.get(1).setId(8);
+        assertMatch(restaurantService.getTodayMenu(RESTAURANT_1.getId()), expectedMenu);
     }
 
 }

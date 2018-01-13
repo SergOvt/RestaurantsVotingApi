@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import ru.voting.api.restaurants.TestUtil;
 import ru.voting.api.restaurants.model.BaseEntity;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.web.json.JsonUtil;
@@ -64,16 +63,12 @@ abstract public class AbstractControllerTest {
                 .andExpect(contentJson(objects.length == 1 ? objects[0] : objects));
     }
 
-    protected <T extends BaseEntity> void testCreateEntity(String restUrl, User authUser, T created, Class<T> clazz) throws Exception {
-        ResultActions action = mockMvc.perform(post(restUrl)
+    protected <T> ResultActions testCreateEntity(String restUrl, User authUser, T created) throws Exception {
+        return mockMvc.perform(post(restUrl)
                 .with(userAuth(authUser))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(created)))
                 .andExpect(status().isCreated());
-
-        T returned = TestUtil.readFromJson(action, clazz);
-        created.setId(returned.getId());
-        assertMatch(returned, created);
     }
 
     protected <T> void testUpdateEntity(String restUrl, User authUser, T updated) throws Exception {
