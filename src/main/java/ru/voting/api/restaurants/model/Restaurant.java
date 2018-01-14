@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 public class Restaurant extends BaseEntity{
 
     @Column(name = "name", nullable = false)
-    @NotBlank
+    @NotBlank(message = "name mast not be empty")
     private String name;
 
     @Formula("(SELECT COUNT(*) FROM votes v WHERE v.date = CURDATE() AND v.rest_id = id)")

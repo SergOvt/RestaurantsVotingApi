@@ -17,16 +17,16 @@ import java.util.Set;
 public class User extends BaseEntity{
 
     @Column(name = "name", nullable = false)
-    @NotBlank
+    @NotBlank(message = "name mast not be empty")
     private String name;
 
     @Column(name = "email", nullable = false, unique = true)
-    @Email
-    @NotBlank
+    @Email(message = "email must be a valid e-mail address (example@mail.com)")
+    @NotBlank(message = "email mast not be empty")
     private String email;
 
     @Column(name = "password", nullable = false)
-    @Size(min = 5, max = 32)
+    @Size(min = 5, max = 32, message = "password mast have a length between 5 and 32 characters")
     private String password;
 
     @Enumerated(EnumType.STRING)

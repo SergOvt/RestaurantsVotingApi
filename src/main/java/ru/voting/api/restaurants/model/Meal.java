@@ -17,21 +17,21 @@ import java.time.LocalDate;
 public class Meal extends BaseEntity {
 
     @Column(name = "title", nullable = false)
-    @NotBlank
+    @NotBlank(message = "title mast not be empty")
     private String title;
 
     @Column(name = "price", nullable = false)
-    @Range(min = 0, max = 1000000)
+    @Range(min = 0, max = 1000000, message = "price must be between 0 and 1 000 000")
     private int price;
 
     @Column(name = "date", nullable = false)
-    @NotNull
+    @NotNull(message = "date must not be null")
     @JsonIgnore
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="rest_id", nullable = false)
-    @NotNull
+    @NotNull(message = "restaurant must not be null")
     @JsonIgnore
     private Restaurant restaurant;
 

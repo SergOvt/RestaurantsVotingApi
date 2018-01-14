@@ -14,4 +14,4 @@ Not supported
 | Field  | Description                                                                      |
 |:------:|----------------------------------------------------------------------------------|
 | title  | A name for each new dish (mast be not empty)                                     |
-| price  | Numerical price for each new dish. Price keep in cents (min = 0, max = 1000000)  |
+| price  | Numerical price for each new dish. Price keep in cents (min = 0, max = 1 000 000)|
