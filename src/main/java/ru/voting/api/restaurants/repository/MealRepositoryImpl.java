@@ -18,11 +18,6 @@ public class MealRepositoryImpl implements MealRepository{
     private EntityManager em;
 
     @Override
-    public List<Meal> getTodayMenu(int restaurantId) {
-        return getMenuByDate(LocalDate.now(), restaurantId);
-    }
-
-    @Override
     public List<Meal> getMenuByDate(LocalDate date, int restaurantId) {
         List<Meal> result =  em.createNamedQuery("meal.getByDate", Meal.class)
                 .setParameter("rest_id", restaurantId)

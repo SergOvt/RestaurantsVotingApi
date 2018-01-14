@@ -58,13 +58,13 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
                 .setParameter("date", LocalDate.now())
                 .getResultList();
         Vote vote = DataAccessUtils.singleResult(votes);
+        Restaurant restaurant = em.getReference(Restaurant.class, restaurantId);
         if (vote == null) {
-            em.persist(new Vote(em.getReference(Restaurant.class, restaurantId),
-                    em.getReference(User.class, userId)));
+            em.persist(new Vote(restaurant, em.getReference(User.class, userId)));
             return true;
         } else {
             if (LocalTime.now().isBefore(endVotingTime)) {
-                vote.setRestaurant(em.getReference(Restaurant.class, restaurantId));
+                vote.setRestaurant(restaurant);
                 return em.merge(vote) != null;
             }
         }

@@ -11,6 +11,7 @@ import ru.voting.api.restaurants.repository.RestaurantRepository;
 import ru.voting.api.restaurants.to.RestaurantTo;
 import ru.voting.api.restaurants.util.ValidationUtil;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     public List<Meal> getTodayMenu(int id) {
-        return checkNotFound(mealRepository.getTodayMenu(id), "Not found menu for restaurant id=" + id);
+        return checkNotFound(mealRepository.getMenuByDate(LocalDate.now(), id), "Not found menu for restaurant id=" + id);
     }
 
     @Override
