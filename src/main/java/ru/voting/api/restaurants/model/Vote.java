@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @NamedQueries({
-        @NamedQuery(name = "vote.get", query = "SELECT v FROM Vote v WHERE v.user.id=:userId AND v.date=:date")
+        @NamedQuery(name = "vote.get", query = "SELECT DISTINCT v FROM Vote v WHERE v.user.id=:userId AND v.date=:date")
 })
 @Entity
 @Table(name = "votes")

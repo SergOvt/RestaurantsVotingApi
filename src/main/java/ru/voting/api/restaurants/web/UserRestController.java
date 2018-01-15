@@ -11,9 +11,6 @@ import ru.voting.api.restaurants.AuthorizedUser;
 import ru.voting.api.restaurants.service.UserService;
 import ru.voting.api.restaurants.to.UserTo;
 
-import static ru.voting.api.restaurants.util.ErrorsHandler.checkExceptions;
-
-
 @RestController
 @RequestMapping(UserRestController.REST_URL)
 public class UserRestController {
@@ -30,23 +27,21 @@ public class UserRestController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity get(){
+    public ResponseEntity get() {
         log.info("User id={} self get", AuthorizedUser.id());
-        return checkExceptions(() -> ResponseEntity.ok(AuthorizedUser.get().getUser()));
+        return ResponseEntity.ok(AuthorizedUser.get().getUser());
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody UserTo user){
+    public ResponseEntity update(@RequestBody UserTo user) {
         log.info("User id={} self update", AuthorizedUser.id());
-        return checkExceptions(() -> ResponseEntity.ok(userService.update(user, AuthorizedUser.id())));
+        return ResponseEntity.ok(userService.update(user, AuthorizedUser.id()));
     }
 
     @DeleteMapping
-    public ResponseEntity delete(){
+    public ResponseEntity delete() {
         log.info("User id={} self delete", AuthorizedUser.id());
-        return checkExceptions(() -> {
-            userService.delete(AuthorizedUser.id());
-            return ResponseEntity.noContent().build();
-        });
+        userService.delete(AuthorizedUser.id());
+        return ResponseEntity.noContent().build();
     }
 }

@@ -16,9 +16,6 @@ import ru.voting.api.restaurants.to.RestaurantTo;
 import java.net.URI;
 import java.util.List;
 
-import static ru.voting.api.restaurants.util.ErrorsHandler.checkExceptions;
-
-
 @RestController
 @RequestMapping(RestaurantAdminRestController.REST_URL)
 public class RestaurantAdminRestController {
@@ -35,35 +32,31 @@ public class RestaurantAdminRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@RequestBody RestaurantTo restaurantTo){
+    public ResponseEntity create(@RequestBody RestaurantTo restaurantTo) {
         log.info("Admin create new restaurant");
-        return checkExceptions(() -> {
-            Restaurant created = restaurantService.create(restaurantTo);
-            URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path(REST_URL + "/{id}")
-                    .buildAndExpand(created.getId()).toUri();
-            return ResponseEntity.created(uriOfNewResource).body(created);
-        });
+        Restaurant created = restaurantService.create(restaurantTo);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id){
+    public ResponseEntity update(@RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id) {
         log.info("Admin update restaurant id={}", id);
-        return checkExceptions(() -> ResponseEntity.ok(restaurantService.update(restaurantTo, id)));
+        return ResponseEntity.ok(restaurantService.update(restaurantTo, id));
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity delete(@PathVariable("id") int id) {
         log.info("Admin delete restaurant id={}", id);
-        return checkExceptions(() -> {
-            restaurantService.delete(id);
-            return ResponseEntity.noContent().build();
-        });
+        restaurantService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}/menu", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity putMenu(@RequestBody List<Meal> menu, @PathVariable("id") int id) {
         log.info("Admin put new menu for restaurant id={}", id);
-        return checkExceptions(() -> ResponseEntity.ok(restaurantService.putMenu(menu, id)));
+        return ResponseEntity.ok(restaurantService.putMenu(menu, id));
     }
 }

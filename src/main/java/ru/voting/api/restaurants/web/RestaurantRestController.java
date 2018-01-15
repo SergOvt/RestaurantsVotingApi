@@ -12,9 +12,6 @@ import ru.voting.api.restaurants.service.RestaurantService;
 
 import java.util.List;
 
-import static ru.voting.api.restaurants.util.ErrorsHandler.checkExceptions;
-
-
 @RestController
 @RequestMapping(RestaurantRestController.REST_URL)
 public class RestaurantRestController {
@@ -33,7 +30,7 @@ public class RestaurantRestController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity get(@PathVariable("id") int id){
         log.info("Get restaurant id={}", id);
-        return checkExceptions(() -> ResponseEntity.ok(restaurantService.get(id)));
+        return ResponseEntity.ok(restaurantService.get(id));
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -45,6 +42,6 @@ public class RestaurantRestController {
     @GetMapping(value = "/{id}/menu", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTodayMenu(@PathVariable("id") int id) {
         log.info("Get today menu from restaurant id={}", id);
-        return checkExceptions(() -> ResponseEntity.ok(restaurantService.getTodayMenu(id)));
+        return ResponseEntity.ok(restaurantService.getTodayMenu(id));
     }
 }

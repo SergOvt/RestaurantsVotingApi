@@ -14,9 +14,6 @@ import ru.voting.api.restaurants.service.UserService;
 import java.net.URI;
 import java.util.List;
 
-import static ru.voting.api.restaurants.util.ErrorsHandler.checkExceptions;
-
-
 @RestController
 @RequestMapping(AdminRestController.REST_URL)
 public class AdminRestController {
@@ -33,41 +30,37 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity get(@PathVariable("id") int id){
+    public ResponseEntity get(@PathVariable("id") int id) {
         log.info("Admin get user id={}", id);
-        return checkExceptions(() -> ResponseEntity.ok(userService.get(id)));
+        return ResponseEntity.ok(userService.get(id));
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> getAll(){
+    public List<User> getAll() {
         log.info("Admin get all users");
         return userService.getAll();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@RequestBody User user){
+    public ResponseEntity create(@RequestBody User user) {
         log.info("Admin create new user");
-        return checkExceptions(() -> {
-            User created = userService.create(user);
-            URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path(REST_URL + "/{id}")
-                    .buildAndExpand(created.getId()).toUri();
-            return ResponseEntity.created(uriOfNewResource).body(created);
-        });
+        User created = userService.create(user);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(REST_URL + "/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody User user, @PathVariable("id") int id){
+    public ResponseEntity update(@RequestBody User user, @PathVariable("id") int id) {
         log.info("Admin update user id={}", id);
-        return checkExceptions(() -> ResponseEntity.ok(userService.update(user, id)));
+        return ResponseEntity.ok(userService.update(user, id));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity delete(@PathVariable("id") int id){
+    public ResponseEntity delete(@PathVariable("id") int id) {
         log.info("Admin delete user id={}", id);
-        return checkExceptions(() -> {
-            userService.delete(id);
-            return ResponseEntity.noContent().build();
-        });
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

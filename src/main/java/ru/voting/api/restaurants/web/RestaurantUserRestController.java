@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.voting.api.restaurants.AuthorizedUser;
 import ru.voting.api.restaurants.service.RestaurantService;
 
-import static ru.voting.api.restaurants.util.ErrorsHandler.checkExceptions;
-
-
 @RestController
 @RequestMapping(RestaurantUserRestController.REST_URL)
 @Transactional
@@ -30,11 +27,9 @@ public class RestaurantUserRestController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity vote(@PathVariable("id") int restaurantId){
+    public ResponseEntity vote(@PathVariable("id") int restaurantId) {
         log.info("User id={} vote for restaurant id={}", AuthorizedUser.id(), restaurantId);
-        return checkExceptions(() -> {
-            restaurantService.vote(restaurantId, AuthorizedUser.id());
-            return ResponseEntity.ok().build();
-        });
+        restaurantService.vote(restaurantId, AuthorizedUser.id());
+        return ResponseEntity.ok().build();
     }
 }
