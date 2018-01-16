@@ -23,18 +23,18 @@ public class AdminRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testGet() throws Exception {
-        testGetEntities(REST_URL + ADMIN_1.getId(), ADMIN_1, ADMIN_1);
+        testGetEntities(REST_URL + USER_1.getId(), ADMIN, USER_1);
     }
 
     @Test
     public void testGetAll() throws Exception {
-        testGetEntities(REST_URL + "/all", ADMIN_1, USER_1, USER_2, ADMIN_1, ADMIN_2);
+        testGetEntities(REST_URL + "/all", ADMIN, USER_1, USER_2, ADMIN);
     }
 
     @Test
     public void testCreate() throws Exception {
         User created = new User(USER_NEW);
-        ResultActions action = testCreateEntity(REST_URL, ADMIN_1, created);
+        ResultActions action = testCreateEntity(REST_URL, ADMIN, created);
         User returned = TestUtil.readFromJson(action, User.class);
         created.setId(returned.getId());
         assertMatch(returned, created);
@@ -45,25 +45,25 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         User updated = new User(USER_1);
         updated.setName("Updated Name");
         updated.setRoles(Collections.singleton(Role.ROLE_ADMIN));
-        testUpdateEntity(REST_URL + USER_1.getId(), ADMIN_1, updated);
+        testUpdateEntity(REST_URL + USER_1.getId(), ADMIN, updated);
         assertMatch(userService.get(USER_1.getId()), updated);
     }
 
     @Test
     public void testDelete() throws Exception {
-        testDeleteEntity(REST_URL + USER_1.getId(), ADMIN_1);
-        assertMatch(userService.getAll(), USER_2, ADMIN_1, ADMIN_2);
+        testDeleteEntity(REST_URL + USER_1.getId(), ADMIN);
+        assertMatch(userService.getAll(), USER_2, ADMIN);
     }
 
     @Test
     public void testGetNotAuthorized() throws Exception {
-        mockMvc.perform(get(REST_URL + ADMIN_1.getId()))
+        mockMvc.perform(get(REST_URL + ADMIN.getId()))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     public void testGetNotAdminAuthorized() throws Exception {
-        mockMvc.perform(get(REST_URL + ADMIN_1.getId())
+        mockMvc.perform(get(REST_URL + ADMIN.getId())
                 .with(userAuth(USER_1)))
                 .andExpect(status().isForbidden());
     }

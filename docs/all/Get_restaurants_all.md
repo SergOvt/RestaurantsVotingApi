@@ -20,8 +20,8 @@ Not supported
 #### Response
 ```
 [
-{"id":2,"name":"Restaurant2","rating":2},
 {"id":1,"name":"Restaurant1","rating":1},
+{"id":2,"name":"Restaurant2","rating":0},
 {"id":3,"name":"Restaurant3","rating":0}
 ]
 ```

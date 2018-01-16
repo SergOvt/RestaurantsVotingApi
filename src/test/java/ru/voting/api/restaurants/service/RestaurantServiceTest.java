@@ -37,7 +37,7 @@ public class RestaurantServiceTest {
     @Test
     public void testGetAll() throws Exception {
         List<Restaurant> actual = service.getAll();
-        assertMatch(actual, RESTAURANT_2, RESTAURANT_1, RESTAURANT_3);
+        assertMatch(actual, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
     }
 
     @Test
@@ -64,21 +64,21 @@ public class RestaurantServiceTest {
     @Test
     public void testNewVote() throws Exception {
         service.vote(RESTAURANT_2.getId(), USER_1.getId());
-        Assert.assertEquals(service.get(RESTAURANT_2.getId()).getRating(), 3);
+        Assert.assertEquals(service.get(RESTAURANT_2.getId()).getRating(), RESTAURANT_2.getRating() + 1);
     }
 
     @Test
     public void testReVote() throws Exception {
         service.setEndVotingTime(LocalTime.now().plusMinutes(1));
-        service.vote(RESTAURANT_1.getId(), ADMIN_2.getId());
-        Assert.assertEquals(service.get(RESTAURANT_1.getId()).getRating(), 2);
-        Assert.assertEquals(service.get(RESTAURANT_2.getId()).getRating(), 1);
+        service.vote(RESTAURANT_2.getId(), USER_2.getId());
+        Assert.assertEquals(service.get(RESTAURANT_1.getId()).getRating(), RESTAURANT_1.getRating() - 1);
+        Assert.assertEquals(service.get(RESTAURANT_2.getId()).getRating(), RESTAURANT_2.getRating() + 1);
     }
 
     @Test(expected = VotingAccessException.class)
     public void testVoteException() throws Exception {
-        service.setEndVotingTime(LocalTime.now().minusHours(RESTAURANT_1.getId()));
-        service.vote(RESTAURANT_1.getId(), ADMIN_2.getId());
+        service.setEndVotingTime(LocalTime.now().minusMinutes(1));
+        service.vote(RESTAURANT_1.getId(), USER_2.getId());
     }
 
     @Test(expected = NotFoundException.class)

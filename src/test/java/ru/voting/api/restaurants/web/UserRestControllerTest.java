@@ -36,7 +36,7 @@ public class UserRestControllerTest extends AbstractControllerTest{
     @Test
     public void testDelete() throws Exception {
         testDeleteEntity(REST_URL, USER_1);
-        assertMatch(userService.getAll(), USER_2, ADMIN_1, ADMIN_2);
+        assertMatch(userService.getAll(), USER_2, ADMIN);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class UserRestControllerTest extends AbstractControllerTest{
     @Test
     public void testGetNotUserAuthorized() throws Exception {
         mockMvc.perform(get(REST_URL)
-                .with(userAuth(ADMIN_1)))
+                .with(userAuth(ADMIN)))
                 .andExpect(status().isForbidden());
     }
 

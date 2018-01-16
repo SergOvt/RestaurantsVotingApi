@@ -1,14 +1,12 @@
 INSERT INTO users (name, email, password) VALUES
   ('user1', 'user1@mail.ru', 'qwerty'),
   ('user2', 'user2@mail.ru', 'qwerty'),
-  ('admin1', 'admin1@mail.ru', 'qwerty'),
-  ('admin2', 'admin2@mail.ru', 'qwerty');
+  ('admin', 'admin@mail.ru', 'qwerty');
 
 INSERT INTO user_roles (user_id, role) VALUES
   (1, 'ROLE_USER'),
   (2, 'ROLE_USER'),
-  (3, 'ROLE_ADMIN'),
-  (4, 'ROLE_ADMIN');
+  (3, 'ROLE_ADMIN');
 
 INSERT INTO restaurants (name) VALUES
   ('Restaurant1'),
@@ -24,7 +22,5 @@ INSERT INTO meals (rest_id, title, price, date) VALUES
   (2, 'chicken', 10000, now());
 
 INSERT INTO votes (user_id, rest_id) VALUES
-  (2, 1),
-  (3, 2),
-  (4, 2);
+  (2, 1);
 

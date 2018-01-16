@@ -33,15 +33,15 @@ public class UserServiceTest {
     @Test
     public void testGetAll() throws Exception {
         List<User> users = service.getAll();
-        assertMatch(users, USER_1, USER_2, ADMIN_1, ADMIN_2);
+        assertMatch(users, USER_1, USER_2, ADMIN);
     }
 
     @Test
     public void testCreate() throws Exception {
         User created = new User(USER_NEW);
         service.create(created);
-        created.setId(5);
-        assertMatch(service.get(5), created);
+        created.setId(4);
+        assertMatch(service.get(4), created);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class UserServiceTest {
     @Test
     public void testDelete() throws Exception {
         service.delete(USER_1.getId());
-        assertMatch(service.getAll(), USER_2, ADMIN_1, ADMIN_2);
+        assertMatch(service.getAll(), USER_2, ADMIN);
     }
 
     @Test(expected = NotFoundException.class)

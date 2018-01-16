@@ -25,7 +25,6 @@ Not supported
 [
 {"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["ROLE_USER"],"enabled":true},
 {"id":2,"name":"user2","email":"user2@mail.ru","password":"qwerty","roles":["ROLE_USER"],"enabled":true},
-{"id":3,"name":"admin1","email":"admin1@mail.ru","password":"qwerty","roles":["ROLE_ADMIN"],"enabled":true},
-{"id":4,"name":"admin2","email":"admin2@mail.ru","password":"qwerty","roles":["ROLE_ADMIN"],"enabled":true}
+{"id":3,"name":"admin","email":"admin@mail.ru","password":"qwerty","roles":["ROLE_ADMIN"],"enabled":true}
 ]
 ```

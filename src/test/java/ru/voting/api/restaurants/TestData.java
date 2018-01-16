@@ -24,14 +24,13 @@ public class TestData {
     public static final Meal MEAL_NEW = new Meal("new", 9999);
 
     public static final Restaurant RESTAURANT_1 = new Restaurant(1, "Restaurant1", 1);
-    public static final Restaurant RESTAURANT_2 = new Restaurant(2, "Restaurant2", 2);
+    public static final Restaurant RESTAURANT_2 = new Restaurant(2, "Restaurant2", 0);
     public static final Restaurant RESTAURANT_3 = new Restaurant(3, "Restaurant3", 0);
     public static final Restaurant RESTAURANT_NEW = new Restaurant(4, "new", 0);
 
     public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", ROLE_USER);
     public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", ROLE_USER);
-    public static final User ADMIN_1 = new User(3, "admin1", "admin1@mail.ru", "qwerty", ROLE_ADMIN);
-    public static final User ADMIN_2 = new User(4, "admin2", "admin2@mail.ru", "qwerty", ROLE_ADMIN);
+    public static final User ADMIN = new User(3, "admin", "admin@mail.ru", "qwerty", ROLE_ADMIN);
     public static final User USER_NEW = new User("new", "new@mail.ru", "qwerty", ROLE_USER);
 
     public static <T> void assertMatch(T actual, T expected) {
