@@ -143,10 +143,12 @@ public class AdminRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testUpdateNotFound() throws Exception {
-        mockMvc.perform(put(REST_URL + "10")
+        User updated = new User(USER_1);
+        updated.setEmail("Updated@email.com");
+        mockMvc.perform(put(REST_URL + 10)
                 .with(userAuth(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(USER_1)))
+                .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isUnprocessableEntity());
     }
 

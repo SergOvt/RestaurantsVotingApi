@@ -11,6 +11,7 @@ import ru.voting.api.restaurants.util.exception.NotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -43,7 +44,6 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     @Transactional
     public User save(User user) {
-        user.setEmail(user.getEmail().toLowerCase());
         if (user.isNew()) {
             em.persist(user);
             return user;
@@ -63,17 +63,20 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     @Transactional
     public boolean vote(User user, int restaurantId, LocalTime endVotingTime) {
-        Restaurant restaurant = em.find(Restaurant.class, restaurantId);
-        if (restaurant == null) throw new NotFoundException("Not found entity with id=" + restaurantId);
-        if (user.getVoteId() == null) {
-            em.persist(new Vote(restaurant, user));
-            return true;
-        } else {
-            if (LocalTime.now().isBefore(endVotingTime)) {
-                Vote vote = new Vote(restaurant, user);
-                vote.setId(user.getVoteId());
-                return em.merge(vote) != null;
+        Restaurant restaurant = em.getReference(Restaurant.class, restaurantId);
+        try {
+            if (user.getVoteId() == null) {
+                em.persist(new Vote(restaurant, user));
+                return true;
+            } else {
+                if (LocalTime.now().isBefore(endVotingTime)) {
+                    Vote vote = new Vote(restaurant, user);
+                    vote.setId(user.getVoteId());
+                    return em.merge(vote) != null;
+                }
             }
+        } catch (PersistenceException e) {
+            throw new NotFoundException("Not found entity with id=" + restaurantId);
         }
         return false;
     }

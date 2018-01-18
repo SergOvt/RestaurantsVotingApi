@@ -126,4 +126,11 @@ public class UserRestControllerTest extends AbstractControllerTest{
         assertMatch(restaurantService.get(RESTAURANT_1.getId()).getRating(), RESTAURANT_1.getRating());
     }
 
+    @Test
+    public void testVoteNotFound() throws Exception {
+        mockMvc.perform(put(REST_URL + "restaurants/" + 10)
+                .with(userAuth(USER_1))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnprocessableEntity());
+    }
 }
