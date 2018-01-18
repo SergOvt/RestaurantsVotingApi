@@ -2,15 +2,18 @@ package ru.voting.api.restaurants.web;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.voting.api.restaurants.TestUtil;
 import ru.voting.api.restaurants.model.Role;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.UserService;
+import ru.voting.api.restaurants.web.json.JsonUtil;
 
 import java.util.Collections;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.api.restaurants.TestData.*;
 import static ru.voting.api.restaurants.TestUtil.userAuth;
@@ -23,18 +26,32 @@ public class AdminRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testGet() throws Exception {
-        testGetEntities(REST_URL + USER_1.getId(), ADMIN, USER_1);
+        mockMvc.perform(get(REST_URL + USER_1.getId())
+                .with(userAuth(ADMIN)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(USER_1))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void testGetAll() throws Exception {
-        testGetEntities(REST_URL + "/all", ADMIN, USER_1, USER_2, ADMIN);
+        mockMvc.perform(get(REST_URL + "/all")
+                .with(userAuth(ADMIN)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(USER_1, USER_2, ADMIN))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void testCreate() throws Exception {
         User created = new User(USER_NEW);
-        ResultActions action = testCreateEntity(REST_URL, ADMIN, created);
+        ResultActions action = mockMvc.perform(post(REST_URL)
+                .with(userAuth(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(created)))
+                .andExpect(status().isCreated());
         User returned = TestUtil.readFromJson(action, User.class);
         created.setId(returned.getId());
         assertMatch(returned, created);
@@ -45,13 +62,19 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         User updated = new User(USER_1);
         updated.setName("Updated Name");
         updated.setRoles(Collections.singleton(Role.ROLE_ADMIN));
-        testUpdateEntity(REST_URL + USER_1.getId(), ADMIN, updated);
+        mockMvc.perform(put(REST_URL + USER_1.getId())
+                .with(userAuth(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isOk());
         assertMatch(userService.get(USER_1.getId()), updated);
     }
 
     @Test
     public void testDelete() throws Exception {
-        testDeleteEntity(REST_URL + USER_1.getId(), ADMIN);
+        mockMvc.perform(delete(REST_URL + USER_1.getId())
+                .with(userAuth(ADMIN)))
+                .andExpect(status().isNoContent());
         assertMatch(userService.getAll(), USER_2, ADMIN);
     }
 
@@ -66,5 +89,72 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         mockMvc.perform(get(REST_URL + ADMIN.getId())
                 .with(userAuth(USER_1)))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void testGetNotFound() throws Exception {
+        mockMvc.perform(get(REST_URL + "100")
+                .with(userAuth(ADMIN)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void testCreateConflict() throws Exception {
+        User user = new User(USER_NEW);
+        user.setEmail(USER_1.getEmail());
+        mockMvc.perform(post(REST_URL)
+                .with(userAuth(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(user)))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    public void testCreateValidation() throws Exception {
+        User user = new User(USER_NEW);
+        user.setPassword("");
+        mockMvc.perform(post(REST_URL)
+                .with(userAuth(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(user)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateConflict() throws Exception {
+        User user = new User(USER_1);
+        user.setEmail(USER_2.getEmail());
+        mockMvc.perform(put(REST_URL + USER_1.getId())
+                .with(userAuth(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(user)))
+                .andExpect(status().isConflict());
+    }
+
+    @Test
+    public void testUpdateValidation() throws Exception {
+        User user = new User(USER_1);
+        user.setPassword("");
+        mockMvc.perform(put(REST_URL + USER_1.getId())
+                .with(userAuth(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(user)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testUpdateNotFound() throws Exception {
+        mockMvc.perform(put(REST_URL + "10")
+                .with(userAuth(ADMIN))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(USER_1)))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void testDeleteNotFound() throws Exception {
+        mockMvc.perform(delete(REST_URL + "10")
+                .with(userAuth(ADMIN)))
+                .andExpect(status().isUnprocessableEntity());
     }
 }

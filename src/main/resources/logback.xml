@@ -21,9 +21,6 @@
         </encoder>
     </appender>
 
-    <logger name="ru.voting.api.restaurants" level="debug"/>
-    <logger name="org.springframework.web.servlet" level="debug"/>
-
     <root level="info">
         <appender-ref ref="file"/>
         <appender-ref ref="console"/>

@@ -1,6 +1,5 @@
 package ru.voting.api.restaurants.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -26,13 +25,11 @@ public class Meal extends BaseEntity {
 
     @Column(name = "date", nullable = false)
     @NotNull(message = "date must not be null")
-    @JsonIgnore
     private LocalDate date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="rest_id", nullable = false)
     @NotNull(message = "restaurant must not be null")
-    @JsonIgnore
     private Restaurant restaurant;
 
     public Meal() {

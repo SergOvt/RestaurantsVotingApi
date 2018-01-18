@@ -19,23 +19,24 @@ public class MealRepositoryImpl implements MealRepository{
 
     @Override
     public List<Meal> getMenuByDate(LocalDate date, int restaurantId) {
-        List<Meal> result =  em.createNamedQuery("meal.getByDate", Meal.class)
+        if (em.find(Restaurant.class, restaurantId) == null) return null;
+        return em.createNamedQuery("meal.getByDate", Meal.class)
                 .setParameter("rest_id", restaurantId)
                 .setParameter("date", date)
                 .getResultList();
-        return result.isEmpty() ? null : result;
     }
 
     @Override
     @Transactional
     public List<Meal> putMenu(List<Meal> menu, int restaurantId) {
+        Restaurant restaurant = em.find(Restaurant.class, restaurantId);
+        if (restaurant == null) return null;
         em.createNamedQuery("meal.delete")
                 .setParameter("date", LocalDate.now())
                 .setParameter("rest_id", restaurantId)
                 .executeUpdate();
         menu.forEach(meal -> {
-            meal.setRestaurant(em.getReference(Restaurant.class, restaurantId));
-            meal.setDate(LocalDate.now());
+            meal.setRestaurant(restaurant);
             em.persist(meal);
         });
         return menu;

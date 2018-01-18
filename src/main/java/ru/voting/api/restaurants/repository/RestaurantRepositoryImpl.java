@@ -1,18 +1,11 @@
 package ru.voting.api.restaurants.repository;
 
-import org.hibernate.jpa.QueryHints;
-import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.Restaurant;
-import ru.voting.api.restaurants.model.User;
-import ru.voting.api.restaurants.model.Vote;
 
 import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -50,27 +43,5 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
         return em.createNamedQuery("restaurant.delete")
                 .setParameter("id", id)
                 .executeUpdate() != 0;
-    }
-
-    @Override
-    @Transactional
-    public boolean vote(int restaurantId, int userId, LocalTime endVotingTime) {
-        List<Vote> votes = em.createNamedQuery("vote.get", Vote.class)
-                .setParameter("userId", userId)
-                .setParameter("date", LocalDate.now())
-                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
-                .getResultList();
-        Vote vote = DataAccessUtils.singleResult(votes);
-        Restaurant restaurant = em.getReference(Restaurant.class, restaurantId);
-        if (vote == null) {
-            em.persist(new Vote(restaurant, em.getReference(User.class, userId)));
-            return true;
-        } else {
-            if (LocalTime.now().isBefore(endVotingTime)) {
-                vote.setRestaurant(restaurant);
-                return em.merge(vote) != null;
-            }
-        }
-        return false;
     }
 }

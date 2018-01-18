@@ -22,3 +22,6 @@ Not supported
 
 #### Response
 ```{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["ROLE_USER"],"enabled":true}```
+
+#### Errors
+The method may return an HTTP 422 error if the user with id = USER_ID not exist.

@@ -3,6 +3,7 @@ package ru.voting.api.restaurants.service;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.to.UserTo;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public interface UserService {
@@ -19,4 +20,7 @@ public interface UserService {
 
     void delete(int id);
 
+    void vote(User user, int restaurantId);
+
+    void setEndVotingTime (LocalTime endVotingTime);
 }

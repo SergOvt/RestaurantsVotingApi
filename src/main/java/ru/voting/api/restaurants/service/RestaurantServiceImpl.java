@@ -8,19 +8,17 @@ import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.repository.MealRepository;
 import ru.voting.api.restaurants.repository.RestaurantRepository;
+import ru.voting.api.restaurants.to.MealTo;
 import ru.voting.api.restaurants.to.RestaurantTo;
-import ru.voting.api.restaurants.util.ValidationUtil;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static ru.voting.api.restaurants.util.ValidationUtil.*;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService{
-
-    private LocalTime endVotingTime = LocalTime.of(11,0);
 
     private final RestaurantRepository restaurantRepository;
     private final MealRepository mealRepository;
@@ -62,24 +60,19 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    public void vote(int restaurantId, int userId) {
-        checkVotingAccess(restaurantRepository.vote(restaurantId, userId, endVotingTime));
+    public List<MealTo> getTodayMenu(int id) {
+        List<MealTo> menuTo = new ArrayList<>();
+        checkNotFound(mealRepository.getMenuByDate(LocalDate.now(), id), id).forEach(meal ->
+                menuTo.add(new MealTo(meal.getTitle(), meal.getPrice())));
+        return menuTo;
     }
 
     @Override
-    public List<Meal> getTodayMenu(int id) {
-        return checkNotFound(mealRepository.getMenuByDate(LocalDate.now(), id), "Not found menu for restaurant id=" + id);
-    }
-
-    @Override
-    public List<Meal> putMenu(List<Meal> menu, int id) {
-        Assert.notNull(menu, "Menu must not be null");
-        menu.forEach(ValidationUtil::checkNew);
-        return checkNotFound(mealRepository.putMenu(menu, id), id);
-    }
-
-    @Override
-    public void setEndVotingTime(LocalTime endVotingTime) {
-        this.endVotingTime = endVotingTime;
+    public List<MealTo> putMenu(List<MealTo> menuTo, int id) {
+        Assert.notNull(menuTo, "Menu must not be null");
+        List<Meal> menu = new ArrayList<>();
+        menuTo.forEach(mealTo -> menu.add(new Meal(mealTo.getTitle(), mealTo.getPrice())));
+        checkNotFound(mealRepository.putMenu(menu, id), id);
+        return menuTo;
     }
 }

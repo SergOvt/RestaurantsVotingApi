@@ -1,6 +1,5 @@
 package ru.voting.api.restaurants.service;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +7,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
+import ru.voting.api.restaurants.to.MealTo;
 import ru.voting.api.restaurants.to.RestaurantTo;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
-import ru.voting.api.restaurants.util.exception.VotingAccessException;
 
-import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,26 +58,6 @@ public class RestaurantServiceTest {
         assertMatch(service.getAll(), RESTAURANT_2, RESTAURANT_3);
     }
 
-    @Test
-    public void testNewVote() throws Exception {
-        service.vote(RESTAURANT_2.getId(), USER_1.getId());
-        Assert.assertEquals(service.get(RESTAURANT_2.getId()).getRating(), RESTAURANT_2.getRating() + 1);
-    }
-
-    @Test
-    public void testReVote() throws Exception {
-        service.setEndVotingTime(LocalTime.now().plusMinutes(1));
-        service.vote(RESTAURANT_2.getId(), USER_2.getId());
-        Assert.assertEquals(service.get(RESTAURANT_1.getId()).getRating(), RESTAURANT_1.getRating() - 1);
-        Assert.assertEquals(service.get(RESTAURANT_2.getId()).getRating(), RESTAURANT_2.getRating() + 1);
-    }
-
-    @Test(expected = VotingAccessException.class)
-    public void testVoteException() throws Exception {
-        service.setEndVotingTime(LocalTime.now().minusMinutes(1));
-        service.vote(RESTAURANT_1.getId(), USER_2.getId());
-    }
-
     @Test(expected = NotFoundException.class)
     public void testGetNotFound() throws Exception {
         service.get(1000);
@@ -98,8 +75,9 @@ public class RestaurantServiceTest {
 
     @Test
     public void testPutMenu() throws Exception {
-        List<Meal> newMenu = service.putMenu(Arrays.asList(new Meal(MEAL_NEW), new Meal(MEAL_NEW)), RESTAURANT_2.getId());
-        assertMatch(service.getTodayMenu(RESTAURANT_2.getId()), newMenu);
+        List<MealTo> menuTo = Arrays.asList(new MealTo("meal1", 2000), new MealTo("meal2", 1000));
+        service.putMenu(menuTo, RESTAURANT_2.getId());
+        assertMatch(service.getTodayMenu(RESTAURANT_2.getId()), menuTo);
     }
 
 }

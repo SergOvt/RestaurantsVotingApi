@@ -14,3 +14,6 @@ Not supported
 
 #### Response Fields
 Not supported
+
+#### Errors
+The method may return an HTTP 423 error if user votes again and it is after 11:00.

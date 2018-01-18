@@ -11,6 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.UserService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class AdminRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@RequestBody User user) {
+    public ResponseEntity create(@Valid @RequestBody User user) {
         log.info("Admin create new user");
         User created = userService.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -52,7 +53,7 @@ public class AdminRestController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody User user, @PathVariable("id") int id) {
+    public ResponseEntity update(@Valid @RequestBody User user, @PathVariable("id") int id) {
         log.info("Admin update user id={}", id);
         return ResponseEntity.ok(userService.update(user, id));
     }

@@ -21,20 +21,19 @@ public class TestData {
     public static final Meal MEAL_4 = new Meal(4, "meat", 15000, LocalDate.of(2000,1,1));
     public static final Meal MEAL_5 = new Meal(5, "fish", 20000, LocalDate.now());
     public static final Meal MEAL_6 = new Meal(6, "chicken", 10000, LocalDate.now());
-    public static final Meal MEAL_NEW = new Meal("new", 9999);
 
     public static final Restaurant RESTAURANT_1 = new Restaurant(1, "Restaurant1", 1);
     public static final Restaurant RESTAURANT_2 = new Restaurant(2, "Restaurant2", 0);
     public static final Restaurant RESTAURANT_3 = new Restaurant(3, "Restaurant3", 0);
     public static final Restaurant RESTAURANT_NEW = new Restaurant(4, "new", 0);
 
-    public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", ROLE_USER);
-    public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", ROLE_USER);
-    public static final User ADMIN = new User(3, "admin", "admin@mail.ru", "qwerty", ROLE_ADMIN);
-    public static final User USER_NEW = new User("new", "new@mail.ru", "qwerty", ROLE_USER);
+    public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", null, ROLE_USER);
+    public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", 1, ROLE_USER);
+    public static final User ADMIN = new User(3, "admin", "admin@mail.ru", "qwerty", null, ROLE_ADMIN);
+    public static final User USER_NEW = new User(null,"new", "new@mail.ru", "qwerty", null, ROLE_USER);
 
     public static <T> void assertMatch(T actual, T expected) {
-        assertThat(actual).isEqualToIgnoringGivenFields(expected, "restaurant");
+        assertThat(actual).isEqualToComparingFieldByField(expected);
     }
 
     @SafeVarargs
@@ -43,10 +42,15 @@ public class TestData {
     }
 
     public static <T> void assertMatch(Iterable<? extends T> actual, Iterable<? extends T> expected) {
-        assertThat(actual).usingElementComparatorIgnoringFields("restaurant").isEqualTo(expected);
+        assertThat(actual).usingFieldByFieldElementComparator().isEqualTo(expected);
     }
 
     public static <T> ResultMatcher contentJson(T expected) {
         return content().json(writeValue(expected));
+    }
+
+    @SafeVarargs
+    public static <T> ResultMatcher contentJson(T... expected) {
+        return content().json(writeValue(Arrays.asList(expected)));
     }
 }

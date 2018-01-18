@@ -30,7 +30,7 @@ public class ValidationUtil {
 
     public static void checkVotingAccess(boolean access) {
         if (!access) {
-            throw new VotingAccessException("Not allowed to vote");
+            throw new VotingAccessException("Voting time is out");
         }
     }
 
@@ -38,5 +38,16 @@ public class ValidationUtil {
         if (!bean.isNew()) {
             throw new IllegalArgumentException(bean + " must be new (id=null)");
         }
+    }
+
+    //  http://stackoverflow.com/a/28565320/548473
+    public static Throwable getRootCause(Throwable t) {
+        Throwable result = t;
+        Throwable cause;
+
+        while (null != (cause = result.getCause()) && (result != cause)) {
+            result = cause;
+        }
+        return result;
     }
 }

@@ -1,5 +1,7 @@
 package ru.voting.api.restaurants.to;
 
+import ru.voting.api.restaurants.model.User;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -25,6 +27,10 @@ public class UserTo implements Serializable {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public UserTo (User user) {
+        this(user.getName(), user.getEmail(), user.getPassword());
     }
 
     public String getPassword() {

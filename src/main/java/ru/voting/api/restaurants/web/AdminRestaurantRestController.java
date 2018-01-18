@@ -8,17 +8,16 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.service.RestaurantService;
 import ru.voting.api.restaurants.to.RestaurantTo;
 
+import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 
 @RestController
-@RequestMapping(RestaurantAdminRestController.REST_URL)
-public class RestaurantAdminRestController {
+@RequestMapping(AdminRestaurantRestController.REST_URL)
+public class AdminRestaurantRestController {
 
     @VisibleForTesting
     static final String REST_URL = "/rest/admin/restaurants";
@@ -27,12 +26,12 @@ public class RestaurantAdminRestController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    public RestaurantAdminRestController(RestaurantService restaurantService) {
+    public AdminRestaurantRestController(RestaurantService restaurantService) {
         this.restaurantService = restaurantService;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@RequestBody RestaurantTo restaurantTo) {
+    public ResponseEntity create(@Valid @RequestBody RestaurantTo restaurantTo) {
         log.info("Admin create new restaurant");
         Restaurant created = restaurantService.create(restaurantTo);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -42,7 +41,7 @@ public class RestaurantAdminRestController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id) {
+    public ResponseEntity update(@Valid @RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id) {
         log.info("Admin update restaurant id={}", id);
         return ResponseEntity.ok(restaurantService.update(restaurantTo, id));
     }
@@ -52,11 +51,5 @@ public class RestaurantAdminRestController {
         log.info("Admin delete restaurant id={}", id);
         restaurantService.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping(value = "/{id}/menu", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity putMenu(@RequestBody List<Meal> menu, @PathVariable("id") int id) {
-        log.info("Admin put new menu for restaurant id={}", id);
-        return ResponseEntity.ok(restaurantService.putMenu(menu, id));
     }
 }

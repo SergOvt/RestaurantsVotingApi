@@ -11,6 +11,7 @@ import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.repository.UserRepository;
 import ru.voting.api.restaurants.to.UserTo;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.voting.api.restaurants.util.ValidationUtil.*;
@@ -18,6 +19,7 @@ import static ru.voting.api.restaurants.util.ValidationUtil.*;
 @Service("userService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
+    private LocalTime endVotingTime = LocalTime.of(11,0);
     private final UserRepository repository;
 
     @Autowired
@@ -46,9 +48,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public User update(User user, int id) {
         Assert.notNull(user, "user must not be null");
-        get(id);  //check NotFound
+        get(id); //check NotFound
         user.setId(id);
-        return checkNotFound(repository.save(user), id);
+        return repository.save(user);
     }
 
     @Override
@@ -75,5 +77,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameNotFoundException("User " + email + " is not found");
         }
         return new AuthorizedUser(user);
+    }
+
+    @Override
+    public void vote(User user, int restaurantId) {
+        checkVotingAccess(repository.vote(user, restaurantId, endVotingTime));
+    }
+
+    @Override
+    public void setEndVotingTime(LocalTime endVotingTime) {
+        this.endVotingTime = endVotingTime;
     }
 }

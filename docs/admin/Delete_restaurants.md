@@ -12,3 +12,6 @@ Not supported
 
 #### Response Fields
 Not supported
+
+#### Errors
+The method may return an HTTP 422 error if the restaurant with id = RESTAURANT_ID not exist.

@@ -11,12 +11,14 @@ import ru.voting.api.restaurants.AuthorizedUser;
 import ru.voting.api.restaurants.service.UserService;
 import ru.voting.api.restaurants.to.UserTo;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(UserRestController.REST_URL)
 public class UserRestController {
 
     @VisibleForTesting
-    static final String REST_URL = "/rest/user/profile";
+    static final String REST_URL = "/rest/user";
 
     private UserService userService;
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -26,22 +28,29 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity get() {
         log.info("User id={} self get", AuthorizedUser.id());
         return ResponseEntity.ok(AuthorizedUser.get().getUser());
     }
 
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@RequestBody UserTo user) {
+    @PutMapping(value = "/profile", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity update(@Valid @RequestBody UserTo user) {
         log.info("User id={} self update", AuthorizedUser.id());
         return ResponseEntity.ok(userService.update(user, AuthorizedUser.id()));
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/profile")
     public ResponseEntity delete() {
         log.info("User id={} self delete", AuthorizedUser.id());
         userService.delete(AuthorizedUser.id());
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/restaurants/{id}")
+    public ResponseEntity vote(@PathVariable("id") int restaurantId) {
+        log.info("User id={} vote for restaurant id={}", AuthorizedUser.id(), restaurantId);
+        userService.vote(AuthorizedUser.get().getUser(), restaurantId);
+        return ResponseEntity.ok().build();
     }
 }

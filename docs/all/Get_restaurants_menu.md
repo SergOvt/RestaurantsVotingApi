@@ -13,16 +13,15 @@ Not supported
 #### Response Fields
 | Field  | Description                                        |
 |:------:|----------------------------------------------------|
-|  id    | A unique identifier for each dish                  |
 | title  | A name for each dish                               |
 | price  | Numerical price for each dish. Price keep in cents |  
 
 #### Response
 ```
 [
-{"id":2,"title":"fish","price":15000},
-{"id":3,"title":"chicken","price":5000}
+{"title":"fish","price":15000},
+{"title":"chicken","price":5000}
 ]
 ```
 #### Errors
-The method may return an HTTP 404 error if the menu for restaurant with id = RESTAURANT_ID not exist.
+The method may return an HTTP 422 error if the menu for restaurant with id = RESTAURANT_ID not exist.

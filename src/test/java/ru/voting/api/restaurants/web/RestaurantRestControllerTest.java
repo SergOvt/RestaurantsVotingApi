@@ -2,6 +2,7 @@ package ru.voting.api.restaurants.web;
 
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import ru.voting.api.restaurants.to.MealTo;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -14,23 +15,37 @@ public class RestaurantRestControllerTest extends AbstractControllerTest{
 
     @Test
     public void testGet() throws Exception {
-        testGetEntities(REST_URL + RESTAURANT_1.getId(), RESTAURANT_1);
+        mockMvc.perform(get(REST_URL + RESTAURANT_1.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(RESTAURANT_1));
     }
 
     @Test
     public void testGetAll() throws Exception {
-        testGetEntities(REST_URL + "/all", RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
+        mockMvc.perform(get(REST_URL + "/all"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(contentJson(RESTAURANT_1, RESTAURANT_2, RESTAURANT_3));
     }
 
     @Test
     public void testGetTodayMenu() throws Exception {
-        testGetEntities(REST_URL + RESTAURANT_1.getId() + "/menu", MEAL_2, MEAL_3);
-    }
-
-    protected <T> void testGetEntities(String restUrl, T... objects) throws Exception {
-        mockMvc.perform(get(restUrl))
+        mockMvc.perform(get(REST_URL + RESTAURANT_1.getId() + "/menu"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(objects.length == 1 ? objects[0] : objects));
+                .andExpect(contentJson(new MealTo(MEAL_2), new MealTo(MEAL_3)));
+    }
+
+    @Test
+    public void testGetNotFound() throws Exception {
+        mockMvc.perform(get(REST_URL + "100"))
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void testGetTodayMenuNotFound() throws Exception {
+        mockMvc.perform(get(REST_URL + 100 + "/menu"))
+                .andExpect(status().isUnprocessableEntity());
     }
 }

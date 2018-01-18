@@ -51,13 +51,13 @@ There is a voting system for deciding where to have lunch:
 ## Example curl commands
 
 #### Get All Users
-`curl -i http://localhost:8080/rest/admin/users/all --user admin1@mail.ru:qwerty`
+`curl -i http://localhost:8080/rest/admin/users/all --user admin@mail.ru:qwerty`
 
 #### Create a User
-`curl -i -X POST -d '{"name":"new_user","email":"new_user@mail.ru","password":"qwerty","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/rest/admin/users --user admin1@mail.ru:qwerty`
+`curl -i -X POST -d '{"name":"new_user","email":"new_user@mail.ru","password":"qwerty","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/rest/admin/users --user admin@mail.ru:qwerty`
 
 #### Delete a Restaurant
-`curl -i -X DELETE http://localhost:8080/rest/admin/restaurants/1 --user admin1@mail.ru:qwerty`
+`curl -i -X DELETE http://localhost:8080/rest/admin/restaurants/1 --user admin@mail.ru:qwerty`
 
 #### Get all Restaurants
 `curl -i http://localhost:8080/rest/restaurants/all`
