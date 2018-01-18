@@ -29,7 +29,7 @@ public class User extends BaseEntity{
     private String email;
 
     @Column(name = "password", nullable = false)
-    @Size(min = 5, max = 32, message = "password mast be between 5 and 32 characters")
+    @Size(min = 5, max = 100, message = "password mast be between 5 and 100 characters")
     private String password;
 
     @Enumerated(EnumType.STRING)

@@ -40,8 +40,7 @@ public class AdminRestControllerTest extends AbstractControllerTest{
                 .with(userAuth(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(USER_1, USER_2, ADMIN))
-                .andExpect(status().isOk());
+                .andExpect(contentJson(USER_1, USER_2, ADMIN));
     }
 
     @Test

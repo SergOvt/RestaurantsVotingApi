@@ -3,6 +3,7 @@ package ru.voting.api.restaurants.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -14,6 +15,7 @@ import ru.voting.api.restaurants.to.UserTo;
 import java.time.LocalTime;
 import java.util.List;
 
+import static ru.voting.api.restaurants.util.UserUtil.*;
 import static ru.voting.api.restaurants.util.ValidationUtil.*;
 
 @Service("userService")
@@ -21,10 +23,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private LocalTime endVotingTime = LocalTime.of(11,0);
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         checkNew(user);
-        return repository.save(user);
+        return repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Override
@@ -50,18 +54,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Assert.notNull(user, "user must not be null");
         get(id); //check NotFound
         user.setId(id);
-        return repository.save(user);
+        return repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Override
     @Transactional
     public User update(UserTo userTo, int id) {
         Assert.notNull(userTo, "user must not be null");
-        User user = get(id);
-        user.setName(userTo.getName());
-        user.setEmail(userTo.getEmail().toLowerCase());
-        user.setPassword(userTo.getPassword());
-        return repository.save(user);
+        User user = updateFromTo(get(id), userTo);
+        return repository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Override

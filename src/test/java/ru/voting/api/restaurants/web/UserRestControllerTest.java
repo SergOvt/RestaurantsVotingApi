@@ -34,8 +34,7 @@ public class UserRestControllerTest extends AbstractControllerTest{
                 .with(userAuth(USER_1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(USER_1))
-                .andExpect(status().isOk());
+                .andExpect(contentJson(USER_1));
     }
 
     @Test

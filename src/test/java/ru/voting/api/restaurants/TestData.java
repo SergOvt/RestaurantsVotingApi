@@ -11,7 +11,7 @@ import java.util.Arrays;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static ru.voting.api.restaurants.model.Role.*;
-import static ru.voting.api.restaurants.web.json.JsonUtil.writeValue;
+import static ru.voting.api.restaurants.web.json.JsonUtil.writeIgnoreProps;
 
 public class TestData {
 
@@ -33,7 +33,7 @@ public class TestData {
     public static final User USER_NEW = new User(null,"new", "new@mail.ru", "qwerty", null, ROLE_USER);
 
     public static <T> void assertMatch(T actual, T expected) {
-        assertThat(actual).isEqualToComparingFieldByField(expected);
+        assertThat(actual).isEqualToIgnoringGivenFields(expected, "password");
     }
 
     @SafeVarargs
@@ -42,15 +42,15 @@ public class TestData {
     }
 
     public static <T> void assertMatch(Iterable<? extends T> actual, Iterable<? extends T> expected) {
-        assertThat(actual).usingFieldByFieldElementComparator().isEqualTo(expected);
+        assertThat(actual).usingElementComparatorIgnoringFields("password").isEqualTo(expected);
     }
 
     public static <T> ResultMatcher contentJson(T expected) {
-        return content().json(writeValue(expected));
+        return content().json(writeIgnoreProps(expected, "password"));
     }
 
     @SafeVarargs
     public static <T> ResultMatcher contentJson(T... expected) {
-        return content().json(writeValue(Arrays.asList(expected)));
+        return content().json(writeIgnoreProps(Arrays.asList(expected), "password"));
     }
 }
