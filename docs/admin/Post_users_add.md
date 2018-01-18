@@ -20,4 +20,5 @@ Not supported
 
 #### Errors
 The method may return an HTTP 409 error if the user's email looks like a duplicate of an existing user's email.
+
 The method may return an HTTP 400 error if the response fields are not valid.

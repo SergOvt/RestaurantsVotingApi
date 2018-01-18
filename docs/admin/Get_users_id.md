@@ -21,7 +21,7 @@ Not supported
 | enabled  | A status for this user (enabled or disabled)     |
 
 #### Response
-```{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["ROLE_USER"],"enabled":true}```
+```{"id":1,"name":"user1","email":"user1@mail.ru","password":"{noop}qwerty","roles":["ROLE_USER"],"enabled":true}```
 
 #### Errors
 The method may return an HTTP 422 error if the user with id = USER_ID not exist.

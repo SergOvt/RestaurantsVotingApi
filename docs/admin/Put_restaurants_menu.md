@@ -18,4 +18,5 @@ Not supported
 
 #### Errors
 The method may return an HTTP 400 error if the response fields are not valid.
+
 The method may return an HTTP 422 error if the restaurant with id = RESTAURANT_ID not exist.

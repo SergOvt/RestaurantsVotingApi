@@ -21,4 +21,4 @@ Not supported
 | enabled  | A status for authorized user (may be just enabled)     |
 
 #### Response
-```{"id":1,"name":"user1","email":"user1@mail.ru","password":"qwerty","roles":["ROLE_USER"],"enabled":true}```
+```{"id":1,"name":"user1","email":"user1@mail.ru","password":"{noop}qwerty","roles":["ROLE_USER"],"enabled":true}```
