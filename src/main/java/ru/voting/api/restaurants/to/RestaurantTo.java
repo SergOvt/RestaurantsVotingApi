@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 public class RestaurantTo implements Serializable {
 
-    @NotBlank
+    @NotBlank(message = "name mast not be empty")
     private String name;
 
     public RestaurantTo() {

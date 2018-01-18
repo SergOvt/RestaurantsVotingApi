@@ -10,14 +10,14 @@ import java.io.Serializable;
 public class UserTo implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @NotBlank
+    @NotBlank(message = "name mast not be empty")
     private String name;
 
-    @Email
-    @NotBlank
+    @Email(message = "email must be a valid e-mail address (example@mail.com)")
+    @NotBlank(message = "email mast not be empty")
     private String email;
 
-    @Size(min = 5, max = 32)
+    @Size(min = 5, max = 32, message = "password mast be between 5 and 32 characters")
     private String password;
 
     public UserTo() {
