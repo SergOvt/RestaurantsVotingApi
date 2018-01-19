@@ -2,7 +2,6 @@ package ru.voting.api.restaurants.repository;
 
 import ru.voting.api.restaurants.model.User;
 
-import java.time.LocalTime;
 import java.util.List;
 
 public interface UserRepository {

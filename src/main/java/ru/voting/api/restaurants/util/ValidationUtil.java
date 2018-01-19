@@ -2,7 +2,6 @@ package ru.voting.api.restaurants.util;
 
 import ru.voting.api.restaurants.model.BaseEntity;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
-import ru.voting.api.restaurants.util.exception.VotingAccessException;
 
 public class ValidationUtil {
 

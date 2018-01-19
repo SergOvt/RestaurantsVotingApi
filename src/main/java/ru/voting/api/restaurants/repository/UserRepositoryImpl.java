@@ -7,12 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.model.Vote;
-import ru.voting.api.restaurants.util.exception.NotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import java.time.LocalTime;
 import java.util.List;
 
 @Repository
