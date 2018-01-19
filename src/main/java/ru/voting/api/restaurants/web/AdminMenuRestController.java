@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +39,9 @@ public class AdminMenuRestController {
     }
 
     @PutMapping(value = "/{id}/menu", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity putMenu(@Valid @RequestBody List<MealTo> menu, @PathVariable("id") int id) {
+    public List<MealTo> putMenu(@Valid @RequestBody List<MealTo> menu, @PathVariable("id") int id) {
         log.info("Admin put new menu for restaurant id={}", id);
-        return ResponseEntity.ok(restaurantService.putMenu(menu, id));
+        return restaurantService.putMenu(menu, id);
     }
 
 }

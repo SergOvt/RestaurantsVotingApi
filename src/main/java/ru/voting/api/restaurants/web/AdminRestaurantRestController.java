@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class AdminRestaurantRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@Valid @RequestBody RestaurantTo restaurantTo) {
+    public ResponseEntity<Restaurant> create(@Valid @RequestBody RestaurantTo restaurantTo) {
         log.info("Admin create new restaurant");
         Restaurant created = restaurantService.create(restaurantTo);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -41,15 +42,15 @@ public class AdminRestaurantRestController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@Valid @RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id) {
+    public Restaurant update(@Valid @RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id) {
         log.info("Admin update restaurant id={}", id);
-        return ResponseEntity.ok(restaurantService.update(restaurantTo, id));
+        return restaurantService.update(restaurantTo, id);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity delete(@PathVariable("id") int id) {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") int id) {
         log.info("Admin delete restaurant id={}", id);
         restaurantService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

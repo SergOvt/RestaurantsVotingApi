@@ -4,6 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +32,9 @@ public class AdminRestController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity get(@PathVariable("id") int id) {
+    public User get(@PathVariable("id") int id) {
         log.info("Admin get user id={}", id);
-        return ResponseEntity.ok(userService.get(id));
+        return userService.get(id);
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,7 +44,7 @@ public class AdminRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity create(@Valid @RequestBody User user) {
+    public ResponseEntity<User> create(@Valid @RequestBody User user) {
         log.info("Admin create new user");
         User created = userService.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -53,15 +54,15 @@ public class AdminRestController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@Valid @RequestBody User user, @PathVariable("id") int id) {
+    public User update(@Valid @RequestBody User user, @PathVariable("id") int id) {
         log.info("Admin update user id={}", id);
-        return ResponseEntity.ok(userService.update(user, id));
+        return userService.update(user, id);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity delete(@PathVariable("id") int id) {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("id") int id) {
         log.info("Admin delete user id={}", id);
         userService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

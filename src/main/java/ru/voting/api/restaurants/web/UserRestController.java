@@ -4,10 +4,11 @@ import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.voting.api.restaurants.AuthorizedUser;
+import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.UserService;
 import ru.voting.api.restaurants.to.UserTo;
 
@@ -29,28 +30,27 @@ public class UserRestController {
     }
 
     @GetMapping(value = "/profile", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity get() {
+    public User get() {
         log.info("User id={} self get", AuthorizedUser.id());
-        return ResponseEntity.ok(AuthorizedUser.get().getUser());
+        return AuthorizedUser.get().getUser();
     }
 
     @PutMapping(value = "/profile", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity update(@Valid @RequestBody UserTo user) {
+    public User update(@Valid @RequestBody UserTo user) {
         log.info("User id={} self update", AuthorizedUser.id());
-        return ResponseEntity.ok(userService.update(user, AuthorizedUser.id()));
+        return userService.update(user, AuthorizedUser.id());
     }
 
     @DeleteMapping(value = "/profile")
-    public ResponseEntity delete() {
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void delete() {
         log.info("User id={} self delete", AuthorizedUser.id());
         userService.delete(AuthorizedUser.id());
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/restaurants/{id}")
-    public ResponseEntity vote(@PathVariable("id") int restaurantId) {
+    public void vote(@PathVariable("id") int restaurantId) {
         log.info("User id={} vote for restaurant id={}", AuthorizedUser.id(), restaurantId);
         userService.vote(AuthorizedUser.get().getUser(), restaurantId);
-        return ResponseEntity.ok().build();
     }
 }
