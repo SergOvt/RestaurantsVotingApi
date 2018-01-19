@@ -61,23 +61,19 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    @Transactional
-    public boolean vote(User user, int restaurantId, LocalTime endVotingTime) {
+    public boolean vote(User user, int restaurantId) {
         Restaurant restaurant = em.getReference(Restaurant.class, restaurantId);
+        Vote vote = new Vote(restaurant, user);
         try {
             if (user.getVoteId() == null) {
-                em.persist(new Vote(restaurant, user));
+                em.persist(vote);
                 return true;
             } else {
-                if (LocalTime.now().isBefore(endVotingTime)) {
-                    Vote vote = new Vote(restaurant, user);
-                    vote.setId(user.getVoteId());
-                    return em.merge(vote) != null;
-                }
+                vote.setId(user.getVoteId());
+                return em.merge(vote) != null;
             }
         } catch (PersistenceException e) {
-            throw new NotFoundException("Not found entity with id=" + restaurantId);
+            return false;
         }
-        return false;
     }
 }

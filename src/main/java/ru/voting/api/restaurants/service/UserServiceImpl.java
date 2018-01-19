@@ -11,6 +11,7 @@ import ru.voting.api.restaurants.AuthorizedUser;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.repository.UserRepository;
 import ru.voting.api.restaurants.to.UserTo;
+import ru.voting.api.restaurants.util.exception.VotingAccessException;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -81,8 +82,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void vote(User user, int restaurantId) {
-        checkVotingAccess(repository.vote(user, restaurantId, endVotingTime));
+        if (user.getVoteId() == null || (user.getVoteId() != null && LocalTime.now().isBefore(endVotingTime))) {
+            checkNotFound(repository.vote(user, restaurantId), restaurantId);
+        } else {
+            throw new VotingAccessException("Voting time is out");
+        }
     }
 
     @Override

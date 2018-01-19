@@ -17,6 +17,6 @@ public interface UserRepository {
 
     boolean delete(int id);
 
-    boolean vote(User user, int restaurantId, LocalTime endVotingTime);
+    boolean vote(User user, int restaurantId);
 
 }

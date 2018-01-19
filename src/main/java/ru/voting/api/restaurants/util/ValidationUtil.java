@@ -28,12 +28,6 @@ public class ValidationUtil {
         }
     }
 
-    public static void checkVotingAccess(boolean access) {
-        if (!access) {
-            throw new VotingAccessException("Voting time is out");
-        }
-    }
-
     public static void checkNew(BaseEntity bean) {
         if (!bean.isNew()) {
             throw new IllegalArgumentException(bean + " must be new (id=null)");
