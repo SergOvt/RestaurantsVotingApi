@@ -65,11 +65,11 @@ public class UserRepositoryImpl implements UserRepository{
         try {
             if (user.getVoteId() == null) {
                 em.persist(vote);
-                return true;
             } else {
                 vote.setId(user.getVoteId());
-                return em.merge(vote) != null;
+                em.merge(vote);
             }
+            return true;
         } catch (PersistenceException e) {
             return false;
         }
