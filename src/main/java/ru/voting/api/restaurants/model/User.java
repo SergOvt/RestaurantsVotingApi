@@ -1,6 +1,8 @@
 package ru.voting.api.restaurants.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -36,27 +38,32 @@ public class User extends BaseEntity{
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
+    @Formula("(SELECT v.id FROM votes v WHERE v.date = CURDATE() AND v.user_id = id)")
+    @JsonIgnore
+    private Integer voteId;
+
     public User() {
     }
 
-    public User(String name, String email, String password, Set<Role> roles) {
+    public User(String name, String email, String password, Integer voteId, Set<Role> roles) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.voteId = voteId;
         this.roles = roles;
     }
 
-    public User(Integer id, String name, String email, String password, Set<Role> roles) {
-        this(name, email, password, roles);
+    public User(Integer id, String name, String email, String password, Integer voteId, Set<Role> roles) {
+        this(name, email, password, voteId, roles);
         this.id = id;
     }
 
-    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, Integer voteId, Role role, Role... roles) {
+        this(id, name, email, password, voteId, EnumSet.of(role, roles));
     }
 
     public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRoles());
+        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getVoteId(), user.getRoles());
         this.enabled = user.isEnabled();
     }
 
@@ -100,4 +107,24 @@ public class User extends BaseEntity{
         this.enabled = enabled;
     }
 
+    public Integer getVoteId() {
+        return voteId;
+    }
+
+    public void setVoteId(Integer voteId) {
+        this.voteId = voteId;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                ", enabled=" + enabled +
+                ", voteId=" + voteId +
+                ", id=" + id +
+                '}';
+    }
 }
