@@ -2,8 +2,8 @@ package ru.voting.api.restaurants;
 
 import org.springframework.test.web.servlet.ResultMatcher;
 import ru.voting.api.restaurants.model.Meal;
-import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.model.User;
+import ru.voting.api.restaurants.to.RestaurantTo;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -22,15 +22,15 @@ public class TestData {
     public static final Meal MEAL_5 = new Meal(5, "fish", 20000, LocalDate.now());
     public static final Meal MEAL_6 = new Meal(6, "chicken", 10000, LocalDate.now());
 
-    public static final Restaurant RESTAURANT_1 = new Restaurant(1, "Restaurant1", 1);
-    public static final Restaurant RESTAURANT_2 = new Restaurant(2, "Restaurant2", 0);
-    public static final Restaurant RESTAURANT_3 = new Restaurant(3, "Restaurant3", 0);
-    public static final Restaurant RESTAURANT_NEW = new Restaurant(4, "new", 0);
+    public static final RestaurantTo RESTAURANT_1 = new RestaurantTo(1, "Restaurant1", 1);
+    public static final RestaurantTo RESTAURANT_2 = new RestaurantTo(2, "Restaurant2", 0);
+    public static final RestaurantTo RESTAURANT_3 = new RestaurantTo(3, "Restaurant3", 0);
+    public static final RestaurantTo RESTAURANT_NEW = new RestaurantTo(4, "new", 0);
 
-    public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", null, ROLE_USER);
-    public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", 1, ROLE_USER);
-    public static final User ADMIN = new User(3, "admin", "admin@mail.ru", "qwerty", null, ROLE_ADMIN);
-    public static final User USER_NEW = new User(null,"new", "new@mail.ru", "qwerty", null, ROLE_USER);
+    public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", ROLE_USER);
+    public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", ROLE_USER);
+    public static final User ADMIN = new User(3, "admin", "admin@mail.ru", "qwerty", ROLE_ADMIN);
+    public static final User USER_NEW = new User(null,"new", "new@mail.ru", "qwerty", ROLE_USER);
 
     public static <T> void assertMatch(T actual, T expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "password");

@@ -6,14 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
-import ru.voting.api.restaurants.repository.MealRepository;
 import ru.voting.api.restaurants.repository.RestaurantRepository;
 import ru.voting.api.restaurants.to.MealTo;
 import ru.voting.api.restaurants.to.RestaurantTo;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.voting.api.restaurants.util.ValidationUtil.*;
 
@@ -21,37 +19,43 @@ import static ru.voting.api.restaurants.util.ValidationUtil.*;
 public class RestaurantServiceImpl implements RestaurantService{
 
     private final RestaurantRepository restaurantRepository;
-    private final MealRepository mealRepository;
 
     @Autowired
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, MealRepository mealRepository) {
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {
         this.restaurantRepository = restaurantRepository;
-        this.mealRepository = mealRepository;
     }
 
     @Override
-    public Restaurant get(int id) {
-        return checkNotFound(restaurantRepository.get(id), id);
+    public RestaurantTo get(int id) {
+        Restaurant restaurant =  checkNotFound(restaurantRepository.get(id), id);
+        return new RestaurantTo(id, restaurant.getName(), restaurantRepository.getRating(restaurant));
     }
 
     @Override
-    public List<Restaurant> getAll() {
-        return restaurantRepository.getAll();
+    public List<RestaurantTo> getAll() {
+        List<Restaurant> restaurants = restaurantRepository.getAll();
+        List<RestaurantTo> result = restaurants.stream()
+                .map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurantRepository.getRating(restaurant)))
+                .collect(Collectors.toList());
+        result.sort((o1, o2) -> o2.getRating() - o1.getRating());
+        return result;
     }
 
     @Override
-    public Restaurant create(RestaurantTo restaurantTo) {
+    public RestaurantTo create(RestaurantTo restaurantTo) {
         Assert.notNull(restaurantTo, "restaurant must not be null");
-        return restaurantRepository.save(new Restaurant(null, restaurantTo.getName(), 0));
+        Restaurant restaurant = restaurantRepository.save(new Restaurant(null, restaurantTo.getName()));
+        return new RestaurantTo(restaurant.getId(), restaurant.getName(), 0);
     }
 
     @Override
     @Transactional
-    public Restaurant update(RestaurantTo restaurantTo, int id) {
+    public RestaurantTo update(RestaurantTo restaurantTo, int id) {
         Assert.notNull(restaurantTo, "restaurant must not be null");
-        Restaurant restaurant = get(id);
+        Restaurant restaurant = checkNotFound(restaurantRepository.get(id), id);
         restaurant.setName(restaurantTo.getName());
-        return checkNotFound(restaurantRepository.save(restaurant), id);
+        restaurantRepository.save(restaurant);
+        return new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurantRepository.getRating(restaurant));
     }
 
     @Override
@@ -61,18 +65,18 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     public List<MealTo> getTodayMenu(int id) {
-        List<MealTo> menuTo = new ArrayList<>();
-        checkNotFound(mealRepository.getMenuByDate(LocalDate.now(), id), id).forEach(meal ->
-                menuTo.add(new MealTo(meal.getTitle(), meal.getPrice())));
-        return menuTo;
+        Restaurant restaurant = checkNotFound(restaurantRepository.get(id), id);
+        return restaurant.getMenu().stream()
+                .map(meal -> new MealTo(meal.getTitle(), meal.getPrice()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<MealTo> putMenu(List<MealTo> menuTo, int id) {
         Assert.notNull(menuTo, "Menu must not be null");
-        List<Meal> menu = new ArrayList<>();
-        menuTo.forEach(mealTo -> menu.add(new Meal(mealTo.getTitle(), mealTo.getPrice())));
-        checkNotFound(mealRepository.putMenu(menu, id), id);
+        restaurantRepository.putMenu(menuTo.stream()
+                .map(mealTo -> new Meal(mealTo.getTitle(), mealTo.getPrice()))
+                .collect(Collectors.toList()), id);
         return menuTo;
     }
 }

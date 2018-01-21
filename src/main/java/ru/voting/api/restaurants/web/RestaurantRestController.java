@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.service.RestaurantService;
 import ru.voting.api.restaurants.to.MealTo;
+import ru.voting.api.restaurants.to.RestaurantTo;
 
 import java.util.List;
 
@@ -28,13 +28,13 @@ public class RestaurantRestController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Restaurant get(@PathVariable("id") int id){
+    public RestaurantTo get(@PathVariable("id") int id){
         log.info("Get restaurant id={}", id);
         return restaurantService.get(id);
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Restaurant> getAll(){
+    public List<RestaurantTo> getAll(){
         log.info("Get all restaurants");
         return restaurantService.getAll();
     }

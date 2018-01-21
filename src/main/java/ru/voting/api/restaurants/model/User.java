@@ -1,7 +1,6 @@
 package ru.voting.api.restaurants.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,11 +9,6 @@ import javax.validation.constraints.Size;
 import java.util.EnumSet;
 import java.util.Set;
 
-@NamedQueries({
-        @NamedQuery(name = "user.delete", query = "DELETE FROM User u WHERE u.id=:id"),
-        @NamedQuery(name = "user.getAll", query = "SELECT u FROM User u LEFT JOIN FETCH u.roles"),
-        @NamedQuery(name = "user.byEmail", query = "SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=:email")
-})
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity{
@@ -36,37 +30,33 @@ public class User extends BaseEntity{
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
+    @BatchSize(size = 200)
     private Set<Role> roles;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
-    @Formula("(SELECT v.id FROM votes v WHERE v.date = CURDATE() AND v.user_id = id)")
-    @JsonIgnore
-    private Integer voteId;
-
     public User() {
     }
 
-    public User(String name, String email, String password, Integer voteId, Set<Role> roles) {
+    public User(String name, String email, String password, Set<Role> roles) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.voteId = voteId;
         this.roles = roles;
     }
 
-    public User(Integer id, String name, String email, String password, Integer voteId, Set<Role> roles) {
-        this(name, email, password, voteId, roles);
+    public User(Integer id, String name, String email, String password, Set<Role> roles) {
+        this(name, email, password, roles);
         this.id = id;
     }
 
-    public User(Integer id, String name, String email, String password, Integer voteId, Role role, Role... roles) {
-        this(id, name, email, password, voteId, EnumSet.of(role, roles));
+    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+        this(id, name, email, password, EnumSet.of(role, roles));
     }
 
     public User(User user) {
-        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getVoteId(), user.getRoles());
+        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRoles());
         this.enabled = user.isEnabled();
     }
 
@@ -110,11 +100,4 @@ public class User extends BaseEntity{
         this.enabled = enabled;
     }
 
-    public Integer getVoteId() {
-        return voteId;
-    }
-
-    public void setVoteId(Integer voteId) {
-        this.voteId = voteId;
-    }
 }

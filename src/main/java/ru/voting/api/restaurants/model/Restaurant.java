@@ -1,14 +1,12 @@
 package ru.voting.api.restaurants.model;
 
-import org.hibernate.annotations.Formula;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
-@NamedQueries({
-        @NamedQuery(name = "restaurant.delete", query = "DELETE FROM Restaurant r WHERE r.id=:id"),
-        @NamedQuery(name = "restaurant.getAll", query = "SELECT r FROM Restaurant r ORDER BY r.rating DESC")
-})
+
 @Entity
 @Table(name = "restaurants")
 public class Restaurant extends BaseEntity{
@@ -17,8 +15,9 @@ public class Restaurant extends BaseEntity{
     @NotBlank(message = "name mast not be empty")
     private String name;
 
-    @Formula("(SELECT COUNT(*) FROM votes v WHERE v.date = CURDATE() AND v.rest_id = id)")
-    private int rating;
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Meal> menu;
 
     public Restaurant() {
     }
@@ -27,14 +26,13 @@ public class Restaurant extends BaseEntity{
         this.name = name;
     }
 
-    public Restaurant(Integer id, String name, int rating) {
+    public Restaurant(Integer id, String name) {
         this(name);
         this.id = id;
-        this.rating = rating;
     }
 
     public Restaurant(Restaurant restaurant) {
-        this(restaurant.getId(), restaurant.getName(), restaurant.getRating());
+        this(restaurant.getId(), restaurant.getName());
     }
 
     public String getName() {
@@ -45,11 +43,12 @@ public class Restaurant extends BaseEntity{
         this.name = name;
     }
 
-    public int getRating() {
-        return rating;
+    public List<Meal> getMenu() {
+        return menu;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setMenu(List<Meal> menu) {
+        this.menu = menu;
     }
+
 }

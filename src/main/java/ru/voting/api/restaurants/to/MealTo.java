@@ -5,9 +5,8 @@ import ru.voting.api.restaurants.model.Meal;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
-public class MealTo implements Serializable {
+public class MealTo {
 
     @Column(name = "title", nullable = false)
     @NotBlank(message = "title mast not be empty")

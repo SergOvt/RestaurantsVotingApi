@@ -76,6 +76,7 @@ public class UserServiceTest {
 
     @Test
     public void testNewVote() throws Exception {
+        userService.setEndVotingTime(LocalTime.now().plusMinutes(1));
         userService.vote(USER_1, RESTAURANT_2.getId());
         Assert.assertEquals(restaurantService.get(RESTAURANT_2.getId()).getRating(), RESTAURANT_2.getRating() + 1);
     }

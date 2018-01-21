@@ -4,9 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@NamedQueries({
-        @NamedQuery(name = "vote.get", query = "SELECT DISTINCT v FROM Vote v WHERE v.user.id=:userId AND v.date=:date")
-})
+
 @Entity
 @Table(name = "votes")
 public class Vote extends BaseEntity{

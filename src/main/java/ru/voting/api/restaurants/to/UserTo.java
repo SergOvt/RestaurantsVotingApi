@@ -5,10 +5,8 @@ import ru.voting.api.restaurants.model.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
-public class UserTo implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class UserTo {
 
     @NotBlank(message = "name mast not be empty")
     private String name;

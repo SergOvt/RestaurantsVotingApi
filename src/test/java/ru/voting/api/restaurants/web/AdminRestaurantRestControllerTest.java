@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import ru.voting.api.restaurants.TestUtil;
-import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.service.RestaurantService;
 import ru.voting.api.restaurants.to.RestaurantTo;
 import ru.voting.api.restaurants.web.json.JsonUtil;
@@ -29,8 +28,8 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest{
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(createdTo)))
                 .andExpect(status().isCreated());
-        Restaurant returned = TestUtil.readFromJson(action, Restaurant.class);
-        Restaurant created = new Restaurant(returned.getId(), RESTAURANT_NEW.getName(), 0);
+        RestaurantTo returned = TestUtil.readFromJson(action, RestaurantTo.class);
+        RestaurantTo created = new RestaurantTo(returned.getId(), RESTAURANT_NEW.getName(), 0);
         assertMatch(returned, created);
     }
 
@@ -42,7 +41,7 @@ public class AdminRestaurantRestControllerTest extends AbstractControllerTest{
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updatedTo)))
                 .andExpect(status().isOk());
-        Restaurant updated = new Restaurant(RESTAURANT_1);
+        RestaurantTo updated = new RestaurantTo(RESTAURANT_1);
         updated.setName("Updated Name");
         assertMatch(restaurantService.get(RESTAURANT_1.getId()), updated);
     }

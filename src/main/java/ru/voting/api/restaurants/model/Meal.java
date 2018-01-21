@@ -7,10 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-@NamedQueries({
-        @NamedQuery(name = "meal.delete", query = "DELETE FROM Meal m WHERE m.date=:date AND m.restaurant.id=:rest_id"),
-        @NamedQuery(name = "meal.getByDate", query = "SELECT m FROM Meal m WHERE m.date=:date AND m.restaurant.id=:rest_id"),
-})
 @Entity
 @Table(name = "meals")
 public class Meal extends BaseEntity {

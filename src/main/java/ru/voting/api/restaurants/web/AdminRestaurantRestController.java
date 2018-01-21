@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.service.RestaurantService;
 import ru.voting.api.restaurants.to.RestaurantTo;
 
@@ -32,9 +31,9 @@ public class AdminRestaurantRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> create(@Valid @RequestBody RestaurantTo restaurantTo) {
+    public ResponseEntity<RestaurantTo> create(@Valid @RequestBody RestaurantTo restaurantTo) {
         log.info("Admin create new restaurant");
-        Restaurant created = restaurantService.create(restaurantTo);
+        RestaurantTo created = restaurantService.create(restaurantTo);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -42,7 +41,7 @@ public class AdminRestaurantRestController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Restaurant update(@Valid @RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id) {
+    public RestaurantTo update(@Valid @RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id) {
         log.info("Admin update restaurant id={}", id);
         return restaurantService.update(restaurantTo, id);
     }

@@ -3,10 +3,10 @@ package ru.voting.api.restaurants.web;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.RestaurantService;
 import ru.voting.api.restaurants.service.UserService;
+import ru.voting.api.restaurants.to.RestaurantTo;
 import ru.voting.api.restaurants.to.UserTo;
 import ru.voting.api.restaurants.web.json.JsonUtil;
 
@@ -66,7 +66,7 @@ public class UserRestControllerTest extends AbstractControllerTest{
                 .with(userAuth(USER_1))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        Restaurant restaurant = restaurantService.get(RESTAURANT_1.getId());
+        RestaurantTo restaurant = restaurantService.get(RESTAURANT_1.getId());
         assertMatch(restaurant.getRating(), RESTAURANT_1.getRating() + 1);
     }
 

@@ -1,77 +1,55 @@
 package ru.voting.api.restaurants.repository;
 
-import org.hibernate.jpa.QueryHints;
-import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.model.Vote;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-@Transactional(readOnly = true)
 public class UserRepositoryImpl implements UserRepository{
 
-    @PersistenceContext
-    private EntityManager em;
+    @Autowired
+    private CrudUserRepository crudUserRepository;
+    @Autowired
+    private CrudRestaurantRepository crudRestaurantRepository;
+    @Autowired
+    private CrudVoteRepository crudVoteRepository;
 
     @Override
     public User get(int id) {
-        return em.find(User.class, id);
+        return crudUserRepository.findById(id).orElse(null);
     }
 
     @Override
     public User getByEmail(String email) {
-        List<User> users = em.createNamedQuery("user.byEmail", User.class)
-                .setParameter("email", email)
-                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
-                .getResultList();
-        return DataAccessUtils.singleResult(users);
+        return crudUserRepository.getByEmail(email);
     }
 
     @Override
     public List<User> getAll() {
-        return em.createNamedQuery("user.getAll", User.class).getResultList();
+        return crudUserRepository.findAll();
     }
 
     @Override
-    @Transactional
     public User save(User user) {
-        if (user.isNew()) {
-            em.persist(user);
-            return user;
-        } else {
-            return em.merge(user);
-        }
+        return crudUserRepository.save(user);
     }
 
     @Override
-    @Transactional
     public boolean delete(int id) {
-        return em.createNamedQuery("user.delete")
-                .setParameter("id", id)
-                .executeUpdate() != 0;
+        return crudUserRepository.delete(id) != 0;
     }
 
     @Override
-    public boolean vote(User user, int restaurantId) {
-        Restaurant restaurant = em.getReference(Restaurant.class, restaurantId);
-        Vote vote = new Vote(restaurant, user);
-        try {
-            if (user.getVoteId() == null) {
-                em.persist(vote);
-            } else {
-                vote.setId(user.getVoteId());
-                em.merge(vote);
-            }
-            return true;
-        } catch (PersistenceException e) {
-            return false;
-        }
+    public void setVote(Vote vote) {
+        crudVoteRepository.save(vote);
+    }
+
+    @Override
+    public Vote getVote(User user) {
+        return crudVoteRepository.findByUserAndDate(user, LocalDate.now());
     }
 }

@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.voting.api.restaurants.AuthorizedUser;
+import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.model.User;
+import ru.voting.api.restaurants.model.Vote;
+import ru.voting.api.restaurants.repository.RestaurantRepository;
 import ru.voting.api.restaurants.repository.UserRepository;
 import ru.voting.api.restaurants.to.UserTo;
 import ru.voting.api.restaurants.util.exception.VotingAccessException;
@@ -23,30 +26,32 @@ import static ru.voting.api.restaurants.util.ValidationUtil.*;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private LocalTime endVotingTime = LocalTime.of(11,0);
-    private final UserRepository repository;
+    private final UserRepository userRepository;
+    private final RestaurantRepository restaurantRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
+    public UserServiceImpl(UserRepository userRepository, RestaurantRepository restaurantRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.restaurantRepository = restaurantRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public User get(int id) {
-        return checkNotFound(repository.get(id), id);
+        return checkNotFound(userRepository.get(id), id);
     }
 
     @Override
     public List<User> getAll() {
-        return repository.getAll();
+        return userRepository.getAll();
     }
 
     @Override
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         checkNew(user);
-        return repository.save(prepareToSave(user, passwordEncoder));
+        return userRepository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Override
@@ -55,7 +60,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Assert.notNull(user, "user must not be null");
         get(id); //check NotFound
         user.setId(id);
-        return repository.save(prepareToSave(user, passwordEncoder));
+        return userRepository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Override
@@ -63,18 +68,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User update(UserTo userTo, int id) {
         Assert.notNull(userTo, "user must not be null");
         User user = updateFromTo(get(id), userTo);
-        return repository.save(prepareToSave(user, passwordEncoder));
+        return userRepository.save(prepareToSave(user, passwordEncoder));
     }
 
     @Override
     public void delete(int id) {
-        checkNotFound(repository.delete(id), id);
+        checkNotFound(userRepository.delete(id), id);
     }
 
     @Override
     public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
         Assert.notNull(email, "email must not be null");
-        User user = repository.getByEmail(email.toLowerCase());
+        User user = userRepository.getByEmail(email.toLowerCase());
         if (user == null) {
             throw new UsernameNotFoundException("User " + email + " is not found");
         }
@@ -84,10 +89,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void vote(User user, int restaurantId) {
-        if (user.getVoteId() == null || (user.getVoteId() != null && LocalTime.now().isBefore(endVotingTime))) {
-            checkNotFound(repository.vote(user, restaurantId), restaurantId);
+        Vote vote = userRepository.getVote(user);
+        Restaurant restaurant = checkNotFound(restaurantRepository.get(restaurantId), restaurantId);
+        if (vote == null) {
+            userRepository.setVote(new Vote(restaurant, user));
         } else {
-            throw new VotingAccessException("Voting time is out");
+            if (LocalTime.now().isBefore(endVotingTime)) {
+                vote.setRestaurant(restaurant);
+                userRepository.setVote(vote);
+            } else {
+                throw new VotingAccessException("Voting time is out");
+            }
         }
     }
 

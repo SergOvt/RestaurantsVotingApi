@@ -14,6 +14,7 @@ import ru.voting.api.restaurants.util.exception.ErrorType;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
 import ru.voting.api.restaurants.util.exception.VotingAccessException;
 
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.StringJoiner;
@@ -25,7 +26,7 @@ public class ExceptionInfoHandler {
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler({NotFoundException.class, EntityNotFoundException.class})
     public ErrorInfo notFoundError(HttpServletRequest req, NotFoundException e) {
         return logAndGetErrorInfo(req, e, false, ErrorType.DATA_NOT_FOUND);
     }

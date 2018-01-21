@@ -50,7 +50,7 @@ public class UserRestController {
 
     @PutMapping(value = "/restaurants/{id}")
     public void vote(@PathVariable("id") int restaurantId) {
-        log.info("User id={} vote for restaurant id={}", AuthorizedUser.id(), restaurantId);
+        log.info("User id={} setVote for restaurant id={}", AuthorizedUser.id(), restaurantId);
         userService.vote(AuthorizedUser.get().getUser(), restaurantId);
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.to.MealTo;
 import ru.voting.api.restaurants.to.RestaurantTo;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
@@ -27,13 +26,13 @@ public class RestaurantServiceTest {
 
     @Test
     public void testGet() throws Exception {
-        Restaurant actual = service.get(RESTAURANT_1.getId());
+        RestaurantTo actual = service.get(RESTAURANT_1.getId());
         assertMatch(actual, RESTAURANT_1);
     }
 
     @Test
     public void testGetAll() throws Exception {
-        List<Restaurant> actual = service.getAll();
+        List<RestaurantTo> actual = service.getAll();
         assertMatch(actual, RESTAURANT_1, RESTAURANT_2, RESTAURANT_3);
     }
 
@@ -47,7 +46,7 @@ public class RestaurantServiceTest {
     public void testUpdate() throws Exception {
         RestaurantTo updatedTo = new RestaurantTo("New Name");
         service.update(updatedTo, RESTAURANT_1.getId());
-        Restaurant updated = new Restaurant(RESTAURANT_1);
+        RestaurantTo updated = new RestaurantTo(RESTAURANT_1);
         updated.setName("New Name");
         assertMatch(service.get(RESTAURANT_1.getId()), updated);
     }
