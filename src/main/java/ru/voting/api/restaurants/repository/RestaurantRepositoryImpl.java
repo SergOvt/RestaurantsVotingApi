@@ -1,6 +1,8 @@
 package ru.voting.api.restaurants.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.Meal;
@@ -22,21 +24,25 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
     }
 
     @Override
+    @Cacheable("restaurants")
     public Restaurant get(int id) {
         return crudRestaurantRepository.getWithMenu(id);
     }
 
     @Override
+    @Cacheable("restaurants")
     public List<Restaurant> getAll() {
         return crudRestaurantRepository.getAllWithMenu();
     }
 
     @Override
+    @CacheEvict(value = "restaurants", allEntries = true)
     public Restaurant save(Restaurant restaurant) {
         return crudRestaurantRepository.save(restaurant);
     }
 
     @Override
+    @CacheEvict(value = "restaurants", allEntries = true)
     public boolean delete(int id) {
         return crudRestaurantRepository.delete(id) != 0;
     }

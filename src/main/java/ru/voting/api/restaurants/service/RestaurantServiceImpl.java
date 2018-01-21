@@ -28,14 +28,12 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    @Cacheable("restaurants")
     public RestaurantTo get(int id) {
         Restaurant restaurant =  checkNotFound(restaurantRepository.get(id), id);
         return new RestaurantTo(id, restaurant.getName(), restaurant.getVotes().size());
     }
 
     @Override
-    @Cacheable("restaurants")
     public List<RestaurantTo> getAll() {
         List<Restaurant> restaurants = restaurantRepository.getAll();
         List<RestaurantTo> result = restaurants.stream()
@@ -46,7 +44,6 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    @CacheEvict(value = "restaurants", allEntries = true)
     public RestaurantTo create(RestaurantTo restaurantTo) {
         Assert.notNull(restaurantTo, "restaurant must not be null");
         Restaurant restaurant = restaurantRepository.save(new Restaurant(null, restaurantTo.getName()));
@@ -55,7 +52,6 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     @Transactional
-    @CacheEvict(value = "restaurants", allEntries = true)
     public RestaurantTo update(RestaurantTo restaurantTo, int id) {
         Assert.notNull(restaurantTo, "restaurant must not be null");
         Restaurant restaurant = checkNotFound(restaurantRepository.get(id), id);
@@ -65,7 +61,6 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
         checkNotFound(restaurantRepository.delete(id), id);
     }
