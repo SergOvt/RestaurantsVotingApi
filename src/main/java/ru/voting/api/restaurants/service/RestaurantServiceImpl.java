@@ -35,6 +35,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
+    @Cacheable("restaurants")
     public List<RestaurantTo> getAll() {
         List<Restaurant> restaurants = restaurantRepository.getAll();
         List<RestaurantTo> result = restaurants.stream()
@@ -45,6 +46,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
+    @CacheEvict(value = "restaurants", allEntries = true)
     public RestaurantTo create(RestaurantTo restaurantTo) {
         Assert.notNull(restaurantTo, "restaurant must not be null");
         Restaurant restaurant = restaurantRepository.save(new Restaurant(null, restaurantTo.getName()));
