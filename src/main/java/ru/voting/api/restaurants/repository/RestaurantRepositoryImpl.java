@@ -16,11 +16,15 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     private final CrudMealRepository crudMealRepository;
     private final CrudRestaurantRepository crudRestaurantRepository;
+    private final CrudVoteRepository crudVoteRepository;
 
     @Autowired
-    public RestaurantRepositoryImpl(CrudMealRepository crudMealRepository, CrudRestaurantRepository crudRestaurantRepository) {
+    public RestaurantRepositoryImpl(CrudMealRepository crudMealRepository,
+                                    CrudRestaurantRepository crudRestaurantRepository,
+                                    CrudVoteRepository crudVoteRepository) {
         this.crudMealRepository = crudMealRepository;
         this.crudRestaurantRepository = crudRestaurantRepository;
+        this.crudVoteRepository = crudVoteRepository;
     }
 
     @Override
@@ -56,5 +60,10 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
         menu.forEach(meal -> meal.setRestaurant(restaurant));
         return crudMealRepository.saveAll(menu);
 
+    }
+
+    @Override
+    public int getRating(Restaurant restaurant) {
+        return crudVoteRepository.countByRestaurant(restaurant);
     }
 }

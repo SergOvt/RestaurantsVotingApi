@@ -30,14 +30,14 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     public RestaurantTo get(int id) {
         Restaurant restaurant =  checkNotFound(restaurantRepository.get(id), id);
-        return new RestaurantTo(id, restaurant.getName(), restaurant.getVotes().size());
+        return new RestaurantTo(id, restaurant.getName(), restaurantRepository.getRating(restaurant));
     }
 
     @Override
     public List<RestaurantTo> getAll() {
         List<Restaurant> restaurants = restaurantRepository.getAll();
         List<RestaurantTo> result = restaurants.stream()
-                .map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurant.getVotes().size()))
+                .map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurantRepository.getRating(restaurant)))
                 .collect(Collectors.toList());
         result.sort((o1, o2) -> o2.getRating() - o1.getRating());
         return result;
@@ -57,7 +57,7 @@ public class RestaurantServiceImpl implements RestaurantService{
         Restaurant restaurant = checkNotFound(restaurantRepository.get(id), id);
         restaurant.setName(restaurantTo.getName());
         restaurantRepository.save(restaurant);
-        return new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurant.getVotes().size());
+        return new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurantRepository.getRating(restaurant));
     }
 
     @Override

@@ -115,16 +115,4 @@ public class User extends BaseEntity{
         this.voteId = voteId;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
-                ", enabled=" + enabled +
-                ", voteId=" + voteId +
-                ", id=" + id +
-                '}';
-    }
 }

@@ -53,11 +53,11 @@ public class ExceptionInfoHandler {
         return new ErrorInfo(req.getRequestURL(), ErrorType.DATA_ERROR, joiner.toString());
     }
 
-    /*@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ErrorInfo handleError(HttpServletRequest req, Exception e) {
         return logAndGetErrorInfo(req, e, true, ErrorType.APP_ERROR);
-    }*/
+    }
 
     private static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logException, ErrorType errorType) {
         Throwable rootCause = ValidationUtil.getRootCause(e);

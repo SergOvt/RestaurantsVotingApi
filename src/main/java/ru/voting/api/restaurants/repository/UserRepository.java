@@ -19,6 +19,4 @@ public interface UserRepository {
 
     void setVote(Vote vote);
 
-    Vote getVote(User user);
-
 }

@@ -21,10 +21,6 @@ public class Restaurant extends BaseEntity{
     @BatchSize(size = 200)
     private Set<Meal> menu;
 
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Vote> votes;
-
     public Restaurant() {
     }
 
@@ -57,11 +53,4 @@ public class Restaurant extends BaseEntity{
         this.menu = menu;
     }
 
-    public Set<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(Set<Vote> votes) {
-        this.votes = votes;
-    }
 }

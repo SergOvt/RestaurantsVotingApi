@@ -14,9 +14,9 @@ import ru.voting.api.restaurants.util.exception.ErrorType;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-public class GlobalErrorHandler {
+public class ErrorController {
 
-    private static Logger log = LoggerFactory.getLogger(GlobalErrorHandler.class);
+    private static Logger log = LoggerFactory.getLogger(ErrorController.class);
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @RequestMapping(value = "unauthorised", produces = MediaType.APPLICATION_JSON_VALUE)
