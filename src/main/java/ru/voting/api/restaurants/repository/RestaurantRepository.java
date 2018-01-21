@@ -17,6 +17,4 @@ public interface RestaurantRepository {
 
     List<Meal> putMenu(List<Meal> menu, int id);
 
-    int getRating(Restaurant restaurant);
-
 }

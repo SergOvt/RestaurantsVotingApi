@@ -1,6 +1,7 @@
 package ru.voting.api.restaurants.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,16 +28,17 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
+    @Cacheable("restaurants")
     public RestaurantTo get(int id) {
         Restaurant restaurant =  checkNotFound(restaurantRepository.get(id), id);
-        return new RestaurantTo(id, restaurant.getName(), restaurantRepository.getRating(restaurant));
+        return new RestaurantTo(id, restaurant.getName(), restaurant.getVotes().size());
     }
 
     @Override
     public List<RestaurantTo> getAll() {
         List<Restaurant> restaurants = restaurantRepository.getAll();
         List<RestaurantTo> result = restaurants.stream()
-                .map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurantRepository.getRating(restaurant)))
+                .map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurant.getVotes().size()))
                 .collect(Collectors.toList());
         result.sort((o1, o2) -> o2.getRating() - o1.getRating());
         return result;
@@ -51,15 +53,17 @@ public class RestaurantServiceImpl implements RestaurantService{
 
     @Override
     @Transactional
+    @CacheEvict(value = "restaurants", allEntries = true)
     public RestaurantTo update(RestaurantTo restaurantTo, int id) {
         Assert.notNull(restaurantTo, "restaurant must not be null");
         Restaurant restaurant = checkNotFound(restaurantRepository.get(id), id);
         restaurant.setName(restaurantTo.getName());
         restaurantRepository.save(restaurant);
-        return new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurantRepository.getRating(restaurant));
+        return new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurant.getVotes().size());
     }
 
     @Override
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void delete(int id) {
         checkNotFound(restaurantRepository.delete(id), id);
     }
@@ -74,6 +78,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
+    @CacheEvict(value = "restaurants", allEntries = true)
     public List<MealTo> putMenu(List<MealTo> menuTo, int id) {
         Assert.notNull(menuTo, "Menu must not be null");
         restaurantRepository.putMenu(menuTo.stream()

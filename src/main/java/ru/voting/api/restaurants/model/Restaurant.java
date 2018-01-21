@@ -1,10 +1,11 @@
 package ru.voting.api.restaurants.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -17,7 +18,12 @@ public class Restaurant extends BaseEntity{
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Meal> menu;
+    @BatchSize(size = 200)
+    private Set<Meal> menu;
+
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Vote> votes;
 
     public Restaurant() {
     }
@@ -43,12 +49,19 @@ public class Restaurant extends BaseEntity{
         this.name = name;
     }
 
-    public List<Meal> getMenu() {
+    public Set<Meal> getMenu() {
         return menu;
     }
 
-    public void setMenu(List<Meal> menu) {
+    public void setMenu(Set<Meal> menu) {
         this.menu = menu;
     }
 
+    public Set<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(Set<Vote> votes) {
+        this.votes = votes;
+    }
 }

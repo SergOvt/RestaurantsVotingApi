@@ -13,10 +13,11 @@ import java.util.List;
 public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Integer> {
 
     @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menu m WHERE r.id=?1 AND (m.date=CURDATE() OR m IS NULL)")
+    @EntityGraph(attributePaths = {"menu", "votes"}, type = EntityGraph.EntityGraphType.LOAD)
     Restaurant getWithMenu(int id);
 
     @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.menu m WHERE m.date=CURDATE() OR m IS NULL")
-    @EntityGraph(attributePaths = {"menu"}, type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(attributePaths = {"menu", "votes"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Restaurant> getAllWithMenu();
 
     @Override

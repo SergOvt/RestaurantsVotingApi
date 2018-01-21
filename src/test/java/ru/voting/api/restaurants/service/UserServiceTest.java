@@ -32,6 +32,14 @@ public class UserServiceTest {
     @Autowired
     private RestaurantService restaurantService;
 
+    @Autowired
+    private CacheManager cacheManager;
+
+    @Before
+    public void setUp() throws Exception {
+        cacheManager.getCache("restaurants").clear();
+    }
+
     @Test
     public void testGet() throws Exception {
         User user = userService.get(USER_1.getId());
