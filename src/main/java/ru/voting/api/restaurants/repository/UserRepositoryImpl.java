@@ -11,12 +11,14 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepository{
 
+    private final CrudUserRepository crudUserRepository;
+    private final CrudVoteRepository crudVoteRepository;
+
     @Autowired
-    private CrudUserRepository crudUserRepository;
-    @Autowired
-    private CrudRestaurantRepository crudRestaurantRepository;
-    @Autowired
-    private CrudVoteRepository crudVoteRepository;
+    public UserRepositoryImpl(CrudUserRepository crudUserRepository, CrudVoteRepository crudVoteRepository) {
+        this.crudUserRepository = crudUserRepository;
+        this.crudVoteRepository = crudVoteRepository;
+    }
 
     @Override
     public User get(int id) {

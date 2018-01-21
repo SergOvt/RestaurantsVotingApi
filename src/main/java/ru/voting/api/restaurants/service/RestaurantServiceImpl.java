@@ -1,6 +1,7 @@
 package ru.voting.api.restaurants.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -64,6 +65,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
+    @Cacheable("restaurants")
     public List<MealTo> getTodayMenu(int id) {
         Restaurant restaurant = checkNotFound(restaurantRepository.get(id), id);
         return restaurant.getMenu().stream()
