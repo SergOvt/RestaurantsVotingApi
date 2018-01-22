@@ -6,6 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.model.Vote;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Transactional(readOnly = true)
 public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
 
@@ -13,6 +16,8 @@ public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
     @Transactional
     Vote save(Vote vote);
 
-    int countByRestaurant(Restaurant restaurant);
+    List<Vote> getAllByDate(LocalDate date);
+
+    int countByRestaurantAndDate(Restaurant restaurant, LocalDate date);
 
 }

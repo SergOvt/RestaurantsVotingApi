@@ -23,4 +23,3 @@ INSERT INTO meals (rest_id, title, price, date) VALUES
 
 INSERT INTO votes (user_id, rest_id) VALUES
   (2, 1);
-

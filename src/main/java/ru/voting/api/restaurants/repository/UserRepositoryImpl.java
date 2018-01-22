@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.model.Vote;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -49,4 +50,8 @@ public class UserRepositoryImpl implements UserRepository{
         crudVoteRepository.save(vote);
     }
 
+    @Override
+    public List<Vote> getTodayVotes() {
+        return crudVoteRepository.getAllByDate(LocalDate.now());
+    }
 }

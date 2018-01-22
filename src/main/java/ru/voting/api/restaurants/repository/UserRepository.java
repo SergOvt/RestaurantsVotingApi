@@ -19,4 +19,6 @@ public interface UserRepository {
 
     void setVote(Vote vote);
 
+    List<Vote> getTodayVotes();
+
 }

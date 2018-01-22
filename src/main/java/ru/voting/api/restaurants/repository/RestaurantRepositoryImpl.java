@@ -9,6 +9,7 @@ import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -64,6 +65,6 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     @Override
     public int getRating(Restaurant restaurant) {
-        return crudVoteRepository.countByRestaurant(restaurant);
+        return crudVoteRepository.countByRestaurantAndDate(restaurant, LocalDate.now());
     }
 }

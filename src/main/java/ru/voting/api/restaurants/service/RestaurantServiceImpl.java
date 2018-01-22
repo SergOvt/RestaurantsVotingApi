@@ -9,10 +9,12 @@ import org.springframework.util.Assert;
 import ru.voting.api.restaurants.model.Meal;
 import ru.voting.api.restaurants.model.Restaurant;
 import ru.voting.api.restaurants.repository.RestaurantRepository;
+import ru.voting.api.restaurants.repository.UserRepository;
 import ru.voting.api.restaurants.to.MealTo;
 import ru.voting.api.restaurants.to.RestaurantTo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ru.voting.api.restaurants.util.ValidationUtil.*;
@@ -21,10 +23,12 @@ import static ru.voting.api.restaurants.util.ValidationUtil.*;
 public class RestaurantServiceImpl implements RestaurantService{
 
     private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository) {
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.restaurantRepository = restaurantRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -36,8 +40,11 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     public List<RestaurantTo> getAll() {
         List<Restaurant> restaurants = restaurantRepository.getAll();
+        Map<Integer, Integer> votes = userRepository.getTodayVotes().stream().collect(Collectors.toMap(k ->
+                k.getRestaurant().getId(), i -> 1, (i, j) -> i + 1));
         List<RestaurantTo> result = restaurants.stream()
-                .map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName(), restaurantRepository.getRating(restaurant)))
+                .map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName(),
+                        votes.getOrDefault(restaurant.getId(), 0)))
                 .collect(Collectors.toList());
         result.sort((o1, o2) -> o2.getRating() - o1.getRating());
         return result;
