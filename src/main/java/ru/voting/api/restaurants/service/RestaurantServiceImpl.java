@@ -42,12 +42,11 @@ public class RestaurantServiceImpl implements RestaurantService{
         List<Restaurant> restaurants = restaurantRepository.getAll();
         Map<Integer, Integer> votes = userRepository.getTodayVotes().stream().collect(Collectors.toMap(k ->
                 k.getRestaurant().getId(), i -> 1, (i, j) -> i + 1));
-        List<RestaurantTo> result = restaurants.stream()
+        return restaurants.stream()
                 .map(restaurant -> new RestaurantTo(restaurant.getId(), restaurant.getName(),
                         votes.getOrDefault(restaurant.getId(), 0)))
+                .sorted((o1, o2) -> o2.getRating() - o1.getRating())
                 .collect(Collectors.toList());
-        result.sort((o1, o2) -> o2.getRating() - o1.getRating());
-        return result;
     }
 
     @Override
