@@ -90,12 +90,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void vote(User user, int restaurantId) {
         Restaurant restaurant = checkNotFound(restaurantRepository.get(restaurantId), restaurantId);
-        Vote vote = new Vote(restaurant, user);
-        if (user.getVoteId() == null) {
-            userRepository.setVote(vote);
+        Vote vote = userRepository.getVote(user);
+        if (vote == null) {
+            userRepository.setVote(new Vote(restaurant, user));
         } else {
             if (LocalTime.now().isBefore(endVotingTime)) {
-                vote.setId(user.getVoteId());
+                vote.setRestaurant(restaurant);
                 userRepository.setVote(vote);
             } else {
                 throw new VotingAccessException("Voting time is out");

@@ -27,10 +27,10 @@ public class TestData {
     public static final RestaurantTo RESTAURANT_3 = new RestaurantTo(3, "Restaurant3", 0);
     public static final RestaurantTo RESTAURANT_NEW = new RestaurantTo(4, "new", 0);
 
-    public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", null, ROLE_USER);
-    public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", 1, ROLE_USER);
-    public static final User ADMIN = new User(3, "admin", "admin@mail.ru", "qwerty", null, ROLE_ADMIN);
-    public static final User USER_NEW = new User(null,"new", "new@mail.ru", "qwerty", null, ROLE_USER);
+    public static final User USER_1 = new User(1, "user1", "user1@mail.ru", "qwerty", ROLE_USER);
+    public static final User USER_2 = new User(2, "user2", "user2@mail.ru", "qwerty", ROLE_USER);
+    public static final User ADMIN = new User(3, "admin", "admin@mail.ru", "qwerty", ROLE_ADMIN);
+    public static final User USER_NEW = new User(null,"new", "new@mail.ru", "qwerty", ROLE_USER);
 
     public static <T> void assertMatch(T actual, T expected) {
         assertThat(actual).isEqualToIgnoringGivenFields(expected, "password");

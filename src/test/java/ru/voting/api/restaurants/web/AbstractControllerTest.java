@@ -42,6 +42,7 @@ abstract public class AbstractControllerTest {
     @Before
     public void setUp() throws Exception {
         cacheManager.getCache("restaurants").clear();
+        cacheManager.getCache("users").clear();
     }
 
     @PostConstruct
