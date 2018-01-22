@@ -54,13 +54,13 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
 
     @Override
     @Transactional
+    @CacheEvict(value = "restaurants", allEntries = true)
     public List<Meal> putMenu(List<Meal> menu, int id) {
-        Restaurant restaurant = crudRestaurantRepository.findById(id).orElseThrow(() ->
-                new NotFoundException("Not found entity with id=" + id));
+        Restaurant restaurant = get(id);
+        if (restaurant == null) throw new NotFoundException("Not found entity with id=" + id);
         crudMealRepository.deleteInBatch(restaurant.getMenu());
         menu.forEach(meal -> meal.setRestaurant(restaurant));
         return crudMealRepository.saveAll(menu);
-
     }
 
     @Override

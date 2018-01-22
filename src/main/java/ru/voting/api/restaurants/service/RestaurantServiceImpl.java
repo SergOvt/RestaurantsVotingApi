@@ -72,7 +72,6 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    @Cacheable("restaurants")
     public List<MealTo> getTodayMenu(int id) {
         Restaurant restaurant = checkNotFound(restaurantRepository.get(id), id);
         return restaurant.getMenu().stream()
@@ -81,7 +80,6 @@ public class RestaurantServiceImpl implements RestaurantService{
     }
 
     @Override
-    @CacheEvict(value = "restaurants", allEntries = true)
     public List<MealTo> putMenu(List<MealTo> menuTo, int id) {
         Assert.notNull(menuTo, "Menu must not be null");
         restaurantRepository.putMenu(menuTo.stream()
