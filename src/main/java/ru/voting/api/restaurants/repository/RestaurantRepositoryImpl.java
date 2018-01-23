@@ -60,7 +60,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository{
         if (restaurant == null) throw new NotFoundException("Not found entity with id=" + id);
         crudMealRepository.deleteInBatch(restaurant.getMenu());
         menu.forEach(meal -> meal.setRestaurant(restaurant));
-        return crudMealRepository.saveAll(menu);
+        return crudMealRepository.save(menu);
     }
 
     @Override

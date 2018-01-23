@@ -2,7 +2,7 @@
 Gives the list of all users.
 
 #### Request
-`GET http://localhost:8080/rest/admin/users/all`
+`GET http://localhost:8080/rest/admin/users`
 
 #### Authentication
 User must be admin.

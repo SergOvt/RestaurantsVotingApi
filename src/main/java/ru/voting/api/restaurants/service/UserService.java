@@ -22,5 +22,5 @@ public interface UserService {
 
     void vote(User user, int restaurantId);
 
-    void setEndVotingTime (LocalTime endVotingTime);
+    void setEndVotingTime(LocalTime endVotingTime);
 }

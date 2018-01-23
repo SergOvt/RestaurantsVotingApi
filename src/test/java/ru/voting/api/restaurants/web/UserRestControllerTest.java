@@ -3,24 +3,23 @@ package ru.voting.api.restaurants.web;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.RestaurantService;
 import ru.voting.api.restaurants.service.UserService;
 import ru.voting.api.restaurants.to.RestaurantTo;
 import ru.voting.api.restaurants.to.UserTo;
-import ru.voting.api.restaurants.web.json.JsonUtil;
 
 import java.time.LocalTime;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.api.restaurants.TestData.*;
-import static ru.voting.api.restaurants.TestUtil.userAuth;
+import static ru.voting.api.restaurants.TestUtil.*;
 
-public class UserRestControllerTest extends AbstractControllerTest{
+public class UserRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = UserRestController.REST_URL + '/';
     @Autowired
@@ -43,7 +42,7 @@ public class UserRestControllerTest extends AbstractControllerTest{
         mockMvc.perform(put(REST_URL + "profile")
                 .with(userAuth(USER_1))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(userTo)))
+                .content(writeValue(userTo)))
                 .andExpect(status().isOk());
         User expected = new User(USER_1);
         expected.setName(userTo.getName());
@@ -95,12 +94,13 @@ public class UserRestControllerTest extends AbstractControllerTest{
     }
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     public void testUpdateConflict() throws Exception {
         UserTo userTo = new UserTo(USER_2);
         mockMvc.perform(put(REST_URL + "profile")
                 .with(userAuth(USER_1))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(userTo)))
+                .content(writeValue(userTo)))
                 .andExpect(status().isConflict());
     }
 
@@ -111,7 +111,7 @@ public class UserRestControllerTest extends AbstractControllerTest{
         mockMvc.perform(put(REST_URL + "profile")
                 .with(userAuth(USER_1))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(userTo)))
+                .content(writeValue(userTo)))
                 .andExpect(status().isBadRequest());
     }
 

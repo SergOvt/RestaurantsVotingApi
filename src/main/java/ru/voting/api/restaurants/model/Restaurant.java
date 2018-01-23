@@ -2,15 +2,15 @@ package ru.voting.api.restaurants.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 
 @Entity
 @Table(name = "restaurants")
-public class Restaurant extends BaseEntity{
+public class Restaurant extends BaseEntity {
 
     @Column(name = "name", nullable = false)
     @NotBlank(message = "name mast not be empty")

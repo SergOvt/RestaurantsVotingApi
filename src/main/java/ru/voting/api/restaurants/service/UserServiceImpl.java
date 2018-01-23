@@ -19,23 +19,24 @@ import ru.voting.api.restaurants.util.exception.VotingAccessException;
 import java.time.LocalTime;
 import java.util.List;
 
-import static ru.voting.api.restaurants.util.UserUtil.*;
-import static ru.voting.api.restaurants.util.ValidationUtil.*;
+import static ru.voting.api.restaurants.util.UserUtil.prepareToSave;
+import static ru.voting.api.restaurants.util.UserUtil.updateFromTo;
+import static ru.voting.api.restaurants.util.ValidationUtil.checkNew;
+import static ru.voting.api.restaurants.util.ValidationUtil.checkNotFound;
 
 @Service("userService")
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private LocalTime endVotingTime = LocalTime.of(11,0);
-    private final UserRepository userRepository;
-    private final RestaurantRepository restaurantRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RestaurantRepository restaurantRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.restaurantRepository = restaurantRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private UserRepository userRepository;
+
+    @Autowired
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public User get(int id) {

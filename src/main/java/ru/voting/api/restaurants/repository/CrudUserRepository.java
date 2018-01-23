@@ -10,6 +10,8 @@ import ru.voting.api.restaurants.model.User;
 @Transactional(readOnly = true)
 public interface CrudUserRepository extends JpaRepository<User, Integer> {
 
+    User getById(int id);
+
     User getByEmail(String email);
 
     @Override

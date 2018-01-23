@@ -1,10 +1,10 @@
 package ru.voting.api.restaurants.to;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 import ru.voting.api.restaurants.model.Meal;
 
 import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
 
 public class MealTo {
 

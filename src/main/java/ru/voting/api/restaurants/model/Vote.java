@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "votes")
-public class Vote extends BaseEntity{
+public class Vote extends BaseEntity {
 
     @Column(name = "date", nullable = false)
     @NotNull(message = "date must not be null")

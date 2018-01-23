@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     @Cacheable("users")
     public User get(int id) {
-        return crudUserRepository.findById(id).orElse(null);
+        return crudUserRepository.getById(id);
     }
 
     @Override

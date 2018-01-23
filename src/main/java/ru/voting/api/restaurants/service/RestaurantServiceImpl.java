@@ -1,8 +1,6 @@
 package ru.voting.api.restaurants.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -17,19 +15,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static ru.voting.api.restaurants.util.ValidationUtil.*;
+import static ru.voting.api.restaurants.util.ValidationUtil.checkNotFound;
 
 @Service
-public class RestaurantServiceImpl implements RestaurantService{
-
-    private final RestaurantRepository restaurantRepository;
-    private final UserRepository userRepository;
+public class RestaurantServiceImpl implements RestaurantService {
 
     @Autowired
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, UserRepository userRepository) {
-        this.restaurantRepository = restaurantRepository;
-        this.userRepository = userRepository;
-    }
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public RestaurantTo get(int id) {

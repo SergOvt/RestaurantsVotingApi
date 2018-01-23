@@ -15,7 +15,7 @@ public class UserUtil {
     }
 
     public static User prepareToSave(User user, PasswordEncoder passwordEncoder) {
-        String password = user.getPassword();
+        String password = user.getPassword().trim();
         user.setPassword(StringUtils.isEmpty(password) ? password : passwordEncoder.encode(password));
         user.setEmail(user.getEmail().toLowerCase());
         return user;

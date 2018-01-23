@@ -14,7 +14,6 @@ import java.util.List;
 public interface CrudVoteRepository extends JpaRepository<Vote, Integer> {
 
     @Override
-    @Transactional
     Vote save(Vote vote);
 
     List<Vote> getAllByDate(LocalDate date);

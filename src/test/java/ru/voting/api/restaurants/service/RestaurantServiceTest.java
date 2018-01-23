@@ -4,11 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.to.MealTo;
 import ru.voting.api.restaurants.to.RestaurantTo;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
@@ -18,20 +18,17 @@ import java.util.List;
 
 import static ru.voting.api.restaurants.TestData.*;
 
-@ContextConfiguration("classpath:spring/spring-app.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
-@Sql(scripts = {"classpath:db/initDB.sql", "classpath:db/populateDB.sql"}, config = @SqlConfig(encoding = "UTF-8"))
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@Transactional
 public class RestaurantServiceTest {
 
     @Autowired
     private RestaurantService service;
 
-    @Autowired
-    private CacheManager cacheManager;
-
     @Before
+    @CacheEvict(value = "restaurants", allEntries = true)
     public void setUp() throws Exception {
-        cacheManager.getCache("restaurants").clear();
     }
 
     @Test
@@ -83,6 +80,7 @@ public class RestaurantServiceTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     public void testPutMenu() throws Exception {
         List<MealTo> menuTo = Arrays.asList(new MealTo("meal1", 2000), new MealTo("meal2", 1000));
         service.putMenu(menuTo, RESTAURANT_2.getId());

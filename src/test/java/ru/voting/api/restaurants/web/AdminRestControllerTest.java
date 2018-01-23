@@ -4,11 +4,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import ru.voting.api.restaurants.TestUtil;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.voting.api.restaurants.model.Role;
 import ru.voting.api.restaurants.model.User;
 import ru.voting.api.restaurants.service.UserService;
-import ru.voting.api.restaurants.web.json.JsonUtil;
 
 import java.util.Collections;
 
@@ -16,9 +16,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.voting.api.restaurants.TestData.*;
-import static ru.voting.api.restaurants.TestUtil.userAuth;
+import static ru.voting.api.restaurants.TestUtil.*;
 
-public class AdminRestControllerTest extends AbstractControllerTest{
+public class AdminRestControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL = AdminRestController.REST_URL + '/';
     @Autowired
@@ -30,13 +30,14 @@ public class AdminRestControllerTest extends AbstractControllerTest{
                 .with(userAuth(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(USER_1))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(contentJson(USER_1));
+
     }
 
     @Test
     public void testGetAll() throws Exception {
-        mockMvc.perform(get(REST_URL + "/all")
+        mockMvc.perform(get(REST_URL)
                 .with(userAuth(ADMIN)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -49,9 +50,9 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         ResultActions action = mockMvc.perform(post(REST_URL)
                 .with(userAuth(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(created)))
+                .content(writeValue(created)))
                 .andExpect(status().isCreated());
-        User returned = TestUtil.readFromJson(action, User.class);
+        User returned = readValue(action, User.class);
         created.setId(returned.getId());
         assertMatch(returned, created);
     }
@@ -64,7 +65,7 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         mockMvc.perform(put(REST_URL + USER_1.getId())
                 .with(userAuth(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(writeValue(updated)))
                 .andExpect(status().isOk());
         assertMatch(userService.get(USER_1.getId()), updated);
     }
@@ -104,7 +105,7 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         mockMvc.perform(post(REST_URL)
                 .with(userAuth(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(user)))
+                .content(writeValue(user)))
                 .andExpect(status().isConflict());
     }
 
@@ -115,18 +116,19 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         mockMvc.perform(post(REST_URL)
                 .with(userAuth(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(user)))
+                .content(writeValue(user)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     public void testUpdateConflict() throws Exception {
         User user = new User(USER_1);
         user.setEmail(USER_2.getEmail());
         mockMvc.perform(put(REST_URL + USER_1.getId())
                 .with(userAuth(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(user)))
+                .content(writeValue(user)))
                 .andExpect(status().isConflict());
     }
 
@@ -137,7 +139,7 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         mockMvc.perform(put(REST_URL + USER_1.getId())
                 .with(userAuth(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(user)))
+                .content(writeValue(user)))
                 .andExpect(status().isBadRequest());
     }
 
@@ -148,7 +150,7 @@ public class AdminRestControllerTest extends AbstractControllerTest{
         mockMvc.perform(put(REST_URL + 10)
                 .with(userAuth(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(writeValue(updated)))
                 .andExpect(status().isUnprocessableEntity());
     }
 

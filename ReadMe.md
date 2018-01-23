@@ -22,7 +22,7 @@ There is a voting system for deciding where to have lunch:
 #### Without authorization
 | Method |    Group    |   Endpoint    |                                                   Usage                                                              |
 |:------:|:-----------:|:-------------:|:---------------------------------------------------------------------------------------------------------------------|
-| GET    | restaurants |    `all`      | [Get all Restaurants](https://github.com/SergOvt/restaurants/blob/master/docs/all/Get_restaurants_all.md)            |
+| GET    | restaurants |      `/`      | [Get all Restaurants](https://github.com/SergOvt/restaurants/blob/master/docs/all/Get_restaurants_all.md)            |
 | GET    | restaurants |`RESTAURANT_ID`| [Get details of a Restaurant](https://github.com/SergOvt/restaurants/blob/master/docs/all/Get_restaurants_id.md)     |
 | GET    | restaurants |    `menu`     | [Get restaurant's day Menu](https://github.com/SergOvt/restaurants/blob/master/docs/all/Get_restaurants_menu.md)     |
 
@@ -33,7 +33,7 @@ There is a voting system for deciding where to have lunch:
 | PUT    | restaurants |`RESTAURANT_ID`| [Update a Restaurant](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Put_restaurants_update.md)       |
 | DELETE | restaurants |`RESTAURANT_ID`| [Delete a Restaurant](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Delete_restaurants.md)           |
 | PUT    | restaurants |    `menu`     | [Put restaurant's day Menu](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Put_restaurants_menu.md)   |
-| GET    |    users    |    `all`      | [Get all Users](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Get_users_all.md)                      |
+| GET    |    users    |      `/`      | [Get all Users](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Get_users_all.md)                      |
 | GET    |    users    |   `USER_ID`   | [Get details of a User](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Get_users_id.md)               |
 | POST   |    users    |      `/`      | [Add a User](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Post_users_add.md)                        |
 | PUT    |    users    |   `USER_ID`   | [Update a User](https://github.com/SergOvt/restaurants/blob/master/docs/admin/Put_users_update.md)                   |
@@ -51,7 +51,7 @@ There is a voting system for deciding where to have lunch:
 ## Example curl commands
 
 #### Get All Users
-`curl -i http://localhost:8080/rest/admin/users/all --user admin@mail.ru:qwerty`
+`curl -i http://localhost:8080/rest/admin/users --user admin@mail.ru:qwerty`
 
 #### Create a User
 `curl -i -X POST -d '{"name":"new_user","email":"new_user@mail.ru","password":"qwerty","roles":["ROLE_USER"]}' -H 'Content-Type:application/json;charset=UTF-8' http://localhost:8080/rest/admin/users --user admin@mail.ru:qwerty`
@@ -60,4 +60,4 @@ There is a voting system for deciding where to have lunch:
 `curl -i -X DELETE http://localhost:8080/rest/admin/restaurants/1 --user admin@mail.ru:qwerty`
 
 #### Get all Restaurants
-`curl -i http://localhost:8080/rest/restaurants/all`
+`curl -i http://localhost:8080/rest/restaurants`

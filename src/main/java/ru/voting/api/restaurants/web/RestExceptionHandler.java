@@ -14,19 +14,18 @@ import ru.voting.api.restaurants.util.exception.ErrorType;
 import ru.voting.api.restaurants.util.exception.NotFoundException;
 import ru.voting.api.restaurants.util.exception.VotingAccessException;
 
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.StringJoiner;
 
-@RestControllerAdvice(annotations = RestController.class)
+@RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE + 5)
-public class ExceptionInfoHandler {
-    private static Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
+public class RestExceptionHandler {
+    private static Logger log = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler({NotFoundException.class, EntityNotFoundException.class})
+    @ExceptionHandler(NotFoundException.class)
     public ErrorInfo notFoundError(HttpServletRequest req, NotFoundException e) {
         return logAndGetErrorInfo(req, e, false, ErrorType.DATA_NOT_FOUND);
     }

@@ -2,7 +2,7 @@
 Gives the list of all sorted by rating restaurants (Max rating first).
 
 #### Request
-`GET http://localhost:8080/rest/restaurants/all`
+`GET http://localhost:8080/rest/restaurants`
 
 #### Authentication
 User or userless authentication.

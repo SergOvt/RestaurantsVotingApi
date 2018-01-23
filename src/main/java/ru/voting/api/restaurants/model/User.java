@@ -1,17 +1,17 @@
 package ru.voting.api.restaurants.model;
 
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.EnumSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     @Column(name = "name", nullable = false)
     @NotBlank(message = "name mast not be empty")

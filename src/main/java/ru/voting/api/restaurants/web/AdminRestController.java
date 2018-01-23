@@ -37,7 +37,7 @@ public class AdminRestController {
         return userService.get(id);
     }
 
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<User> getAll() {
         log.info("Admin get all users");
         return userService.getAll();

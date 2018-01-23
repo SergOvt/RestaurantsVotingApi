@@ -1,8 +1,8 @@
 package ru.voting.api.restaurants.to;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotBlank;
 
 public class RestaurantTo {
 
