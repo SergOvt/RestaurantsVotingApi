@@ -1,5 +1,5 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/7b44e357f94c4eb39b5ad58fd90d38bd)](https://www.codacy.com/app/SergOvt/restaurants?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SergOvt/restaurants&amp;utm_campaign=Badge_Grade)
-[![Build Status](https://travis-ci.org/SergOvt/restaurants.svg?branch=master)](https://travis-ci.org/SergOvt/restaurants)
+[![Build Status](https://travis-ci.org/SergOvt/RestaurantsVotingApi.svg?branch=master)](https://travis-ci.org/SergOvt/RestaurantsVotingApi)
 
 Voting system for restaurants REST API (without frontend)
 ===============================
